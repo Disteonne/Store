@@ -6,3 +6,6 @@ CREATE TABLE address
     street   VARCHAR(40) NOT NULL,
     building VARCHAR(10)
 );
+
+
+

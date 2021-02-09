@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -29,11 +30,9 @@ public class Address {
     @Column(name = "building")
     private String building;
 
-    @OneToMany
-    @JoinColumn(name = "address_id")
-    private Set<User> user;
+    @OneToMany(mappedBy = "id")
+    private List<User> user;
 
-    @OneToOne
-    @JoinColumn(name = "addres_id")
-    private Supplier supplier;
+    @OneToMany(mappedBy = "id")
+    private List<Supplier> supplier;
 }

@@ -22,11 +22,10 @@ public class Supplier {
     @Column(name = "mail")
     private String mail;
 
-    @OneToMany
-    @JoinColumn(name = "supplier_id")
+    @OneToMany(mappedBy = "id")
     private List<Product> product;
 
-    @OneToMany
-    @JoinColumn(name = "id")
-    private List<Address> address;
+    @ManyToOne
+    @JoinColumn(name = "id",insertable = false,updatable = false)
+    private Address address;
 }

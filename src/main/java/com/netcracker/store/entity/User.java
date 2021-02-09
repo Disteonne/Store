@@ -37,12 +37,12 @@ public class User {
     @Column(name = "mail")
     private String mail;
 
-    @OneToOne
-    @JoinColumn(name = "id")
+    @ManyToOne
+    @JoinColumn(name = "id",insertable = false,updatable = false)
     private Address address;
 
     @OneToMany
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id",insertable = false,updatable = false)
     private List<PurchaseHistory> history;
 
     @Transient

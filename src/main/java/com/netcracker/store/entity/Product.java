@@ -23,8 +23,8 @@ public class Product {
     @Column(name = "price")
     private double price;
 
-    @OneToOne
-    @JoinColumn(name = "id")
+    @ManyToOne
+    @JoinColumn(name = "id",insertable = false,updatable = false)
     private Supplier supplier;
 
     @Column(name = "info")
