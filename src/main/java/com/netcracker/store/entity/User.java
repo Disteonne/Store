@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -37,7 +37,16 @@ public class User {
     @Column(name = "mail")
     private String mail;
 
-    private long addressId;
+    @OneToOne
+    @JoinColumn(name = "id")
+    private Address address;
+
+    @OneToMany
+    @JoinColumn(name = "id")
+    private List<PurchaseHistory> history;
+
+    @Transient
+    private List<Product> basket = new ArrayList<>();
 
 
 }

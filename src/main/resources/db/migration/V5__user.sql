@@ -1,4 +1,4 @@
-CREATE TABLE user
+CREATE TABLE users
 (
     id        SERIAL PRIMARY KEY,
     surname   VARCHAR(30) NOT NULL,
@@ -7,6 +7,6 @@ CREATE TABLE user
     login     VARCHAR     NOT NULL,
     password  VARCHAR     NOT NULL,
     mail      VARCHAR     NOT NULL,
-    addressId integer REFERENCES address (id)
-
+    address_id integer REFERENCES address (id),
+    history_id integer REFERENCES history (id)
 );

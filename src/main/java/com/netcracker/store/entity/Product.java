@@ -23,7 +23,9 @@ public class Product {
     @Column(name = "price")
     private double price;
 
-    private long supplierId;
+    @OneToOne
+    @JoinColumn(name = "id")
+    private Supplier supplier;
 
     @Column(name = "info")
     private String info;

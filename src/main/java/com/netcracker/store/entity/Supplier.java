@@ -4,6 +4,8 @@ import lombok.Data;
 
 
 import javax.persistence.*;
+import java.util.List;
+
 
 @Entity
 @Data
@@ -20,5 +22,11 @@ public class Supplier {
     @Column(name = "mail")
     private String mail;
 
-    private long addressId;
+    @OneToMany
+    @JoinColumn(name = "supplier_id")
+    private List<Product> product;
+
+    @OneToMany
+    @JoinColumn(name = "id")
+    private List<Address> address;
 }

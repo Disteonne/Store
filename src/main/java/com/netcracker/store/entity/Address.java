@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
@@ -27,4 +28,12 @@ public class Address {
 
     @Column(name = "building")
     private String building;
+
+    @OneToMany
+    @JoinColumn(name = "address_id")
+    private Set<User> user;
+
+    @OneToOne
+    @JoinColumn(name = "addres_id")
+    private Supplier supplier;
 }
