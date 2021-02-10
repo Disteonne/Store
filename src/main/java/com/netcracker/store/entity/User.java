@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Data
@@ -17,7 +19,10 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
+
+    @Column(name = "credentials")
+    private Credentials credentials;
 
     @Column(name = "surname")
     private String surname;
@@ -46,7 +51,7 @@ public class User {
     private List<PurchaseHistory> history;
 
     @Transient
-    private List<Product> basket = new ArrayList<>();
+    private Map<Product,Integer> basket = new HashMap<>();
 
 
 }

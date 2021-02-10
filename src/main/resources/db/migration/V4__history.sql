@@ -1,6 +1,6 @@
 CREATE TABLE history
 (
     id   SERIAL PRIMARY KEY,
-    date DATE    NOT NULL,
+    date timestamp with time zone NOT NULL,
     info VARCHAR NOT NULL
 );
