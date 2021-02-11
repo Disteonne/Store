@@ -12,7 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "history")
-public class PurchaseHistory {
+public class UserHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,5 +23,6 @@ public class PurchaseHistory {
 
     @Column(name = "history")
     private String history; //Product id and so on...
+
 
 }

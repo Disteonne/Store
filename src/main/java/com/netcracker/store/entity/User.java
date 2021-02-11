@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +21,7 @@ public class User {
     private int id;
 
     @Column(name = "credentials")
-    private Credentials credentials;
+    private String credentials;
 
     @Column(name = "surname")
     private String surname;
@@ -48,7 +47,7 @@ public class User {
 
     @OneToMany
     @JoinColumn(name = "id",insertable = false,updatable = false)
-    private List<PurchaseHistory> history;
+    private List<UserHistory> history;
 
     @Transient
     private Map<Product,Integer> basket = new HashMap<>();

@@ -27,25 +27,15 @@ public class AddressController {
         this.addressService = service;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/getAll")
     public List<Address> getAll() {
         return addressService.getAllAddress();
     }
 
-    @GetMapping("/getAddress/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Address> getAddressById(@PathVariable(value = "id") int id) {
         Address address = addressService.getAddressById(id);
         return ResponseEntity.ok(address);
-    }
-
-    @GetMapping("/deleteAddress/{id}")
-    public Map<String, Boolean> deleteAddressById(@PathVariable(value = "id") int id) {
-        return addressService.deleteAddressById(id);
-    }
-
-    @DeleteMapping("/deleteAddress")
-    public Map<String, Boolean> deleteAddress(@RequestBody Address address) {
-        return addressService.deleteAddress(address);
     }
 
     @PostMapping("/saveAddress")
@@ -53,6 +43,15 @@ public class AddressController {
         return addressService.saveAddress(address);
     }
 
+    @DeleteMapping("/delete")
+    public Map<String, Boolean> deleteAddress(@RequestBody Address address) {
+        return addressService.deleteAddress(address);
+    }
+
+    @GetMapping("/delete/{id}")
+    public Map<String, Boolean> deleteAddressById(@PathVariable(value = "id") int id) {
+        return addressService.deleteAddressById(id);
+    }
 
 
 }
