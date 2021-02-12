@@ -2,8 +2,10 @@ package com.netcracker.store.controller;
 
 import com.netcracker.store.entity.Supplier;
 import com.netcracker.store.entity.User;
+import com.netcracker.store.exeption.NotFoundException;
 import com.netcracker.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getById(@PathVariable(value= "id") int id){
+    public ResponseEntity<User> getById(@PathVariable(value= "id") int id) throws NotFoundException {
         return service.getUserById(id);
     }
 
@@ -40,7 +42,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public Map<String,Boolean> deleteById(@PathVariable(value = "id") int id){
+    public Map<String,Boolean> deleteById(@PathVariable(value = "id") int id) throws NotFoundException {
         return service.deleteUserById(id);
     }
 }

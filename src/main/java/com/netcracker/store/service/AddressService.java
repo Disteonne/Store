@@ -1,7 +1,9 @@
 package com.netcracker.store.service;
 
 import com.netcracker.store.entity.Address;
+import com.netcracker.store.exeption.NotFoundException;
 import com.netcracker.store.repository.AddressRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -21,8 +23,8 @@ public class AddressService {
         return repository.findAll();
     }
 
-    public Address getAddressById(int id) {
-        return repository.getOne(id);
+    public ResponseEntity<Address> getAddressById(int id) throws NotFoundException {
+        return ResponseEntity.ok().body(find(id));
     }
 
     public Map<String, Boolean> deleteAddress(Address address) {
@@ -33,10 +35,11 @@ public class AddressService {
 
     }
 
-    public Map<String, Boolean> deleteAddressById(Integer id) {
-        repository.deleteById(id);
+    public Map<String, Boolean> deleteAddressById(Integer id) throws NotFoundException {
+        Address address= find(id);
+        repository.delete(address);
         Map<String, Boolean> result = new HashMap<>();
-        result.put("deleted", true);
+        result.put("deleted", Boolean.TRUE);
         return result;
     }
 
@@ -47,5 +50,8 @@ public class AddressService {
         return result;
     }
 
+    private Address find(int id) throws NotFoundException {
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("Address not found"));
+    }
 
 }

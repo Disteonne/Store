@@ -24,5 +24,7 @@ public class UserHistory {
     @Column(name = "history")
     private String history; //Product id and so on...
 
+    @ManyToOne
+    private User user;
 
 }

@@ -2,8 +2,10 @@ package com.netcracker.store.service;
 
 import com.netcracker.store.entity.Product;
 import com.netcracker.store.entity.User;
+import com.netcracker.store.exeption.NotFoundException;
 import com.netcracker.store.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -24,8 +26,8 @@ public class UserService {
         return repository.findAll();
     }
 
-    public User getUserById(int id){
-        return repository.getOne(id);
+    public ResponseEntity<User> getUserById(int id) throws NotFoundException {
+        return ResponseEntity.ok().body(find(id));
     }
 
     public Map<String,Boolean> saveUser(User user){
@@ -42,10 +44,15 @@ public class UserService {
         return result;
     }
 
-    public Map<String,Boolean> deleteUserById(int id){
+    public Map<String,Boolean> deleteUserById(int id) throws NotFoundException {
+        User user=find(id);
         repository.deleteById(id);
         Map<String,Boolean> result=new HashMap<>();
-        result.put("deleted",true);
+        result.put("deleted",Boolean.TRUE);
         return result;
+    }
+
+    private User find(int id) throws NotFoundException {
+        return repository.findById(id).orElseThrow(()-> new NotFoundException("User not found"));
     }
 }

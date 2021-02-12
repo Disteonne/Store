@@ -31,9 +31,13 @@ public class Product {
     private int count;
 
     @ManyToOne
+    @JoinColumn(name = "supplier_id")
+    private Supplier supplier;
+    /*
+    @ManyToOne
     @JoinColumn(name = "id",insertable = false,updatable = false)
     private Supplier supplier;
-
+     */
     @Column(name = "info")
     private String info;
 }

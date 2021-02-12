@@ -3,6 +3,7 @@ package com.netcracker.store.controller;
 import com.netcracker.store.entity.Product;
 import com.netcracker.store.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getById(@PathVariable(value = "id") int id){
+    public ResponseEntity<Product> getById(@PathVariable(value = "id") int id){
         return service.getProductById(id);
     }
 

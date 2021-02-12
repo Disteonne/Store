@@ -1,9 +1,11 @@
 package com.netcracker.store.controller;
 
 import com.netcracker.store.entity.Supplier;
+import com.netcracker.store.exeption.NotFoundException;
 import com.netcracker.store.repository.SupplierRepository;
 import com.netcracker.store.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +27,7 @@ public class SupplierController {
     }
 
     @GetMapping("/{id}")
-    public Supplier getById(@PathVariable(value= "id") int id){
+    public ResponseEntity<Supplier> getById(@PathVariable(value= "id") int id) throws NotFoundException {
         return service.getSupplierById(id);
     }
 
@@ -40,7 +42,7 @@ public class SupplierController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public Map<String,Boolean> deleteById(@PathVariable(value = "id") int id){
+    public Map<String,Boolean> deleteById(@PathVariable(value = "id") int id) throws NotFoundException {
         return service.deleteSupplierById(id);
     }
 

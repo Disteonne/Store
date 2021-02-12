@@ -1,5 +1,6 @@
 package com.netcracker.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -42,15 +43,15 @@ public class User {
     private String mail;
 
     @ManyToOne
-    @JoinColumn(name = "id",insertable = false,updatable = false)
+    @JoinColumn(name = "address_id")
     private Address address;
 
     @OneToMany
     @JoinColumn(name = "id",insertable = false,updatable = false)
+    @JsonIgnore
     private List<UserHistory> history;
 
     @Transient
     private Map<Product,Integer> basket = new HashMap<>();
-
 
 }
