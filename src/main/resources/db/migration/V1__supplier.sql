@@ -4,5 +4,4 @@ CREATE TABLE supplier
     name       VARCHAR NOT NULL,
     mail       VARCHAR NOT NULL,
     address_id integer REFERENCES address (id)
-
 );

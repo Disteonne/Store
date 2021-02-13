@@ -1,21 +1,21 @@
-package com.netcracker.store.entity;
+package com.netcracker.store.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.netcracker.store.entity.Address;
+import com.netcracker.store.entity.Purchase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "users")
-public class User {
-
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -41,17 +41,9 @@ public class User {
     @Column(name = "mail")
     private String mail;
 
-    @ManyToOne
-    @JoinColumn(name = "address_id")
-    private Address address;
+    @Column(name = "address_id")
+    private int addressId;
 
-    @OneToOne
-    @JoinColumn(name = "id",insertable = false,updatable = false)
-    @JsonIgnore
-    private Purchase purchase;
-
-    @Transient
-    @JsonIgnore
-    private List<Product> basket = new ArrayList<>();
-
+    @Column(name = "historyId")
+    private int purchase;
 }

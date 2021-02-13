@@ -1,13 +1,17 @@
 package com.netcracker.store.controller;
 
+import com.netcracker.store.dto.UserDto;
 import com.netcracker.store.entity.Supplier;
 import com.netcracker.store.entity.User;
 import com.netcracker.store.exeption.NotFoundException;
+import com.netcracker.store.exeption.ResponseInputException;
+import com.netcracker.store.service.UserDtoService;
 import com.netcracker.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -15,11 +19,11 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserService service;
+    @Autowired
+    private  UserService service;
 
-    public UserController(UserService service) {
-        this.service = service;
-    }
+    @Autowired
+    private UserDtoService userDtoService;
 
     @GetMapping("/getAll")
     public List<User> getAll(){
@@ -36,13 +40,38 @@ public class UserController {
         return service.saveUser(user);
     }
 
+    @PostMapping("/saveDto")
+    public String saveDto(@RequestBody UserDto userDto){
+        return userDtoService.saveDto(userDto);
+    }
+
     @DeleteMapping("/delete")
-    public Map<String,Boolean> delete(@RequestBody User user){
-        return service.deleteUser(user);
+    public String delete(@RequestBody UserDto userDto){
+        return userDtoService.deleteDto(userDto);
     }
 
     @DeleteMapping("/delete/{id}")
     public Map<String,Boolean> deleteById(@PathVariable(value = "id") int id) throws NotFoundException {
         return service.deleteUserById(id);
+    }
+
+    @PutMapping("/update/surname={surname}&name={name}&age={age}&login={login}&" +
+                    "password={password}&mail={mail}&addressId={addressId}&id={id}")
+    public String fullUpdate(@Valid @PathVariable(value = "surname") String surname,
+                             @Valid @PathVariable(value = "name") String name,
+                             @Valid @PathVariable(value = "age") int age,
+                             @Valid @PathVariable(value = "login") String login,
+                             @Valid @PathVariable(value = "password") String password,
+                             @Valid @PathVariable(value = "mail") String mail,
+                             @Valid @PathVariable(value = "addressId") int addressId,
+                             @Valid @PathVariable(value = "id") int id) throws NotFoundException {
+        return userDtoService.fullUpdate(surname,name,age,login,password,mail,addressId,id);
+    }
+
+    @PutMapping("/update/whatUpdate={what}&toUpdate={to}&id={id}")
+    public String partUpdate(@Valid @PathVariable(value = "what") String whatUpdate,
+                             @Valid @PathVariable(value = "to") String toUpdate,
+                             @Valid @PathVariable(value = "id") int id) throws NotFoundException, ResponseInputException {
+        return userDtoService.updatePart(whatUpdate, toUpdate, id);
     }
 }

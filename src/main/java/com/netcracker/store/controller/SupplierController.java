@@ -1,13 +1,16 @@
 package com.netcracker.store.controller;
 
+import com.netcracker.store.dto.SupplierDto;
+import com.netcracker.store.exeption.ResponseInputException;
+import com.netcracker.store.service.SupplierDtoService;
 import com.netcracker.store.entity.Supplier;
 import com.netcracker.store.exeption.NotFoundException;
-import com.netcracker.store.repository.SupplierRepository;
 import com.netcracker.store.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -17,33 +20,60 @@ public class SupplierController {
 
     private final SupplierService service;
 
+    @Autowired
+    private SupplierDtoService supplierDtoService;
+
     public SupplierController(SupplierService service) {
         this.service = service;
     }
 
     @GetMapping("/getAll")
-    public List<Supplier> getAll(){
+    public List<Supplier> getAll() {
         return service.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Supplier> getById(@PathVariable(value= "id") int id) throws NotFoundException {
+    public ResponseEntity<Supplier> getById(@PathVariable(value = "id") int id) throws NotFoundException {
         return service.getSupplierById(id);
     }
 
+    //с добавлением адреса (вложено)
     @PostMapping("/save")
-    public Map<String,Boolean> save(@RequestBody Supplier supplier){
+    public Map<String, Boolean> save(@RequestBody Supplier supplier) throws NotFoundException {
         return service.saveSupplier(supplier);
     }
 
-    @DeleteMapping("/delete")
-    public Map<String,Boolean> delete(@RequestBody Supplier supplier){
-        return service.deleteSupplier(supplier);
+    //с добавлением id адреса
+    @PostMapping("/saveDto")
+    public String saveDto(@RequestBody SupplierDto supplierDto) {
+        return supplierDtoService.saveDto(supplierDto);
+    }
+
+    //без вложенного объекта,а просто с id
+    @DeleteMapping("/deleteDto")
+    public String delete(@RequestBody SupplierDto supplierDto) {
+        return supplierDtoService.deleteDto(supplierDto);
     }
 
     @DeleteMapping("/delete/{id}")
-    public Map<String,Boolean> deleteById(@PathVariable(value = "id") int id) throws NotFoundException {
+    public Map<String, Boolean> deleteById(@PathVariable(value = "id") int id) throws NotFoundException {
         return service.deleteSupplierById(id);
+    }
+
+
+    @PutMapping("/update/name={name}&mail={mail}&addresId={addressId}&id={id}")
+    public String fullUpdate(@Valid @PathVariable(value = "name") String name,
+                             @Valid @PathVariable(value = "mail") String mail,
+                             @Valid @PathVariable(value = "addressId") int addressId,
+                             @Valid @PathVariable(value = "id") int id) throws NotFoundException {
+        return supplierDtoService.fullUpdate(name, mail, addressId, id);
+    }
+
+    @PutMapping("/update/whatUpdate={what}&toUpdate={to}&id={id}")
+    public String partUpdate(@Valid @PathVariable(value = "what") String whatUpdate,
+                             @Valid @PathVariable(value = "to") String toUpdate,
+                             @Valid @PathVariable(value = "id") int id) throws NotFoundException, ResponseInputException {
+        return supplierDtoService.updatePart(whatUpdate, toUpdate, id);
     }
 
 

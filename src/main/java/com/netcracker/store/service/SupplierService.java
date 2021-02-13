@@ -1,5 +1,6 @@
 package com.netcracker.store.service;
 
+import com.netcracker.store.dto.SupplierDto;
 import com.netcracker.store.entity.Address;
 import com.netcracker.store.entity.Supplier;
 import com.netcracker.store.exeption.NotFoundException;
@@ -32,7 +33,7 @@ public class SupplierService {
         return ResponseEntity.ok().body(find(id));
     }
 
-    public Map<String, Boolean> saveSupplier(Supplier supplier) {
+    public Map<String, Boolean> saveSupplier(Supplier supplier) throws NotFoundException {
         //repository.save(supplier);
 
         Address address=supplier.getAddress();

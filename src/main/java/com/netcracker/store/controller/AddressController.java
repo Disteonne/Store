@@ -2,6 +2,7 @@ package com.netcracker.store.controller;
 
 import com.netcracker.store.entity.Address;
 import com.netcracker.store.exeption.NotFoundException;
+import com.netcracker.store.exeption.ResponseInputException;
 import com.netcracker.store.repository.AddressRepository;
 import com.netcracker.store.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,13 @@ public class AddressController {
                                               @Valid @PathVariable(value = "building") String building,
                                               @Valid @PathVariable(value = "id") int id) throws NotFoundException {
         return addressService.updateFullAddress(country, city, street, building, id);
+    }
+
+    @PutMapping("/update/update={field}&to={info}&id={id}")
+    public Map<String,Boolean> updateAddressPart(@Valid @PathVariable(value = "field") String field,
+                                                 @Valid @PathVariable(value = "info") String info,
+                                                 @Valid @PathVariable(value = "id") int id) throws NotFoundException, ResponseInputException {
+        return addressService.updatePartAddress(field,info,id);
     }
 
 

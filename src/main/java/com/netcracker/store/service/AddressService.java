@@ -2,6 +2,7 @@ package com.netcracker.store.service;
 
 import com.netcracker.store.entity.Address;
 import com.netcracker.store.exeption.NotFoundException;
+import com.netcracker.store.exeption.ResponseInputException;
 import com.netcracker.store.repository.AddressRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -32,11 +33,10 @@ public class AddressService {
         Map<String, Boolean> result = new HashMap<>();
         result.put("deleted", true);
         return result;
-
     }
 
     public Map<String, Boolean> deleteAddressById(Integer id) throws NotFoundException {
-        Address address= find(id);
+        Address address = find(id);
         repository.delete(address);
         Map<String, Boolean> result = new HashMap<>();
         result.put("deleted", Boolean.TRUE);
@@ -45,20 +45,44 @@ public class AddressService {
 
     public Map<String, Boolean> saveAddress(Address address) {
         Map<String, Boolean> result = new HashMap<>();
-            repository.save(address);
-            result.put("saved", true);
+        repository.save(address);
+        result.put("saved", true);
         return result;
     }
 
-    public Map<String,Boolean> updateFullAddress(String country,String city,String street,String building,int id) throws NotFoundException {
-        Address address=find(id);
+    public Map<String, Boolean> updateFullAddress(String country, String city, String street, String building, int id) throws NotFoundException {
+        Address address = find(id);
         address.setCountry(country);
         address.setCity(city);
         address.setStreet(street);
         address.setBuilding(building);
         repository.save(address);
+        Map<String, Boolean> result = new HashMap<>();
+        result.put("The address was changed", Boolean.TRUE);
+        return result;
+    }
+
+    public Map<String,Boolean> updatePartAddress(String whatUpdate,String update,int id) throws NotFoundException, ResponseInputException {
+        Address address = find(id);
+        switch (whatUpdate){
+            case "country":
+                address.setCountry(update);
+                break;
+            case "city":
+                address.setCity(update);
+                break;
+            case "street":
+                address.setStreet(update);
+                break;
+            case "building":
+                address.setBuilding(update);
+                break;
+            default:
+               throw  new ResponseInputException("Error entering the change field");
+        }
+        repository.save(address);
         Map<String,Boolean> result=new HashMap<>();
-        result.put("Address full update",Boolean.TRUE);
+        result.put("The address was changed",Boolean.TRUE);
         return result;
     }
 

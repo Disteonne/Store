@@ -32,7 +32,7 @@ public class ProductService {
         return ResponseEntity.ok().body(find(id));
     }
 
-    public Map<String, Boolean> saveProduct(Product product) {
+    public Map<String, Boolean> saveProduct(Product product) throws com.netcracker.store.exeption.NotFoundException {
         Supplier supplier=product.getSupplier();
         supplierService.saveSupplier(supplier);
         repository.save(product);
