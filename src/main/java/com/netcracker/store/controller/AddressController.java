@@ -36,7 +36,7 @@ public class AddressController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Address> getAddressById(@PathVariable(value = "id") int id) throws NotFoundException {
-        return  addressService.getAddressById(id);
+        return addressService.getAddressById(id);
     }
 
     @PostMapping("/saveAddress")
@@ -52,6 +52,15 @@ public class AddressController {
     @DeleteMapping("/delete/{id}")
     public Map<String, Boolean> deleteAddressById(@PathVariable(value = "id") int id) throws NotFoundException {
         return addressService.deleteAddressById(id);
+    }
+
+    @PutMapping("/update/country={country}&city={city}&street={street}&building={building}&id={id}")
+    public Map<String, Boolean> updateAddress(@Valid @PathVariable(value = "country") String country,
+                                              @Valid @PathVariable(value = "city") String city,
+                                              @Valid @PathVariable(value = "street") String street,
+                                              @Valid @PathVariable(value = "building") String building,
+                                              @Valid @PathVariable(value = "id") int id) throws NotFoundException {
+        return addressService.updateFullAddress(country, city, street, building, id);
     }
 
 

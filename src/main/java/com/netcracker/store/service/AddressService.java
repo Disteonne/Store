@@ -44,14 +44,27 @@ public class AddressService {
     }
 
     public Map<String, Boolean> saveAddress(Address address) {
-        repository.save(address);
         Map<String, Boolean> result = new HashMap<>();
-        result.put("saved", true);
+            repository.save(address);
+            result.put("saved", true);
+        return result;
+    }
+
+    public Map<String,Boolean> updateFullAddress(String country,String city,String street,String building,int id) throws NotFoundException {
+        Address address=find(id);
+        address.setCountry(country);
+        address.setCity(city);
+        address.setStreet(street);
+        address.setBuilding(building);
+        repository.save(address);
+        Map<String,Boolean> result=new HashMap<>();
+        result.put("Address full update",Boolean.TRUE);
         return result;
     }
 
     private Address find(int id) throws NotFoundException {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Address not found"));
     }
+
 
 }

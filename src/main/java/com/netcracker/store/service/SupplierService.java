@@ -1,5 +1,6 @@
 package com.netcracker.store.service;
 
+import com.netcracker.store.entity.Address;
 import com.netcracker.store.entity.Supplier;
 import com.netcracker.store.exeption.NotFoundException;
 import com.netcracker.store.repository.SupplierRepository;
@@ -24,11 +25,23 @@ public class SupplierService {
         return repository.findAll();
     }
 
+    @Autowired
+    private AddressService addressService;
+
     public ResponseEntity<Supplier> getSupplierById(int id) throws NotFoundException {
         return ResponseEntity.ok().body(find(id));
     }
 
     public Map<String, Boolean> saveSupplier(Supplier supplier) {
+        //repository.save(supplier);
+
+        Address address=supplier.getAddress();
+        //if(address.getCountry()==null && address.getCity()==null && address.getStreet()==null){
+        //    address=null;
+        //}
+        //else {
+            addressService.saveAddress(address);
+        //}
         repository.save(supplier);
         Map<String, Boolean> result = new HashMap<>();
         result.put("saved", true);

@@ -17,6 +17,9 @@ public class ProductService {
 
     private final ProductRepository repository;
 
+    @Autowired
+    private SupplierService supplierService;
+
     public ProductService(ProductRepository repository) {
         this.repository = repository;
     }
@@ -30,6 +33,8 @@ public class ProductService {
     }
 
     public Map<String, Boolean> saveProduct(Product product) {
+        Supplier supplier=product.getSupplier();
+        supplierService.saveSupplier(supplier);
         repository.save(product);
         Map<String, Boolean> result = new HashMap<>();
         result.put("saved", true);

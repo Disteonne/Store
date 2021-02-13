@@ -1,5 +1,6 @@
 package com.netcracker.store.service;
 
+import com.netcracker.store.entity.Address;
 import com.netcracker.store.entity.Product;
 import com.netcracker.store.entity.User;
 import com.netcracker.store.exeption.NotFoundException;
@@ -17,12 +18,15 @@ public class UserService {
 
     private final UserRepository repository;
 
+    @Autowired
+    private AddressService addressService;
+
     public UserService(UserRepository repository) {
         this.repository = repository;
     }
 
 
-    public List<User> getAll(){
+    public List<User> getAll() {
         return repository.findAll();
     }
 
@@ -30,29 +34,36 @@ public class UserService {
         return ResponseEntity.ok().body(find(id));
     }
 
-    public Map<String,Boolean> saveUser(User user){
+    public Map<String, Boolean> saveUser(User user) {
+        Address address = user.getAddress();
+        if (address.getCountry() == null && address.getCity() == null && address.getStreet() == null) {
+            address = null;
+            user.setAddress(address);
+        } else {
+            addressService.saveAddress(address); //адрес перезаписывается,если уже есть такой?
+        }
         repository.save(user);
-        Map<String,Boolean> result=new HashMap<>();
-        result.put("saved",true);
+        Map<String, Boolean> result = new HashMap<>();
+        result.put("saved", true);
         return result;
     }
 
-    public Map<String,Boolean> deleteUser(User user){
+    public Map<String, Boolean> deleteUser(User user) {
         repository.delete(user);
-        Map<String,Boolean> result=new HashMap<>();
-        result.put("deleted",true);
+        Map<String, Boolean> result = new HashMap<>();
+        result.put("deleted", true);
         return result;
     }
 
-    public Map<String,Boolean> deleteUserById(int id) throws NotFoundException {
-        User user=find(id);
-        repository.deleteById(id);
-        Map<String,Boolean> result=new HashMap<>();
-        result.put("deleted",Boolean.TRUE);
+    public Map<String, Boolean> deleteUserById(int id) throws NotFoundException {
+        User user = find(id);
+        repository.delete(user);
+        Map<String, Boolean> result = new HashMap<>();
+        result.put("deleted", Boolean.TRUE);
         return result;
     }
 
     private User find(int id) throws NotFoundException {
-        return repository.findById(id).orElseThrow(()-> new NotFoundException("User not found"));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("User not found"));
     }
 }

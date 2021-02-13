@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping(value = "/product") //,headers = "application/json;charset=UTF-8"
 public class ProductController {
 
     private final ProductService service;

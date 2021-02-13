@@ -52,6 +52,7 @@ public class User {
     private List<UserHistory> history;
 
     @Transient
+    @JsonIgnore
     private Map<Product,Integer> basket = new HashMap<>();
 
 }
