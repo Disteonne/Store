@@ -1,6 +1,9 @@
 package com.netcracker.store.controller;
 
+import com.netcracker.store.check.CheckForPatchMapping;
 import com.netcracker.store.dto.ProductDto;
+import com.netcracker.store.dto.UserDto;
+import com.netcracker.store.entity.Address;
 import com.netcracker.store.entity.Product;
 import com.netcracker.store.exeption.NotFoundException;
 import com.netcracker.store.exeption.ResponseInputException;
@@ -11,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +28,8 @@ public class ProductController {
 
     @Autowired
     private ProductDtoService productDtoService;
+
+    private final CheckForPatchMapping checkForPatchMapping=new CheckForPatchMapping();
 
     @GetMapping("/getAll")
     public List<Product> getAll(){
@@ -54,7 +61,23 @@ public class ProductController {
         return service.deleteProductById(id);
     }
 
-    @PutMapping("/update/name={name}&type={type}&price={price}&count={count}&supplierId={supplierId}&info={info}&id={id}")
+    @PutMapping("/update/put")
+    public ResponseEntity<String> putUpdate(@RequestBody ProductDto productDto){
+        productDtoService.saveDto(productDto);
+        return ResponseEntity.ok("Saved");
+    }
+
+    @PatchMapping("/update/patch")
+    public ResponseEntity<String> patchUpdate(@RequestBody ProductDto productDto) throws IllegalAccessException, NotFoundException, ResponseInputException {
+        Map<String,String> fields= checkForPatchMapping.validateObject(productDto);
+        for (Map.Entry<String, String> pair : fields.entrySet()
+        ) {
+            productDtoService.updatePart(pair.getKey(), pair.getValue(), productDto.getId());
+        }
+        return ResponseEntity.ok("Updated");
+    }
+
+    @PatchMapping("/update/name={name}&type={type}&price={price}&count={count}&supplierId={supplierId}&info={info}&id={id}")
     public String fullUpdate(@Valid @PathVariable(value = "name") String name,
                              @Valid @PathVariable(value = "type") String type,
                              @Valid @PathVariable(value = "price") double price,
@@ -65,7 +88,7 @@ public class ProductController {
        return productDtoService.fullUpdate(name,type,price,count,supplierId,info,id);
     }
 
-    @PutMapping("/update/whatUpdate={what}&toUpdate={to}&id={id}")
+    @PatchMapping("/update/whatUpdate={what}&toUpdate={to}&id={id}")
     public String partUpdate(@Valid @PathVariable(value = "what") String whatUpdate,
                              @Valid @PathVariable(value = "to") String toUpdate,
                              @Valid @PathVariable(value = "id") int id) throws NotFoundException, ResponseInputException {

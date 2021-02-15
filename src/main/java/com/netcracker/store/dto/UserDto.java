@@ -45,5 +45,5 @@ public class UserDto {
     private int addressId;
 
     @Column(name = "historyId")
-    private int purchase;
+    private int historyId;
 }

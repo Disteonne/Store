@@ -1,6 +1,9 @@
 package com.netcracker.store.controller;
 
+import com.netcracker.store.check.CheckForPatchMapping;
+import com.netcracker.store.dto.ProductDto;
 import com.netcracker.store.dto.SupplierDto;
+import com.netcracker.store.dto.UserDto;
 import com.netcracker.store.exeption.ResponseInputException;
 import com.netcracker.store.service.SupplierDtoService;
 import com.netcracker.store.entity.Supplier;
@@ -22,6 +25,8 @@ public class SupplierController {
 
     @Autowired
     private SupplierDtoService supplierDtoService;
+
+    private final CheckForPatchMapping checkForPatchMapping=new CheckForPatchMapping();
 
     public SupplierController(SupplierService service) {
         this.service = service;
@@ -60,8 +65,23 @@ public class SupplierController {
         return service.deleteSupplierById(id);
     }
 
+    @PutMapping("/update/put")
+    public ResponseEntity<String> putUpdate(@RequestBody SupplierDto supplierDto){
+        supplierDtoService.saveDto(supplierDto);
+        return ResponseEntity.ok("Saved");
+    }
 
-    @PutMapping("/update/name={name}&mail={mail}&addresId={addressId}&id={id}")
+    @PatchMapping("/update/patch")
+    public ResponseEntity<String> patchUpdate(@RequestBody SupplierDto supplierDto) throws IllegalAccessException, NotFoundException, ResponseInputException {
+        Map<String,String> fields= checkForPatchMapping.validateObject(supplierDto);
+        for (Map.Entry<String, String> pair : fields.entrySet()
+        ) {
+            supplierDtoService.updatePart(pair.getKey(), pair.getValue(), supplierDto.getId());
+        }
+        return ResponseEntity.ok("Updated");
+    }
+
+    @PatchMapping("/update/name={name}&mail={mail}&addresId={addressId}&id={id}")
     public String fullUpdate(@Valid @PathVariable(value = "name") String name,
                              @Valid @PathVariable(value = "mail") String mail,
                              @Valid @PathVariable(value = "addressId") int addressId,
@@ -69,7 +89,7 @@ public class SupplierController {
         return supplierDtoService.fullUpdate(name, mail, addressId, id);
     }
 
-    @PutMapping("/update/whatUpdate={what}&toUpdate={to}&id={id}")
+    @PatchMapping("/update/whatUpdate={what}&toUpdate={to}&id={id}")
     public String partUpdate(@Valid @PathVariable(value = "what") String whatUpdate,
                              @Valid @PathVariable(value = "to") String toUpdate,
                              @Valid @PathVariable(value = "id") int id) throws NotFoundException, ResponseInputException {

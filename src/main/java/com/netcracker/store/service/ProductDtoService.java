@@ -49,7 +49,7 @@ public class ProductDtoService {
                 productDto.setType(infoToUpdate);;
                 break;
             case "price":
-                productDto.setPrice(Integer.parseInt(infoToUpdate));
+                productDto.setPrice(Double.parseDouble(infoToUpdate));
                 break;
             case "count":
                 productDto.setCount(Integer.parseInt(infoToUpdate));
