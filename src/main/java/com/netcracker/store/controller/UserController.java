@@ -2,11 +2,10 @@ package com.netcracker.store.controller;
 
 import com.netcracker.store.check.CheckForPatchMapping;
 import com.netcracker.store.dto.UserDto;
-import com.netcracker.store.entity.Address;
-import com.netcracker.store.entity.Supplier;
 import com.netcracker.store.entity.User;
 import com.netcracker.store.exeption.NotFoundException;
 import com.netcracker.store.exeption.ResponseInputException;
+import com.netcracker.store.repository.UserPaginationAndSortRepository;
 import com.netcracker.store.service.UserDtoService;
 import com.netcracker.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +25,9 @@ public class UserController {
 
     @Autowired
     private UserDtoService userDtoService;
+
+    @Autowired
+    private UserPaginationAndSortRepository userPaginationAndSortRepository;
 
     private final CheckForPatchMapping checkForPatchMapping = new CheckForPatchMapping();
 
@@ -94,4 +96,13 @@ public class UserController {
                              @Valid @PathVariable(value = "id") int id) throws NotFoundException, ResponseInputException {
         return userDtoService.updatePart(whatUpdate, toUpdate, id);
     }
+
+    @GetMapping("/{page}/{size}/{sortBy}/{sortOrder}")
+    public List<User> sortAndPaging(@PathVariable(value = "page") int page,
+                                     @PathVariable(value = "size") int size,
+                                     @PathVariable(value = "sortBy") String sortBy,
+                                     @PathVariable(value = "sortOrder") String sortOrder) {
+        return service.sortAndPaging(page,size,sortBy,sortOrder);
+    }
+
 }

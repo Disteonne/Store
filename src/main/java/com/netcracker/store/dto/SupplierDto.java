@@ -1,8 +1,5 @@
 package com.netcracker.store.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.netcracker.store.entity.Address;
-import com.netcracker.store.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

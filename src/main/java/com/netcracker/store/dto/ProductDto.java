@@ -1,6 +1,5 @@
 package com.netcracker.store.dto;
 
-import com.netcracker.store.entity.Supplier;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

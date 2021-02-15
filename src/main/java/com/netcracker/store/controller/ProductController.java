@@ -2,8 +2,6 @@ package com.netcracker.store.controller;
 
 import com.netcracker.store.check.CheckForPatchMapping;
 import com.netcracker.store.dto.ProductDto;
-import com.netcracker.store.dto.UserDto;
-import com.netcracker.store.entity.Address;
 import com.netcracker.store.entity.Product;
 import com.netcracker.store.exeption.NotFoundException;
 import com.netcracker.store.exeption.ResponseInputException;
@@ -14,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +25,7 @@ public class ProductController {
     @Autowired
     private ProductDtoService productDtoService;
 
-    private final CheckForPatchMapping checkForPatchMapping=new CheckForPatchMapping();
+    private final CheckForPatchMapping checkForPatchMapping =new CheckForPatchMapping();
 
     @GetMapping("/getAll")
     public List<Product> getAll(){
@@ -93,5 +89,13 @@ public class ProductController {
                              @Valid @PathVariable(value = "to") String toUpdate,
                              @Valid @PathVariable(value = "id") int id) throws NotFoundException, ResponseInputException {
         return productDtoService.updatePart(whatUpdate, toUpdate, id);
+    }
+
+    @GetMapping("/{page}/{size}/{sortBy}/{sortOrder}")
+    public List<Product> sortAndPaging(@PathVariable(value = "page") int page,
+                                        @PathVariable(value = "size") int size,
+                                        @PathVariable(value = "sortBy") String sortBy,
+                                        @PathVariable(value = "sortOrder") String sortOrder) {
+        return service.sortAndPaging(page,size,sortBy,sortOrder);
     }
 }

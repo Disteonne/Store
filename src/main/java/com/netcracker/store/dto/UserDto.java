@@ -1,14 +1,11 @@
 package com.netcracker.store.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.netcracker.store.entity.Address;
-import com.netcracker.store.entity.Purchase;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "users")

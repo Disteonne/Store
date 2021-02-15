@@ -1,13 +1,17 @@
 package com.netcracker.store.service;
 
+import com.netcracker.store.check.CheckForSortAndPaging;
 import com.netcracker.store.entity.Product;
 import com.netcracker.store.entity.Supplier;
+import com.netcracker.store.repository.ProductPaginationAndSortRepository;
 import com.netcracker.store.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.NotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +23,11 @@ public class ProductService {
 
     @Autowired
     private SupplierService supplierService;
+
+    @Autowired
+    private ProductPaginationAndSortRepository productPaginationAndSortRepository;
+
+    private final CheckForSortAndPaging check=new CheckForSortAndPaging();
 
     public ProductService(ProductRepository repository) {
         this.repository = repository;
@@ -58,5 +67,14 @@ public class ProductService {
 
     private Product find(int id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Product not found"));
+    }
+
+    public List<Product> sortAndPaging(int page,int size,String sortBy,String sortOrder){
+        Page<Product> result = productPaginationAndSortRepository.findAll(check.returnPage(page,size,sortBy,sortOrder));
+        if (!result.isEmpty()) {
+            return result.getContent();
+        } else {
+            return new ArrayList<Product>();
+        }
     }
 }

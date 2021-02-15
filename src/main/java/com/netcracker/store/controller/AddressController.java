@@ -1,22 +1,15 @@
 package com.netcracker.store.controller;
 
 import com.netcracker.store.check.CheckForPatchMapping;
-import com.netcracker.store.dto.UserDto;
 import com.netcracker.store.entity.Address;
 import com.netcracker.store.exeption.NotFoundException;
 import com.netcracker.store.exeption.ResponseInputException;
-import com.netcracker.store.repository.AddressRepository;
 import com.netcracker.store.service.AddressService;
-import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.ws.rs.PathParam;
-import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +20,7 @@ public class AddressController {
     private AddressService addressService;
 
 
-    private final CheckForPatchMapping checkForPatchMapping= new CheckForPatchMapping();
+    private final CheckForPatchMapping checkForPatchMapping = new CheckForPatchMapping();
 
     public AddressController(AddressService addressService) {
         this.addressService = addressService;
@@ -93,6 +86,14 @@ public class AddressController {
                                                   @Valid @PathVariable(value = "info") String info,
                                                   @Valid @PathVariable(value = "id") int id) throws NotFoundException, ResponseInputException {
         return addressService.updatePartAddress(field, info, id);
+    }
+
+    @GetMapping("/{page}/{size}/{sortBy}/{sortOrder}")
+    public List<Address> sortAndPaging(@PathVariable(value = "page") int page,
+                                       @PathVariable(value = "size") int size,
+                                       @PathVariable(value = "sortBy") String sortBy,
+                                       @PathVariable(value = "sortOrder") String sortOrder) {
+        return addressService.sortAndPaging(page,size,sortBy,sortOrder);
     }
 
 }

@@ -1,9 +1,8 @@
 package com.netcracker.store.controller;
 
 import com.netcracker.store.check.CheckForPatchMapping;
-import com.netcracker.store.dto.ProductDto;
+import com.netcracker.store.check.CheckForSortAndPaging;
 import com.netcracker.store.dto.SupplierDto;
-import com.netcracker.store.dto.UserDto;
 import com.netcracker.store.exeption.ResponseInputException;
 import com.netcracker.store.service.SupplierDtoService;
 import com.netcracker.store.entity.Supplier;
@@ -26,7 +25,10 @@ public class SupplierController {
     @Autowired
     private SupplierDtoService supplierDtoService;
 
-    private final CheckForPatchMapping checkForPatchMapping=new CheckForPatchMapping();
+
+    private final CheckForPatchMapping checkForPatchMapping =new CheckForPatchMapping();
+
+    private final CheckForSortAndPaging checkForSortAndPaging=new CheckForSortAndPaging();
 
     public SupplierController(SupplierService service) {
         this.service = service;
@@ -97,4 +99,11 @@ public class SupplierController {
     }
 
 
+    @GetMapping("/{page}/{size}/{sortBy}/{sortOrder}")
+    public List<Supplier> sortAndPaging(@PathVariable(value = "page") int page,
+                                     @PathVariable(value = "size") int size,
+                                     @PathVariable(value = "sortBy") String sortBy,
+                                     @PathVariable(value = "sortOrder") String sortOrder) {
+       return service.sortAndPaging(page,size,sortBy,sortOrder);
+    }
 }

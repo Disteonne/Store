@@ -1,14 +1,19 @@
 package com.netcracker.store.service;
 
+import com.netcracker.store.check.CheckForSortAndPaging;
 import com.netcracker.store.dto.SupplierDto;
 import com.netcracker.store.entity.Address;
 import com.netcracker.store.entity.Supplier;
+import com.netcracker.store.entity.User;
 import com.netcracker.store.exeption.NotFoundException;
+import com.netcracker.store.repository.SupplierPaginationAndSortRepository;
 import com.netcracker.store.repository.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +33,11 @@ public class SupplierService {
 
     @Autowired
     private AddressService addressService;
+
+    @Autowired
+    private SupplierPaginationAndSortRepository supplierPaginationAndSortRepository;
+
+    private final CheckForSortAndPaging check=new CheckForSortAndPaging();
 
     public ResponseEntity<Supplier> getSupplierById(int id) throws NotFoundException {
         return ResponseEntity.ok().body(find(id));
@@ -68,4 +78,12 @@ public class SupplierService {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Supplier not found"));
     }
 
+    public List<Supplier> sortAndPaging(int page,int size,String sortBy,String sortOrder){
+        Page<Supplier> result = supplierPaginationAndSortRepository.findAll(check.returnPage(page,size,sortBy,sortOrder));
+        if (!result.isEmpty()) {
+            return result.getContent();
+        } else {
+            return new ArrayList<Supplier>();
+        }
+    }
 }

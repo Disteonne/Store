@@ -48,7 +48,7 @@ public class User {
     @OneToOne
     @JoinColumn(name = "id",insertable = false,updatable = false)
     @JsonIgnore
-    private Purchase purchase;
+    private History history;
 
     @Transient
     @JsonIgnore
