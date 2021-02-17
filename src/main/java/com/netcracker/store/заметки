@@ -48,3 +48,22 @@ info в таблицу history сделай типа jsonb
 
 Не забыть фильтрацию  и запросы
 + не забудь спринг секьюр.
+
+
+_________________________________________________________
+ $(document).ready(function () {
+        $.get('/product/getAll', function (data) {
+            console.log(data);
+
+            let table = "<table border='1'>";
+            for (var iter=0; iter < data.length; iter++) {
+                table = table + "<tr><td> " + data[iter].id + "</td><td>" + data[iter].name + "</td>"
+                    + "</tr>"
+            }
+            table = table + "</table>";
+            $("#all_product").html(table)
+        })
+    })
+
+---------------------------------------------------------
+в таблице product style выводит как Nan-почему?

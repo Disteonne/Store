@@ -13,23 +13,17 @@ var getJSON = function (url, callback) {
     xhr.send();
 };
 
-
 var list = getJSON('http://localhost:8080/product/getAll',
     function (data) {
         console.log(data)
-
-
+        var table="<table border='2'>";
         for (var iter=0;iter<data.length;iter++){
-            var id=data.id;
-            var name=data.name;
-
-            var elTR = $('all_product').insertRow( -1 );
-            var elTD1 = elTR.insertCell( -1 );
-            elTD1.innerHTML = id;
-            var elTD2 = elTR.insertCell( -1 );
-            elTD2.innerHTML = name;
+            table+="<tr><td>"+data[iter].id+"</td><td>"+data[iter].name+"</td><td>"+
+                +data[iter].type.toString()+"</td><td>"+data[iter].price+"</td><td>"+
+                +data[iter].count+"</td><td>"+data[iter].supplier.name+"</td><td>"+data[iter].info+"</td></tr>"
         }
-
+        table+="</table>";
+        document.getElementById('all_product').innerHTML=table;
     });
 
 
