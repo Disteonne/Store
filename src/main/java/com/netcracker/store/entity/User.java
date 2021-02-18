@@ -46,7 +46,7 @@ public class User {
     private Address address;
 
     @OneToOne
-    @JoinColumn(name = "id",insertable = false,updatable = false)
+    @JoinColumn(name = "id")
     @JsonIgnore
     private History history;
 

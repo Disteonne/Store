@@ -48,7 +48,7 @@ public class ProductController {
                 .body(productMapper.toProductDto(productService.save(productMapper.toProduct(productPostDto))));
     }
 
-    @DeleteMapping("/delete{id}")
+    @DeleteMapping("/product/delete{id}")
     public ResponseEntity<Void> delete(@PathVariable(value = "id") Long id) {
         return productService.deleteById(id) ?
                 ResponseEntity.status(HttpStatus.OK).build() :

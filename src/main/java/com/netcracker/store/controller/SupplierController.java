@@ -50,12 +50,12 @@ public class SupplierController {
                 .body(supplierMapper.toSupplierDto(supplierService.save(supplierMapper.toSupplier(supplierPostDto))));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/supplier/delete/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable(value = "id") Long id) {
         return supplierService.deleteById(id) ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @PutMapping("/update/put")
+    @PutMapping("/supplier")
     public ResponseEntity<SupplierDto> put(@Valid @RequestBody SupplierPutDto supplierPutDto) {
         return ResponseEntity.ok(supplierMapper.toSupplierDto(supplierMapper.toSupplier(supplierPutDto)));
     }

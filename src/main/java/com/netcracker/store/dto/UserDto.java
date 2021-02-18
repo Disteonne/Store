@@ -13,7 +13,6 @@ public class UserDto {
     private String credentials;
     private String surname;
     private String name;
-    @Min(18)
     private Integer age;
     private String login;
     private String password;

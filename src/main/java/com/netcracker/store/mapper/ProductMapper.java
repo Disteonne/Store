@@ -8,6 +8,7 @@ import com.netcracker.store.entity.Product;
 import com.netcracker.store.entity.Supplier;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class ProductMapper {
         productDto.setType(product.getType());
         productDto.setCount(product.getCount());
         productDto.setInfo(product.getInfo());
+        productDto.setPrice(product.getPrice());
         if (product.getSupplier() != null) {
             productDto.setSupplierId(product.getSupplier().getId());
         }

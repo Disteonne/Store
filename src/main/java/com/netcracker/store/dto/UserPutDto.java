@@ -18,7 +18,6 @@ public class UserPutDto {
     @NotNull
     private String name;
     @NotNull
-    @Min(18)
     private int age;
     @NotNull
     private String login;

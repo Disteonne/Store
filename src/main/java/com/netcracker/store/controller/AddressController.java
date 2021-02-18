@@ -45,7 +45,7 @@ public class AddressController {
                 .body(addressMapper.toAddressDto(addressService.save(addressMapper.toAddress(addressPostDto))));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/address/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable(name = "id") Long id) {
         return addressService.deleteById(id) ?
                 ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.NOT_FOUND).build();

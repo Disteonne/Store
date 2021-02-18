@@ -44,7 +44,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userMapper.toUserDto(userService.save(userMapper.toUser(userPostDto))));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/user/delete/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable(value = "id") Long id) {
         return userService.deleteById(id) ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
