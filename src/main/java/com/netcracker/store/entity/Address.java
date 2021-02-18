@@ -21,7 +21,7 @@ public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "country")
     private String country;
@@ -40,7 +40,7 @@ public class Address {
     private List<User> user;
 
     @OneToMany(mappedBy = "address")
-    @JsonIgnore
+    //@JsonIgnore
     //@JoinColumn(name = "id" ,insertable = false,updatable = false)
     private List<Supplier> supplier;
 

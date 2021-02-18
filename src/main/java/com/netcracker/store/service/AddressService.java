@@ -1,14 +1,14 @@
 package com.netcracker.store.service;
 
-import com.netcracker.store.check.CheckForSortAndPaging;
+
 import com.netcracker.store.entity.Address;
-import com.netcracker.store.entity.Product;
-import com.netcracker.store.exeption.NotFoundException;
-import com.netcracker.store.exeption.ResponseInputException;
-import com.netcracker.store.repository.AddressPaginationAndSortRepository;
 import com.netcracker.store.repository.AddressRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -18,96 +18,38 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class AddressService {
 
-    private final AddressRepository repository;
+    private final AddressRepository addressRepository;
 
-    @Autowired
-    private AddressPaginationAndSortRepository addressPaginationAndSortRepository;
-
-    private final CheckForSortAndPaging check=new CheckForSortAndPaging();
-
-    public AddressService(AddressRepository repository) {
-        this.repository = repository;
+    public List<Address> getAll() {
+        return addressRepository.findAll();
     }
 
-    public List<Address> getAllAddress() {
-        return repository.findAll();
+    public Address getById(Long id) {
+        return addressRepository.getOne(id);
     }
 
-    public ResponseEntity<Address> getAddressById(int id) throws NotFoundException {
-        return ResponseEntity.ok().body(find(id));
+    public Address save(Address address) {
+        return addressRepository.save(address);
     }
 
-    public Map<String, Boolean> deleteAddress(Address address) {
-        repository.delete(address);
-        Map<String, Boolean> result = new HashMap<>();
-        result.put("deleted", true);
-        return result;
-    }
-
-    public Map<String, Boolean> deleteAddressById(Integer id) throws NotFoundException {
-        Address address = find(id);
-        repository.delete(address);
-        Map<String, Boolean> result = new HashMap<>();
-        result.put("deleted", Boolean.TRUE);
-        return result;
-    }
-
-    public Map<String, Boolean> saveAddress(Address address) {
-        Map<String, Boolean> result = new HashMap<>();
-        repository.save(address);
-        result.put("saved", true);
-        return result;
-    }
-
-    public Map<String, Boolean> updateFullAddress(String country, String city, String street, String building, int id) throws NotFoundException {
-        Address address = find(id);
-        address.setCountry(country);
-        address.setCity(city);
-        address.setStreet(street);
-        address.setBuilding(building);
-        repository.save(address);
-        Map<String, Boolean> result = new HashMap<>();
-        result.put("The address was changed", Boolean.TRUE);
-        return result;
-    }
-
-    public Map<String,Boolean> updatePartAddress(String whatUpdate,String update,int id) throws NotFoundException, ResponseInputException {
-        Address address = find(id);
-        switch (whatUpdate){
-            case "country":
-                address.setCountry(update);
-                break;
-            case "city":
-                address.setCity(update);
-                break;
-            case "street":
-                address.setStreet(update);
-                break;
-            case "building":
-                address.setBuilding(update);
-                break;
-            default:
-               throw  new ResponseInputException("Error entering the change field");
+    public boolean deleteById(Long id) {
+        try {
+            addressRepository.deleteById(id);
+        } catch (Exception ex) {
+            return false;
         }
-        repository.save(address);
-        Map<String,Boolean> result=new HashMap<>();
-        result.put("The address was changed",Boolean.TRUE);
-        return result;
+        return true;
     }
 
-    private Address find(int id) throws NotFoundException {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("Address not found"));
+
+    public List<Address> getAll(int page, int size, Sort sort){
+        Page<Address> result=addressRepository.findAll(PageRequest.of(page,size,sort));
+        return result.getContent();
     }
 
-    public List<Address> sortAndPaging(int page, int size, String sortBy, String sortOrder){
-        Page<Address> result = addressPaginationAndSortRepository.findAll(check.returnPage(page,size,sortBy,sortOrder));
-        if (!result.isEmpty()) {
-            return result.getContent();
-        } else {
-            return new ArrayList<Address>();
-        }
-    }
+
 
 }

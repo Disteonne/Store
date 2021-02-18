@@ -1,19 +1,24 @@
 package com.netcracker.store.dto;
 
-import com.netcracker.store.entity.Supplier;
-import lombok.*;
+import com.sun.istack.NotNull;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class ProductDto {
-    private Long id;
+public class ProductPostDto {
+
+    @NotNull
     private String name;
     private String type;
+    @NotNull
     private BigDecimal price;
-    private Integer count;
+    private int count;
+    @NotNull
     private Long supplierId;
+    @NotNull
     private String info;
 }

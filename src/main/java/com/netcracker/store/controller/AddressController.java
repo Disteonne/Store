@@ -1,99 +1,67 @@
 package com.netcracker.store.controller;
 
-import com.netcracker.store.check.CheckForPatchMapping;
+import com.netcracker.store.dto.AddressDto;
+import com.netcracker.store.dto.AddressPostDto;
+import com.netcracker.store.dto.AddressPutDto;
 import com.netcracker.store.entity.Address;
-import com.netcracker.store.exeption.NotFoundException;
-import com.netcracker.store.exeption.ResponseInputException;
+import com.netcracker.store.mapper.AddressMapper;
 import com.netcracker.store.service.AddressService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 @RestController
-@RequestMapping("/address")
+@RequiredArgsConstructor
 public class AddressController {
 
-    private AddressService addressService;
+    private final AddressService addressService;
+    private final AddressMapper addressMapper;
 
-
-    private final CheckForPatchMapping checkForPatchMapping = new CheckForPatchMapping();
-
-    public AddressController(AddressService addressService) {
-        this.addressService = addressService;
+    @GetMapping("/addresses")
+    public List<AddressDto> getAll(@RequestParam(required = false) Integer page,
+                                   @RequestParam(required = false) Integer size,
+                                   @RequestParam(required = false) String sortName,
+                                   @RequestParam(required = false) String orderBy) {
+        if (sortName == null) {
+            return addressMapper.toAddressDtoList(addressService.getAll());
+        }
+        return addressMapper.toAddressDtoList(addressService.getAll(page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)));
     }
 
-    @Autowired
-    public void setAddressService(AddressService service) {
-        this.addressService = service;
+    @GetMapping("/address/{id}")
+    public AddressDto getById(@PathVariable(value = "id") Long id) {
+        return addressMapper.toAddressDto(addressService.getById(id));
     }
 
-    @GetMapping("/getAll")
-    public List<Address> getAll() {
-        return addressService.getAllAddress();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Address> getAddressById(@PathVariable(value = "id") int id) throws NotFoundException {
-        return addressService.getAddressById(id);
-    }
-
-    @PostMapping("/saveAddress")
-    public Map<String, Boolean> saveAddress(@Valid @RequestBody Address address) {
-        return addressService.saveAddress(address);
-    }
-
-    @DeleteMapping("/delete")
-    public Map<String, Boolean> deleteAddress(@Valid @RequestBody Address address) {
-        return addressService.deleteAddress(address);
+    @PostMapping("/address")
+    public ResponseEntity<AddressDto> save(@Valid @RequestBody AddressPostDto addressPostDto) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(addressMapper.toAddressDto(addressService.save(addressMapper.toAddress(addressPostDto))));
     }
 
     @DeleteMapping("/delete/{id}")
-    public Map<String, Boolean> deleteAddressById(@PathVariable(value = "id") int id) throws NotFoundException {
-        return addressService.deleteAddressById(id);
+    public ResponseEntity<Void> delete(@PathVariable(name = "id") Long id) {
+        return addressService.deleteById(id) ?
+                ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @PutMapping("/update/put")
-    public ResponseEntity<String> putUpdate(@RequestBody Address address) {
-        addressService.saveAddress(address);
-        return ResponseEntity.ok("Updated");
+
+    @PutMapping("/address")
+    public ResponseEntity<AddressDto> put(@Valid @RequestBody AddressPutDto addressPutDto) {
+        return ResponseEntity
+                .ok(addressMapper.toAddressDto(addressService.save(addressMapper.toAddress(addressPutDto))));
     }
 
-    @PatchMapping("/update/patch")
-    public ResponseEntity<String> patchUpdate(@RequestBody Address address) throws IllegalAccessException, NotFoundException, ResponseInputException {
-        Map<String,String> fields= checkForPatchMapping.validateObject(address);
-        for (Map.Entry<String, String> pair : fields.entrySet()
-        ) {
-            addressService.updatePartAddress(pair.getKey(), pair.getValue(), address.getId());
-        }
-        return ResponseEntity.ok("Updated");
-    }
-
-    @PatchMapping("/update/country={country}&city={city}&street={street}&building={building}&id={id}")
-    public Map<String, Boolean> updateAddress(@Valid @PathVariable(value = "country") String country,
-                                              @Valid @PathVariable(value = "city") String city,
-                                              @Valid @PathVariable(value = "street") String street,
-                                              @Valid @PathVariable(value = "building") String building,
-                                              @Valid @PathVariable(value = "id") int id) throws NotFoundException {
-        return addressService.updateFullAddress(country, city, street, building, id);
-    }
-
-    @PatchMapping("/update/update={field}&to={info}&id={id}")
-    public Map<String, Boolean> updateAddressPart(@Valid @PathVariable(value = "field") String field,
-                                                  @Valid @PathVariable(value = "info") String info,
-                                                  @Valid @PathVariable(value = "id") int id) throws NotFoundException, ResponseInputException {
-        return addressService.updatePartAddress(field, info, id);
-    }
-
-    @GetMapping("/{page}/{size}/{sortBy}/{sortOrder}")
-    public List<Address> sortAndPaging(@PathVariable(value = "page") int page,
-                                       @PathVariable(value = "size") int size,
-                                       @PathVariable(value = "sortBy") String sortBy,
-                                       @PathVariable(value = "sortOrder") String sortOrder) {
-        return addressService.sortAndPaging(page,size,sortBy,sortOrder);
+    @PatchMapping("/address/{id}")
+    public ResponseEntity<AddressDto> patch(@PathVariable(name = "id") Long id, @Valid @RequestBody AddressDto addressDto) {
+        Address address = addressService.getById(id);
+        return ResponseEntity.ok(addressMapper.toAddressDto(addressMapper.patch(address, addressDto)));
     }
 
 }

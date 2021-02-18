@@ -1,109 +1,70 @@
 package com.netcracker.store.controller;
 
-import com.netcracker.store.check.CheckForPatchMapping;
-import com.netcracker.store.check.CheckForSortAndPaging;
 import com.netcracker.store.dto.SupplierDto;
-import com.netcracker.store.exeption.ResponseInputException;
-import com.netcracker.store.service.SupplierDtoService;
+import com.netcracker.store.dto.SupplierPostDto;
+import com.netcracker.store.dto.SupplierPutDto;
 import com.netcracker.store.entity.Supplier;
-import com.netcracker.store.exeption.NotFoundException;
+import com.netcracker.store.mapper.SupplierMapper;
 import com.netcracker.store.service.SupplierService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 @RestController
-@RequestMapping("/supplier")
+@RequiredArgsConstructor
 public class SupplierController {
 
-    private final SupplierService service;
+    private final SupplierService supplierService;
+    private final SupplierMapper supplierMapper;
 
-    @Autowired
-    private SupplierDtoService supplierDtoService;
+    @GetMapping("/suppliers") //
+    public List<SupplierDto> getAll(@RequestParam(required = false) Integer page,
+                                    @RequestParam(required = false) Integer size,
+                                    @RequestParam(required = false) String sortName,
+                                    @RequestParam(required = false) String orderBy) {
 
-
-    private final CheckForPatchMapping checkForPatchMapping =new CheckForPatchMapping();
-
-    private final CheckForSortAndPaging checkForSortAndPaging=new CheckForSortAndPaging();
-
-    public SupplierController(SupplierService service) {
-        this.service = service;
+        //рассмотри пагинацию отдельно от сортировки ???
+        // default
+        if (sortName == null) {
+            return supplierMapper.toSupplierDtoList(supplierService.getAll());
+        }
+        return supplierMapper
+                .toSupplierDtoList(supplierService
+                        .getAll(page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)));
     }
 
-    @GetMapping("/getAll")
-    public List<Supplier> getAll() {
-        return service.getAll();
+    @GetMapping("/supplier/{id}")
+    public SupplierDto getById(@PathVariable(value = "id") Long id) {
+        return supplierMapper.toSupplierDto(supplierService.getById(id));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Supplier> getById(@PathVariable(value = "id") int id) throws NotFoundException {
-        return service.getSupplierById(id);
-    }
-
-    //с добавлением адреса (вложено)
-    @PostMapping("/save")
-    public Map<String, Boolean> save(@RequestBody Supplier supplier) throws NotFoundException {
-        return service.saveSupplier(supplier);
-    }
-
-    //с добавлением id адреса
-    @PostMapping("/saveDto")
-    public String saveDto(@RequestBody SupplierDto supplierDto) {
-        return supplierDtoService.saveDto(supplierDto);
-    }
-
-    //без вложенного объекта,а просто с id
-    @DeleteMapping("/deleteDto")
-    public String delete(@RequestBody SupplierDto supplierDto) {
-        return supplierDtoService.deleteDto(supplierDto);
+    @PostMapping("/supplier")
+    public ResponseEntity<SupplierDto> save(@Valid @RequestBody SupplierPostDto supplierPostDto) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(supplierMapper.toSupplierDto(supplierService.save(supplierMapper.toSupplier(supplierPostDto))));
     }
 
     @DeleteMapping("/delete/{id}")
-    public Map<String, Boolean> deleteById(@PathVariable(value = "id") int id) throws NotFoundException {
-        return service.deleteSupplierById(id);
+    public ResponseEntity<Void> deleteById(@PathVariable(value = "id") Long id) {
+        return supplierService.deleteById(id) ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @PutMapping("/update/put")
-    public ResponseEntity<String> putUpdate(@RequestBody SupplierDto supplierDto){
-        supplierDtoService.saveDto(supplierDto);
-        return ResponseEntity.ok("Saved");
+    public ResponseEntity<SupplierDto> put(@Valid @RequestBody SupplierPutDto supplierPutDto) {
+        return ResponseEntity.ok(supplierMapper.toSupplierDto(supplierMapper.toSupplier(supplierPutDto)));
     }
 
-    @PatchMapping("/update/patch")
-    public ResponseEntity<String> patchUpdate(@RequestBody SupplierDto supplierDto) throws IllegalAccessException, NotFoundException, ResponseInputException {
-        Map<String,String> fields= checkForPatchMapping.validateObject(supplierDto);
-        for (Map.Entry<String, String> pair : fields.entrySet()
-        ) {
-            supplierDtoService.updatePart(pair.getKey(), pair.getValue(), supplierDto.getId());
-        }
-        return ResponseEntity.ok("Updated");
+    @PatchMapping("/supplier/{id}")
+    public ResponseEntity<SupplierDto> patch(@PathVariable(name = "id") Long id, @RequestBody SupplierDto supplierDto) {
+        Supplier supplier = supplierService.getById(id);
+        return ResponseEntity
+                .ok(supplierMapper.toSupplierDto(supplierService.save(supplierMapper.patch(supplier, supplierDto))));
     }
 
-    @PatchMapping("/update/name={name}&mail={mail}&addresId={addressId}&id={id}")
-    public String fullUpdate(@Valid @PathVariable(value = "name") String name,
-                             @Valid @PathVariable(value = "mail") String mail,
-                             @Valid @PathVariable(value = "addressId") int addressId,
-                             @Valid @PathVariable(value = "id") int id) throws NotFoundException {
-        return supplierDtoService.fullUpdate(name, mail, addressId, id);
-    }
-
-    @PatchMapping("/update/whatUpdate={what}&toUpdate={to}&id={id}")
-    public String partUpdate(@Valid @PathVariable(value = "what") String whatUpdate,
-                             @Valid @PathVariable(value = "to") String toUpdate,
-                             @Valid @PathVariable(value = "id") int id) throws NotFoundException, ResponseInputException {
-        return supplierDtoService.updatePart(whatUpdate, toUpdate, id);
-    }
-
-
-    @GetMapping("/{page}/{size}/{sortBy}/{sortOrder}")
-    public List<Supplier> sortAndPaging(@PathVariable(value = "page") int page,
-                                     @PathVariable(value = "size") int size,
-                                     @PathVariable(value = "sortBy") String sortBy,
-                                     @PathVariable(value = "sortOrder") String sortOrder) {
-       return service.sortAndPaging(page,size,sortBy,sortOrder);
-    }
 }

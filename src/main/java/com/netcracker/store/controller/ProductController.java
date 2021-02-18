@@ -1,101 +1,70 @@
 package com.netcracker.store.controller;
 
-import com.netcracker.store.check.CheckForPatchMapping;
 import com.netcracker.store.dto.ProductDto;
+import com.netcracker.store.dto.ProductPostDto;
+import com.netcracker.store.dto.ProductPutDto;
 import com.netcracker.store.entity.Product;
-import com.netcracker.store.exeption.NotFoundException;
-import com.netcracker.store.exeption.ResponseInputException;
-import com.netcracker.store.service.ProductDtoService;
+import com.netcracker.store.mapper.ProductMapper;
 import com.netcracker.store.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
+
 
 @RestController
-@RequestMapping(value = "/product") //,headers = "application/json;charset=UTF-8"
+@RequiredArgsConstructor
 public class ProductController {
 
-    @Autowired
-    private  ProductService service;
+    private final ProductService productService;
+    private final ProductMapper productMapper;
 
-    @Autowired
-    private ProductDtoService productDtoService;
 
-    private final CheckForPatchMapping checkForPatchMapping =new CheckForPatchMapping();
-
-    @GetMapping("/getAll")
-    public List<Product> getAll(){
-        return service.getAll();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Product> getById(@PathVariable(value = "id") int id){
-        return service.getProductById(id);
-    }
-
-    @PostMapping("/save")
-    public Map<String,Boolean> save(@RequestBody Product product) throws NotFoundException {
-        return service.saveProduct(product);
-    }
-
-    @PostMapping("/saveDto")
-    public String saveDto(@RequestBody ProductDto productDto) throws NotFoundException {
-        return productDtoService.saveDto(productDto);
-    }
-
-    @DeleteMapping("/delete")
-    public String delete(@RequestBody ProductDto productDto){
-        return productDtoService.deleteDto(productDto);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public Map<String,Boolean> delete(@PathVariable(value = "id") int id){
-        return service.deleteProductById(id);
-    }
-
-    @PutMapping("/update/put")
-    public ResponseEntity<String> putUpdate(@RequestBody ProductDto productDto){
-        productDtoService.saveDto(productDto);
-        return ResponseEntity.ok("Saved");
-    }
-
-    @PatchMapping("/update/patch")
-    public ResponseEntity<String> patchUpdate(@RequestBody ProductDto productDto) throws IllegalAccessException, NotFoundException, ResponseInputException {
-        Map<String,String> fields= checkForPatchMapping.validateObject(productDto);
-        for (Map.Entry<String, String> pair : fields.entrySet()
-        ) {
-            productDtoService.updatePart(pair.getKey(), pair.getValue(), productDto.getId());
+    @GetMapping("/products")
+    public List<ProductDto> getAll(@RequestParam(required = false) Integer page,
+                                   @RequestParam(required = false) Integer size,
+                                   @RequestParam(required = false) String sortName,
+                                   @RequestParam(required = false) String orderBy) {
+        if (sortName == null) {
+            return productMapper.toProductDtoList(productService.getAll());
         }
-        return ResponseEntity.ok("Updated");
+        return productMapper.
+                toProductDtoList(productService.getAll(page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)));
     }
 
-    @PatchMapping("/update/name={name}&type={type}&price={price}&count={count}&supplierId={supplierId}&info={info}&id={id}")
-    public String fullUpdate(@Valid @PathVariable(value = "name") String name,
-                             @Valid @PathVariable(value = "type") String type,
-                             @Valid @PathVariable(value = "price") double price,
-                             @Valid @PathVariable(value = "count") int count,
-                             @Valid @PathVariable(value = "supplierId") int supplierId,
-                             @Valid @PathVariable(value = "info") String info,
-                             @Valid @PathVariable(value = "id") int id) throws NotFoundException {
-       return productDtoService.fullUpdate(name,type,price,count,supplierId,info,id);
+    @GetMapping("/product/{id}")
+    public ProductDto getById(@PathVariable(value = "id") Long id) {
+        return productMapper.toProductDto(productService.getById(id));
     }
 
-    @PatchMapping("/update/whatUpdate={what}&toUpdate={to}&id={id}")
-    public String partUpdate(@Valid @PathVariable(value = "what") String whatUpdate,
-                             @Valid @PathVariable(value = "to") String toUpdate,
-                             @Valid @PathVariable(value = "id") int id) throws NotFoundException, ResponseInputException {
-        return productDtoService.updatePart(whatUpdate, toUpdate, id);
+    @PostMapping("/product")
+    public ResponseEntity<ProductDto> save(@Valid @RequestBody ProductPostDto productPostDto) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(productMapper.toProductDto(productService.save(productMapper.toProduct(productPostDto))));
     }
 
-    @GetMapping("/{page}/{size}/{sortBy}/{sortOrder}")
-    public List<Product> sortAndPaging(@PathVariable(value = "page") int page,
-                                        @PathVariable(value = "size") int size,
-                                        @PathVariable(value = "sortBy") String sortBy,
-                                        @PathVariable(value = "sortOrder") String sortOrder) {
-        return service.sortAndPaging(page,size,sortBy,sortOrder);
+    @DeleteMapping("/delete{id}")
+    public ResponseEntity<Void> delete(@PathVariable(value = "id") Long id) {
+        return productService.deleteById(id) ?
+                ResponseEntity.status(HttpStatus.OK).build() :
+                ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @PutMapping("/product")
+    public ResponseEntity<ProductDto> put(@Valid @RequestBody ProductPutDto productPutDto) {
+        return ResponseEntity
+                .ok(productMapper.toProductDto(productService.save(productMapper.toProduct(productPutDto))));
+    }
+
+    @PatchMapping("/product/{id}")
+    public ResponseEntity<Void> patch(@PathVariable(value = "id") Long id,@Valid @RequestBody ProductDto dto) {
+        Product product = productService.getById(id);
+        productService.save(productMapper.patch(product, dto));
+        return ResponseEntity.ok().build();
     }
 }

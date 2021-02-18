@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Data
@@ -16,7 +17,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "name_product")
     private String name;
@@ -25,10 +26,10 @@ public class Product {
     private String type;
 
     @Column(name = "price")
-    private double price;
+    private BigDecimal price=BigDecimal.ZERO;
 
     @Column(name = "count")
-    private int count;
+    private Integer count;
 
     @ManyToOne
     @JoinColumn(name = "supplier_id")
