@@ -1,8 +1,5 @@
 package com.netcracker.store.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,12 +31,8 @@ public class Address {
     private String building;
 
     @OneToMany(mappedBy = "address")
-    //@JsonIgnore
     private List<User> user;
 
     @OneToMany(mappedBy = "address")
-    //@JsonIgnore
-    //@JoinColumn(name = "id" ,insertable = false,updatable = false)
     private List<Supplier> supplier;
-
 }
