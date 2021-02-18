@@ -15,8 +15,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Address {
 
     @Id
@@ -36,7 +34,7 @@ public class Address {
     private String building;
 
     @OneToMany(mappedBy = "address")
-    @JsonIgnore
+    //@JsonIgnore
     private List<User> user;
 
     @OneToMany(mappedBy = "address")
