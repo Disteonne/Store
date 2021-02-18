@@ -19,12 +19,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-
     private final UserService userService;
     private final UserMapper userMapper;
 
     @GetMapping("/users")
-    public List<UserDto> getAll(@RequestParam(required = false ,defaultValue ="0") Integer page,
+    public List<UserDto> getAll(@RequestParam(required = false, defaultValue = "0") Integer page,
                                 @RequestParam(required = false) Integer size,
                                 @RequestParam(required = false) String sortName,
                                 @RequestParam(required = false) String orderBy) {

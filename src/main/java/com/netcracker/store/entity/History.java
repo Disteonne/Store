@@ -1,6 +1,5 @@
 package com.netcracker.store.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,7 +34,5 @@ public class History {
     private List<Product> history; //List<Product> id and so on...
 
     @OneToOne(mappedBy = "history")
-    @JsonIgnore
     private User user;
-
 }

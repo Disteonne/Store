@@ -26,6 +26,7 @@ public class UserMapper {
         userDto.setPassword(user.getPassword());
         userDto.setAge(user.getAge());
         userDto.setCredentials(user.getCredentials());
+        userDto.setMail(user.getMail());
         if (user.getAddress() != null) {
             userDto.setAddressId(user.getAddress().getId());
         }
@@ -90,33 +91,33 @@ public class UserMapper {
     }
 
     public User patch(User user, UserDto userDto) {
-        if(userDto==null){
+        if (userDto == null) {
             return user;
         }
-        if(userDto.getName()!=null){
+        if (userDto.getName() != null) {
             user.setName(userDto.getName());
         }
-        if(userDto.getSurname()!=null){
+        if (userDto.getSurname() != null) {
             user.setSurname(userDto.getSurname());
         }
-        if(userDto.getCredentials()!=null){
+        if (userDto.getCredentials() != null) {
             user.setCredentials(Credentials.ADMIN.toString());
         }
-        if(userDto.getAge()!=null){
+        if (userDto.getAge() != null) {
             user.setAge(userDto.getAge());
         }
-        if(userDto.getMail()!=null){
+        if (userDto.getMail() != null) {
             user.setMail(userDto.getMail());
         }
         //history not added
-        if(userDto.getLogin()!=null){
+        if (userDto.getLogin() != null) {
             user.setLogin(userDto.getLogin());
         }
-        if(userDto.getPassword()!=null){
+        if (userDto.getPassword() != null) {
             user.setPassword(userDto.getPassword());
         }
-        if(userDto.getAddressId()!=null){
-            Address address=new Address();
+        if (userDto.getAddressId() != null) {
+            Address address = new Address();
             address.setId(userDto.getAddressId());
             user.setAddress(address);
         }

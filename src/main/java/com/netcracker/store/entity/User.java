@@ -1,13 +1,10 @@
 package com.netcracker.store.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Data
@@ -47,11 +44,5 @@ public class User {
 
     @OneToOne
     @JoinColumn(name = "id")
-    @JsonIgnore
     private History history;
-
-    @Transient
-    @JsonIgnore
-    private List<Product> basket = new ArrayList<>();
-
 }
