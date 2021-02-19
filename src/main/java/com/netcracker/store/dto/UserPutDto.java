@@ -3,8 +3,7 @@ package com.netcracker.store.dto;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.validation.constraints.Min;
+import org.springframework.validation.annotation.Validated;
 
 @Getter
 @Setter

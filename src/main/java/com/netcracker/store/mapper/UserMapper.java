@@ -5,6 +5,7 @@ import com.netcracker.store.dto.UserPostDto;
 import com.netcracker.store.dto.UserPutDto;
 import com.netcracker.store.entity.Address;
 import com.netcracker.store.entity.Credentials;
+import com.netcracker.store.entity.History;
 import com.netcracker.store.entity.User;
 import org.springframework.stereotype.Component;
 
@@ -31,8 +32,13 @@ public class UserMapper {
         if (user.getAddress() != null) {
             userDto.setAddressId(user.getAddress().getId());
         }
-        if (user.getHistory() != null) {
-            userDto.setHistoryId(user.getHistory().getId());
+        if (!user.getHistory().isEmpty()) {
+            String history="";
+            for (History h: user.getHistory()
+                 ) {
+                history="ID: "+h.getId()+" ,Date: "+h.getDate()+", List: "+h.getHistory().toString();
+            }
+            //userDto.setHistoryId(user.getHistory().getId());
         }
         return userDto;
     }

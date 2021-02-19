@@ -44,12 +44,9 @@ public class AddressService {
         return true;
     }
 
-
     public List<Address> getAll(int page, int size, Sort sort){
         Page<Address> result=addressRepository.findAll(PageRequest.of(page,size,sort));
         return result.getContent();
     }
-
-
 
 }

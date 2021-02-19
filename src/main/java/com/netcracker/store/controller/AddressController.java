@@ -51,7 +51,6 @@ public class AddressController {
                 ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-
     @PutMapping("/address")
     public ResponseEntity<AddressDto> put(@Valid @RequestBody AddressPutDto addressPutDto) {
         return ResponseEntity
@@ -61,7 +60,7 @@ public class AddressController {
     @PatchMapping("/address/{id}")
     public ResponseEntity<AddressDto> patch(@PathVariable(name = "id") Long id, @Valid @RequestBody AddressDto addressDto) {
         Address address = addressService.getById(id);
-        return ResponseEntity.ok(addressMapper.toAddressDto(addressMapper.patch(address, addressDto)));
+        return ResponseEntity.ok(addressMapper.toAddressDto(addressService.save(addressMapper.patch(address, addressDto))));
     }
 
 }

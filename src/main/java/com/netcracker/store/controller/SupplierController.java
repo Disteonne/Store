@@ -57,7 +57,7 @@ public class SupplierController {
 
     @PutMapping("/supplier")
     public ResponseEntity<SupplierDto> put(@Valid @RequestBody SupplierPutDto supplierPutDto) {
-        return ResponseEntity.ok(supplierMapper.toSupplierDto(supplierMapper.toSupplier(supplierPutDto)));
+        return ResponseEntity.ok(supplierMapper.toSupplierDto(supplierService.save(supplierMapper.toSupplier(supplierPutDto))));
     }
 
     @PatchMapping("/supplier/{id}")

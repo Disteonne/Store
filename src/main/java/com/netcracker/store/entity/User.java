@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -42,7 +43,7 @@ public class User {
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToOne
-    @JoinColumn(name = "id")
-    private History history;
+    @OneToMany(mappedBy = "user")
+   // @JoinColumn(name = "id")
+    private List<History> history;
 }

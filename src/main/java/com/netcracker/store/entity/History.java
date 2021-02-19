@@ -33,6 +33,8 @@ public class History {
     @Type(type = "jsonb")
     private List<Product> history; //List<Product> id and so on...
 
-    @OneToOne(mappedBy = "history")
+
+    @ManyToOne()
+    @JoinColumn(name = "id")
     private User user;
 }
