@@ -8,7 +8,6 @@ import com.netcracker.store.entity.Product;
 import com.netcracker.store.entity.Supplier;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,12 +51,12 @@ public class ProductMapper {
         return product;
     }
 
-    public List<ProductDto> toProductDtoList(List<Product> all) {
+    public List<ProductDto> toProductDtoList(List<Product> productList) {
         List<ProductDto> result = new ArrayList<>();
-        if (all == null) {
+        if (productList == null) {
             return result;
         }
-        all.forEach(product -> result.add(toProductDto(product)));
+        productList.forEach(product -> result.add(toProductDto(product)));
         return result;
     }
 
@@ -80,26 +79,26 @@ public class ProductMapper {
     }
 
     public Product patch(Product product, ProductDto dto) {
-        if(dto==null){
-            return null;//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        if (dto == null) {
+            return product;
         }
-        if(dto.getCount()!=null){
+        if (dto.getCount() != null) {
             product.setCount(dto.getCount());
         }
-        if(dto.getInfo()!=null){
+        if (dto.getInfo() != null) {
             product.setInfo(dto.getInfo());
         }
-        if(dto.getPrice()!=null){
+        if (dto.getPrice() != null) {
             product.setPrice(dto.getPrice());
         }
-        if(dto.getType()!=null){
+        if (dto.getType() != null) {
             product.setType(dto.getType());
         }
-        if(dto.getName()!=null){
+        if (dto.getName() != null) {
             product.setName(dto.getName());
         }
-        if(dto.getSupplierId()!=null){
-            Supplier supplier=new Supplier();
+        if (dto.getSupplierId() != null) {
+            Supplier supplier = new Supplier();
             supplier.setId(dto.getSupplierId());
             product.setSupplier(supplier);
         }

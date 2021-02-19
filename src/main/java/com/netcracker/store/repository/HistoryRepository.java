@@ -7,7 +7,8 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface HistoryRepository extends JpaRepository<History,Long> {
-    @Query("SELECT user.history FROM User user where user.id=:id")
+public interface HistoryRepository extends JpaRepository<History, Long> {
+
+    @Query("SELECT t FROM History t where t.user.id=:id")
     List<History> findByUserId(@Param("id") Long id);
 }

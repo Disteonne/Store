@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-
 @RestController
 @RequiredArgsConstructor
 public class ProductController {
@@ -23,17 +22,14 @@ public class ProductController {
     private final ProductService productService;
     private final ProductMapper productMapper;
 
-
     @GetMapping("/products")
-    public List<ProductDto> getAll(@RequestParam(required = false) Integer page,
-                                   @RequestParam(required = false) Integer size,
-                                   @RequestParam(required = false) String sortName,
-                                   @RequestParam(required = false) String orderBy) {
-        if (sortName == null) {
-            return productMapper.toProductDtoList(productService.getAll());
-        }
-        return productMapper.
-                toProductDtoList(productService.getAll(page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)));
+    public List<ProductDto> getAll(@RequestParam(required = false) String name,
+                                   @RequestParam(required = false, defaultValue = "0") Integer page,
+                                   @RequestParam(required = false, defaultValue = "10000") Integer size,
+                                   @RequestParam(required = false, defaultValue = "name") String sortName,
+                                   @RequestParam(required = false, defaultValue = "asc") String orderBy) {
+        return productMapper
+                .toProductDtoList(productService.getAll(name, page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)));
     }
 
     @GetMapping("/product/{id}")
@@ -62,7 +58,7 @@ public class ProductController {
     }
 
     @PatchMapping("/product/{id}")
-    public ResponseEntity<Void> patch(@PathVariable(value = "id") Long id,@Valid @RequestBody ProductDto dto) {
+    public ResponseEntity<Void> patch(@PathVariable(value = "id") Long id, @Valid @RequestBody ProductDto dto) {
         Product product = productService.getById(id);
         productService.save(productMapper.patch(product, dto));
         return ResponseEntity.ok().build();

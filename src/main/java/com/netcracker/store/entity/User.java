@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -44,6 +45,5 @@ public class User {
     private Address address;
 
     @OneToMany(mappedBy = "user")
-   // @JoinColumn(name = "id")
-    private List<History> history;
+    private List<History> history = new ArrayList<>();
 }

@@ -1,11 +1,9 @@
 package com.netcracker.store.dto;
 
-import com.sun.istack.NotNull;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Getter

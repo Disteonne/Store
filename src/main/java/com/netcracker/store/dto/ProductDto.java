@@ -1,12 +1,14 @@
 package com.netcracker.store.dto;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Getter
 @Setter
 public class ProductDto {
+    
     private Long id;
     private String name;
     private String type;

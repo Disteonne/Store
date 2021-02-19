@@ -8,6 +8,5 @@ CREATE TABLE users
     login     VARCHAR     NOT NULL,
     password  VARCHAR     NOT NULL,
     mail      VARCHAR     NOT NULL,
-    address_id integer REFERENCES address (id),
-    history_id integer REFERENCES history (id)
+    address_id integer REFERENCES address (id)
 );

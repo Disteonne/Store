@@ -9,7 +9,8 @@ import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,14 +28,13 @@ public class History {
     private Long id;
 
     @Column(name = "date")
-    private Date date;
+    private LocalDateTime date;
 
-    @Column(name = "info")//list
+    @Column(name = "info")
     @Type(type = "jsonb")
-    private List<Product> history; //List<Product> id and so on...
+    private List<Product> history = new ArrayList<>();
 
-
-    @ManyToOne()
-    @JoinColumn(name = "id")
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 }

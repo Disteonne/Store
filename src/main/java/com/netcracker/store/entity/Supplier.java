@@ -1,12 +1,9 @@
 package com.netcracker.store.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
-
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,9 +23,8 @@ public class Supplier {
     @Column(name = "mail")
     private String mail;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "supplier")
-    @JsonIgnore
-    private List<Product> product;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "supplier")
+    private List<Product> product = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "address_id")

@@ -28,21 +28,21 @@ public class HistoryService {
         return historyRepository.save(history);
     }
 
-    public boolean deleteById(Long id){
+    public boolean deleteById(Long id) {
         try {
             historyRepository.deleteById(id);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return false;
         }
         return true;
     }
 
-    public List<History> getAll(int page, int size, Sort sort){
-        Page<History> result=historyRepository.findAll(PageRequest.of(page,size,sort));
+    public List<History> getAll(int page, int size, Sort sort) {
+        Page<History> result = historyRepository.findAll(PageRequest.of(page, size, sort));
         return result.getContent();
     }
 
-    public List<History> findByUserId(Long id){
+    public List<History> findByUserId(Long id) {
         return historyRepository.findByUserId(id);
     }
 }
