@@ -13,7 +13,7 @@ var getProductJson = function (url, callback) {
     xhr.send();
 };
 
-var listProduct = getProductJson('http://localhost:8080/products',
+var listProduct = getProductJson('http://localhost:8081/products?page=0&size=6',
     function (data) {
         console.log(data)
         var table = "<table border='2'>" +

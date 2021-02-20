@@ -23,14 +23,15 @@ public class UserController {
     private final UserMapper userMapper;
 
     @GetMapping("/users")
-    public List<UserDto> getAll(@RequestParam(required = false, defaultValue = "0") Integer page,
-                                @RequestParam(required = false) Integer size,
-                                @RequestParam(required = false) String sortName,
-                                @RequestParam(required = false) String orderBy) {
-        if (sortName == null) {
-            return userMapper.toUserDtoList(userService.getAll());
-        }
-        return userMapper.toUserDtoList(userService.getAll(page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)));
+    public List<UserDto> getAll(@RequestParam(required = false) String street,
+                                @RequestParam(required = false, defaultValue = "0") Integer page,
+                                @RequestParam(required = false, defaultValue = "10") Integer size,
+                                @RequestParam(required = false, defaultValue = "name") String sortName,
+                                @RequestParam(required = false, defaultValue = "asc") String orderBy) {
+
+        return userMapper
+                .toUserDtoList(userService
+                        .getAll(street, page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)));
     }
 
     @GetMapping("/user/{id}")

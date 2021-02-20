@@ -23,13 +23,15 @@ public class ProductController {
     private final ProductMapper productMapper;
 
     @GetMapping("/products")
-    public List<ProductDto> getAll(@RequestParam(required = false) String name,
+    public List<ProductDto> getAll(@RequestParam(required = false) String type,
+                                   @RequestParam(required = false) String nameLike,
                                    @RequestParam(required = false, defaultValue = "0") Integer page,
-                                   @RequestParam(required = false, defaultValue = "10000") Integer size,
+                                   @RequestParam(required = false, defaultValue = "6") Integer size,
                                    @RequestParam(required = false, defaultValue = "name") String sortName,
                                    @RequestParam(required = false, defaultValue = "asc") String orderBy) {
         return productMapper
-                .toProductDtoList(productService.getAll(name, page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)));
+                .toProductDtoList(productService.
+                        getAll(type, nameLike, page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)));
     }
 
     @GetMapping("/product/{id}")

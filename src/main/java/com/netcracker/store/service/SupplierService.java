@@ -37,8 +37,11 @@ public class SupplierService {
        return true;
     }
 
-    public List<Supplier> getAll(int page, int size, Sort sort){
-        Page<Supplier> result = supplierRepository.findAll(PageRequest.of(page,size,sort));
-        return result.getContent();
+    public List<Supplier> getAll(String name,int page, int size, Sort sort){
+        if(name==null) {
+            Page<Supplier> result = supplierRepository.findAll(PageRequest.of(page, size, sort));
+            return result.getContent();
+        }
+        return supplierRepository.findSupplierByNameStartingWith(name,PageRequest.of(page,size,sort));
     }
 }

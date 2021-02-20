@@ -23,19 +23,15 @@ public class SupplierController {
     private final SupplierMapper supplierMapper;
 
     @GetMapping("/suppliers") //
-    public List<SupplierDto> getAll(@RequestParam(required = false) Integer page,
-                                    @RequestParam(required = false) Integer size,
-                                    @RequestParam(required = false) String sortName,
-                                    @RequestParam(required = false) String orderBy) {
+    public List<SupplierDto> getAll(@RequestParam(required = false) String nameLike,
+                                    @RequestParam(required = false, defaultValue = "0") Integer page,
+                                    @RequestParam(required = false, defaultValue = "10") Integer size,
+                                    @RequestParam(required = false, defaultValue = "name") String sortName,
+                                    @RequestParam(required = false, defaultValue = "asc") String orderBy) {
 
-        //рассмотри пагинацию отдельно от сортировки ???
-        // default
-        if (sortName == null) {
-            return supplierMapper.toSupplierDtoList(supplierService.getAll());
-        }
         return supplierMapper
                 .toSupplierDtoList(supplierService
-                        .getAll(page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)));
+                        .getAll(nameLike, page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)));
     }
 
     @GetMapping("/supplier/{id}")

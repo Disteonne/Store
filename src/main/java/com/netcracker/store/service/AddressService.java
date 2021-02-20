@@ -44,9 +44,15 @@ public class AddressService {
         return true;
     }
 
-    public List<Address> getAll(int page, int size, Sort sort){
-        Page<Address> result=addressRepository.findAll(PageRequest.of(page,size,sort));
-        return result.getContent();
+    public List<Address> getAll(String country,String city,String street, int page, int size, Sort sort){
+        if(city!=null && country==null && street==null){
+            return addressRepository.getAddressesByCity(city,PageRequest.of(page,size,sort));
+        }
+        if(country==null || city==null || street==null) {
+            Page<Address> result = addressRepository.findAll(PageRequest.of(page, size, sort));
+            return result.getContent();
+        }
+        return addressRepository.getAddressesByCountryAndCityAndStreet(country,city,street,PageRequest.of(page,size,sort));
     }
 
 }

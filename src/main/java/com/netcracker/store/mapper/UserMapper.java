@@ -23,23 +23,21 @@ public class UserMapper {
         userDto.setId(user.getId());
         userDto.setName(user.getName());
         userDto.setSurname(user.getSurname());
-        userDto.setMail(user.getMail());
         userDto.setLogin(user.getLogin());
         userDto.setPassword(user.getPassword());
         userDto.setAge(user.getAge());
         userDto.setCredentials(user.getCredentials());
-        userDto.setMail(user.getMail());
         if (user.getAddress() != null) {
             userDto.setAddressId(user.getAddress().getId());
         }
-        if (!user.getHistory().isEmpty()) {
-            String history="";
-            for (History h: user.getHistory()
-                 ) {
-                history="ID: "+h.getId()+" ,Date: "+h.getDate()+", List: "+h.getHistory().toString();
-            }
+        //if (!user.getHistory().isEmpty()) {
+        //    String history="";
+        //    for (History h: user.getHistory()
+        //         ) {
+        //        history="ID: "+h.getId()+" ,Date: "+h.getDate()+", List: "+h.getHistory().toString();
+        //    }
             //userDto.setHistoryId(user.getHistory().getId());
-        }
+        //}
         return userDto;
     }
 
@@ -67,7 +65,6 @@ public class UserMapper {
         }
         user.setLogin(userPostDto.getLogin());
         user.setPassword(userPostDto.getPassword());
-        user.setMail(userPostDto.getMail());
         Address address = new Address();
         address.setId(userPostDto.getAddressId());
         user.setAddress(address);
@@ -90,7 +87,6 @@ public class UserMapper {
         }
         user.setLogin(userPutDto.getLogin());
         user.setPassword(userPutDto.getPassword());
-        user.setMail(userPutDto.getMail());
         Address address = new Address();
         address.setId(userPutDto.getAddressId());
         user.setAddress(address);
@@ -112,9 +108,6 @@ public class UserMapper {
         }
         if (userDto.getAge() != null) {
             user.setAge(userDto.getAge());
-        }
-        if (userDto.getMail() != null) {
-            user.setMail(userDto.getMail());
         }
         //history not added
         if (userDto.getLogin() != null) {

@@ -23,14 +23,16 @@ public class AddressController {
     private final AddressMapper addressMapper;
 
     @GetMapping("/addresses")
-    public List<AddressDto> getAll(@RequestParam(required = false) Integer page,
-                                   @RequestParam(required = false) Integer size,
-                                   @RequestParam(required = false) String sortName,
-                                   @RequestParam(required = false) String orderBy) {
-        if (sortName == null) {
-            return addressMapper.toAddressDtoList(addressService.getAll());
-        }
-        return addressMapper.toAddressDtoList(addressService.getAll(page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)));
+    public List<AddressDto> getAll(@RequestParam(required = false) String country,
+                                   @RequestParam(required = false) String city,
+                                   @RequestParam(required = false) String street,
+                                   @RequestParam(required = false, defaultValue = "0") Integer page,
+                                   @RequestParam(required = false, defaultValue = "10") Integer size,
+                                   @RequestParam(required = false, defaultValue = "country") String sortName,
+                                   @RequestParam(required = false, defaultValue = "asc") String orderBy) {
+        return addressMapper
+                .toAddressDtoList(addressService
+                        .getAll(country, city, street, page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)));
     }
 
     @GetMapping("/address/{id}")

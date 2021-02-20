@@ -14,7 +14,6 @@ public class UserDto {
     private Integer age;
     private String login;
     private String password;
-    private String mail;
     private Long addressId;
     private Long historyId;
 

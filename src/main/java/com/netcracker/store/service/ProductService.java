@@ -36,9 +36,13 @@ public class ProductService {
         return true;
     }
 
-    public List<Product> getAll(String name, int page, int size, Sort sort) {
-        if (name == null) {
+    public List<Product> getAll(String type, String name, int page, int size, Sort sort) {
+
+        if (name == null && type==null) {
             return productRepository.findAll(PageRequest.of(page, size, sort)).getContent();
+        }
+        if(type!=null && name==null){
+            return productRepository.findAllByType(type,PageRequest.of(page,size,sort));
         }
         return productRepository.findAllByNameContaining(name, PageRequest.of(page, size, sort));
     }

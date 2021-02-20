@@ -37,8 +37,11 @@ public class UserService {
         return true;
     }
 
-    public List<User> getAll(int page, int size, Sort sort) {
-        Page<User> result = userRepository.findAll(PageRequest.of(page, size, sort));
-        return result.getContent();
+    public List<User> getAll(String street, int page, int size, Sort sort) {
+        if(street==null) {
+            Page<User> result = userRepository.findAll(PageRequest.of(page, size, sort));
+            return result.getContent();
+        }
+        return userRepository.getUser(street,PageRequest.of(page,size,sort));
     }
 }
