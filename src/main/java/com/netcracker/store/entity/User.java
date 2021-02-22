@@ -20,13 +20,11 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //@Column(name = "credentials")
-    //private String credentials;
-
-    @Enumerated(EnumType.STRING)
-    @ElementCollection(targetClass = Credentials.class,fetch = FetchType.EAGER)
-    @CollectionTable(name = "credentials")
-    public Set<Credentials> credentials=new HashSet<>();
+/*    @Enumerated(EnumType.STRING)
+    @ElementCollection(targetClass = Credential.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "users_role")*/
+    @Transient
+    public Set<Credential> credentials = new HashSet<>();
 
     @Column(name = "surname")
     private String surname;
@@ -37,13 +35,13 @@ public class User implements UserDetails {
     @Column(name = "age")
     private int age;
 
-    @Column(name = "login",unique = true)
+    @Column(name = "login", unique = true)
     private String login;
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "mail",unique = true)
+    @Column(name = "mail", unique = true)
     private String mail;
 
     @ManyToOne

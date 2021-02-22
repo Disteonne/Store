@@ -3,7 +3,7 @@ package com.netcracker.store.mapper;
 import com.netcracker.store.dto.ProductDto;
 import com.netcracker.store.dto.ProductPostDto;
 import com.netcracker.store.dto.ProductPutDto;
-import com.netcracker.store.entity.Credentials;
+import com.netcracker.store.entity.Credential;
 import com.netcracker.store.entity.Product;
 import com.netcracker.store.entity.Supplier;
 import org.springframework.stereotype.Component;
@@ -41,9 +41,9 @@ public class ProductMapper {
         product.setInfo(productPostDto.getInfo());
         product.setName(productPostDto.getName());
         if (productPostDto.getType() == null) {
-            product.setType(Credentials.USER.toString());
+            product.setType(Credential.USER.toString());
         } else
-            product.setType(Credentials.ADMIN.toString());
+            product.setType(Credential.ADMIN.toString());
 
         Supplier supplier = new Supplier();
         supplier.setId(productPostDto.getSupplierId());
