@@ -10,7 +10,9 @@ import com.netcracker.store.entity.User;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class UserMapper {
@@ -51,6 +53,7 @@ public class UserMapper {
     }
 
     public User toUser(UserPostDto userPostDto) {
+
         if (userPostDto == null) {
             return null;
         }
@@ -58,10 +61,14 @@ public class UserMapper {
         user.setName(userPostDto.getName());
         user.setSurname(userPostDto.getSurname());
         user.setAge(userPostDto.getAge());
+
+        Set<Credentials> credentials=new HashSet<>();
         if (userPostDto.getCredentials() == null) {
-            user.setCredentials(Credentials.USER.toString());
+            credentials.add(Credentials.USER);
+            user.setCredentials(credentials);
         } else {
-            user.setCredentials(Credentials.ADMIN.toString());
+            credentials.add(Credentials.ADMIN);
+            user.setCredentials(credentials);
         }
         user.setLogin(userPostDto.getLogin());
         user.setPassword(userPostDto.getPassword());
@@ -80,11 +87,25 @@ public class UserMapper {
         user.setName(userPutDto.getName());
         user.setSurname(userPutDto.getSurname());
         user.setAge(userPutDto.getAge());
+
+
+        Set<Credentials> credentials=new HashSet<>();
+        if (userPutDto.getCredentials() == null) {
+            credentials.add(Credentials.USER);
+            user.setCredentials(credentials);
+        } else {
+            credentials.add(Credentials.ADMIN);
+            user.setCredentials(credentials);
+        }
+
+        /*
         if (userPutDto.getCredentials() == null) {
             user.setCredentials(Credentials.USER.toString());
         } else {
             user.setCredentials(Credentials.ADMIN.toString());
         }
+         */
+
         user.setLogin(userPutDto.getLogin());
         user.setPassword(userPutDto.getPassword());
         Address address = new Address();
@@ -104,7 +125,10 @@ public class UserMapper {
             user.setSurname(userDto.getSurname());
         }
         if (userDto.getCredentials() != null) {
-            user.setCredentials(Credentials.ADMIN.toString());
+            Set<Credentials> credentials=new HashSet<>();
+            credentials.add(Credentials.ADMIN);
+            user.setCredentials(credentials);
+            //user.setCredentials(Credentials.ADMIN.toString());
         }
         if (userDto.getAge() != null) {
             user.setAge(userDto.getAge());

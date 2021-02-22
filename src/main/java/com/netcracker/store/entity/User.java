@@ -3,24 +3,30 @@ package com.netcracker.store.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "credentials")
-    private String credentials;
+    //@Column(name = "credentials")
+    //private String credentials;
+
+    @Enumerated(EnumType.STRING)
+    @ElementCollection(targetClass = Credentials.class,fetch = FetchType.EAGER)
+    @CollectionTable(name = "credentials")
+    public Set<Credentials> credentials=new HashSet<>();
 
     @Column(name = "surname")
     private String surname;
@@ -31,13 +37,13 @@ public class User {
     @Column(name = "age")
     private int age;
 
-    @Column(name = "login")
+    @Column(name = "login",unique = true)
     private String login;
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "mail")
+    @Column(name = "mail",unique = true)
     private String mail;
 
     @ManyToOne
@@ -46,4 +52,35 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<History> history = new ArrayList<>();
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return credentials;
+    }
+
+    @Override
+    public String getUsername() {
+        return getName();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
