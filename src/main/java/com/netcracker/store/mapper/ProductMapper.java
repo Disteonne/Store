@@ -3,9 +3,10 @@ package com.netcracker.store.mapper;
 import com.netcracker.store.dto.ProductDto;
 import com.netcracker.store.dto.ProductPostDto;
 import com.netcracker.store.dto.ProductPutDto;
-import com.netcracker.store.entity.Credential;
+import com.netcracker.store.entity.UsersRole;
 import com.netcracker.store.entity.Product;
 import com.netcracker.store.entity.Supplier;
+import com.netcracker.store.exception.TypeNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class ProductMapper {
         return productDto;
     }
 
-    public Product toProduct(ProductPostDto productPostDto) {
+    public Product toProduct(ProductPostDto productPostDto) throws TypeNotFoundException {
         if (productPostDto == null) {
             return null;
         }
@@ -41,9 +42,9 @@ public class ProductMapper {
         product.setInfo(productPostDto.getInfo());
         product.setName(productPostDto.getName());
         if (productPostDto.getType() == null) {
-            product.setType(Credential.USER.toString());
+            throw new TypeNotFoundException("Type is null.");
         } else
-            product.setType(Credential.ADMIN.toString());
+            product.setType(productPostDto.getType());
 
         Supplier supplier = new Supplier();
         supplier.setId(productPostDto.getSupplierId());

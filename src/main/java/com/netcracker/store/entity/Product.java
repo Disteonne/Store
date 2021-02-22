@@ -23,7 +23,7 @@ public class Product {
     private String name;
 
     @Column(name = "type")
-    private String type;
+    private String type;    //можно так же создать таблицу отдельно
 
     @Column(name = "price")
     private BigDecimal price=BigDecimal.ZERO;

@@ -20,11 +20,11 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-/*    @Enumerated(EnumType.STRING)
-    @ElementCollection(targetClass = Credential.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "users_role")*/
-    @Transient
-    public Set<Credential> credentials = new HashSet<>();
+    @Enumerated(EnumType.STRING)
+    @ElementCollection(targetClass = UsersRole.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "users_role",joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "name")
+    public Set<UsersRole> usersRoles = new HashSet<>();
 
     @Column(name = "surname")
     private String surname;
@@ -54,7 +54,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return credentials;
+        return usersRoles;
     }
 
     @Override

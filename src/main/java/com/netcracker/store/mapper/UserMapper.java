@@ -4,7 +4,7 @@ import com.netcracker.store.dto.UserDto;
 import com.netcracker.store.dto.UserPostDto;
 import com.netcracker.store.dto.UserPutDto;
 import com.netcracker.store.entity.Address;
-import com.netcracker.store.entity.Credential;
+import com.netcracker.store.entity.UsersRole;
 import com.netcracker.store.entity.User;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +27,7 @@ public class UserMapper {
         userDto.setLogin(user.getLogin());
         userDto.setPassword(user.getPassword());
         userDto.setAge(user.getAge());
-        userDto.setCredentials(user.getCredentials());
+        userDto.setUsersRoles(user.getUsersRoles());
         if (user.getAddress() != null) {
             userDto.setAddressId(user.getAddress().getId());
         }
@@ -61,13 +61,13 @@ public class UserMapper {
         user.setSurname(userPostDto.getSurname());
         user.setAge(userPostDto.getAge());
 
-        Set<Credential> credentials = new HashSet<>();
+        Set<UsersRole> usersRoles = new HashSet<>();
         if (userPostDto.getCredentials() == null) {
-            credentials.add(Credential.USER);
-            user.setCredentials(credentials);
+            usersRoles.add(UsersRole.USER);
+            user.setUsersRoles(usersRoles);
         } else {
-            credentials.add(Credential.ADMIN);
-            user.setCredentials(credentials);
+            usersRoles.add(UsersRole.ADMIN);
+            user.setUsersRoles(usersRoles);
         }
         user.setLogin(userPostDto.getLogin());
         user.setPassword(userPostDto.getPassword());
@@ -88,13 +88,13 @@ public class UserMapper {
         user.setAge(userPutDto.getAge());
 
 
-        Set<Credential> credentials = new HashSet<>();
+        Set<UsersRole> usersRoles = new HashSet<>();
         if (userPutDto.getCredentials() == null) {
-            credentials.add(Credential.USER);
-            user.setCredentials(credentials);
+            usersRoles.add(UsersRole.USER);
+            user.setUsersRoles(usersRoles);
         } else {
-            credentials.add(Credential.ADMIN);
-            user.setCredentials(credentials);
+            usersRoles.add(UsersRole.ADMIN);
+            user.setUsersRoles(usersRoles);
         }
 
         /*
@@ -123,10 +123,10 @@ public class UserMapper {
         if (userDto.getSurname() != null) {
             user.setSurname(userDto.getSurname());
         }
-        if (userDto.getCredentials() != null) {
-            Set<Credential> credentials = new HashSet<>();
-            credentials.add(Credential.ADMIN);
-            user.setCredentials(credentials);
+        if (userDto.getUsersRoles() != null) {
+            Set<UsersRole> usersRoles = new HashSet<>();
+            usersRoles.add(UsersRole.ADMIN);
+            user.setUsersRoles(usersRoles);
             //user.setCredentials(Credentials.ADMIN.toString());
         }
         if (userDto.getAge() != null) {

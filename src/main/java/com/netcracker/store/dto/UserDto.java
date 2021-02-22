@@ -1,6 +1,6 @@
 package com.netcracker.store.dto;
 
-import com.netcracker.store.entity.Credential;
+import com.netcracker.store.entity.UsersRole;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +11,7 @@ import java.util.Set;
 public class UserDto {
 
     private Long id;
-    private Set<Credential> credentials; //was String
+    private Set<UsersRole> usersRoles; //was String
     private String surname;
     private String name;
     private Integer age;
