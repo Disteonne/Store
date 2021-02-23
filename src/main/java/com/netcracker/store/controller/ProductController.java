@@ -4,6 +4,7 @@ import com.netcracker.store.dto.ProductDto;
 import com.netcracker.store.dto.ProductPostDto;
 import com.netcracker.store.dto.ProductPutDto;
 import com.netcracker.store.entity.Product;
+import com.netcracker.store.exception.TypeNotFoundException;
 import com.netcracker.store.mapper.ProductMapper;
 import com.netcracker.store.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +41,7 @@ public class ProductController {
     }
 
     @PostMapping("/product")
-    public ResponseEntity<ProductDto> save(@Valid @RequestBody ProductPostDto productPostDto) {
+    public ResponseEntity<ProductDto> save(@Valid @RequestBody ProductPostDto productPostDto) throws TypeNotFoundException {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(productMapper.toProductDto(productService.save(productMapper.toProduct(productPostDto))));
