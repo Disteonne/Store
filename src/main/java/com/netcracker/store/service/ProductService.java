@@ -19,6 +19,14 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    public Integer getCountAll(){
+        return productRepository.countAllProduct();
+    }
+
+    public Integer getCountByName(String name){
+        return productRepository.countByNameContaining(name);
+    }
+
     public Product getById(Long id) {
         return productRepository.getOne(id);
     }
@@ -37,7 +45,6 @@ public class ProductService {
     }
 
     public List<Product> getAll(String type, String name, int page, int size, Sort sort) {
-
         if (name == null && type==null) {
             return productRepository.findAll(PageRequest.of(page, size, sort)).getContent();
         }

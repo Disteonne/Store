@@ -27,12 +27,25 @@ public class ProductController {
     public List<ProductDto> getAll(@RequestParam(required = false) String type,
                                    @RequestParam(required = false) String nameLike,
                                    @RequestParam(required = false, defaultValue = "0") Integer page,
-                                   @RequestParam(required = false, defaultValue = "6") Integer size,
+                                   @RequestParam(required = false, defaultValue = "5") Integer size,
                                    @RequestParam(required = false, defaultValue = "name") String sortName,
                                    @RequestParam(required = false, defaultValue = "asc") String orderBy) {
         return productMapper
                 .toProductDtoList(productService.
                         getAll(type, nameLike, page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)));
+    }
+
+    @GetMapping("/all/products")
+    public List<ProductDto> getAllProduct(){
+        return productMapper.toProductDtoList(productService.getAll());
+    }
+
+    @GetMapping("/count")
+    public Integer getCount(@RequestParam(required = false, value = "name") String name){
+        if(name==null){
+            return productService.getCountAll();
+        }else
+            return productService.getCountByName(name);
     }
 
     @GetMapping("/product/{id}")

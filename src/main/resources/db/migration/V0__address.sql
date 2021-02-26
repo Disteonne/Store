@@ -4,7 +4,7 @@ CREATE TABLE address
     country  VARCHAR(40) NOT NULL,
     city     VARCHAR(40) NOT NULL,
     street   VARCHAR(40) NOT NULL,
-    building VARCHAR(10)
+    building VARCHAR(20)
 );
 
 
