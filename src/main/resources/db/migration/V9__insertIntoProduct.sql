@@ -21,12 +21,45 @@ values ('Samsung Galaxy S21','Техника и электроника',67900.0,
 Количество основных камер:3');
 
 INSERT INTO product (name, type, price, count, supplier_id, info)
-values ('Samsung Galaxy S21','Техника и электроника',67900.0,37,2,'Производитель:Samsung
-Тип:смартфон
-Платформа:Android
-Диагональ экрана (точно):6.2 "
-Диагональ экрана:6.0"-6.4"
-Количество основных камер:3');
+values ('Samsung Galaxy A11','Техника и электроника',9290.0,17,2,'экран: 6.4" (1560x720)
+оперативная память: 2 ГБ
+память: 32 ГБ, слот для карты памяти
+3 камеры: 13 МП, 2 МП, 5 МП
+аккумулятор: 4000 мА·ч
+процессор: Qualcomm Snapdragon 450
+SIM-карты: 2 (nano SIM)
+операционная система: Android 10
+беспроводные интерфейсы: NFC, Wi-Fi, Bluetooth 4.2
+интернет: 4G LTE
+вес: 177 г');
+
+INSERT INTO product (name, type, price, count, supplier_id, info)
+values ('Samsung Galaxy S21','Техника и электроника',67879.0,13,2,'экран: 6.2" (2400x1080) 120 Гц
+оперативная память: 8 ГБ
+память: 128 ГБ
+3 камеры: 64 МП, 12 МП, 12 МП
+аккумулятор: 4000 мА·ч
+процессор: Samsung Exynos 2100
+SIM-карты: 2 (nano SIM+eSIM)
+операционная система: Android 11
+беспроводные интерфейсы: NFC, Wi-Fi, Bluetooth 5.1
+интернет: 4G LTE, 5G
+степень защиты: IP68
+вес: 171 г');
+
+INSERT INTO product (name, type, price, count, supplier_id, info)
+values ('Samsung Galaxy A71','Техника и электроника',29269.0,27,2,'экран: 6.7" (2400x1080)
+оперативная память: 6 ГБ
+память: 128 ГБ, слот для карты памяти
+4 камеры: 64 МП, 12 МП, 5 МП, 5 МП
+аккумулятор: 4500 мА·ч
+процессор: Qualcomm Snapdragon 730
+SIM-карты: 2 (nano SIM)
+операционная система: Android 10
+беспроводные интерфейсы: NFC, Wi-Fi, Bluetooth 5.0
+интернет: 4G LTE
+вес: 179 г
+');
 
 INSERT INTO product (name, type, price, count, supplier_id, info)
 values ('Apple iPhone 12 mini','Техника и электроника',72990.0,83,1,'экран: 5.4" (2340×1080) 60 Гц

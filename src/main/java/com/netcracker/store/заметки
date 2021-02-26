@@ -324,3 +324,309 @@ getProductInfo();
 
 //newButton.addEventListener('click', getProductInfo);
 
+
+___________________________________________РАБОТАЕТ ПАГИНАЦИЯ ДЛЯ ВСЕХ ПРОДУКТОВ_______________________________
+//метод для парсинга JSON
+var getInfoAboutProduct = function (url, type, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.responseType = type;
+    xhr.onload = function () {
+        var status = xhr.status;
+        if (status === 200) {
+            callback(xhr.response)
+        } else {
+            callback(status, xhr.response);
+        }
+    };
+    xhr.send();
+};
+
+var functionByUrl = function (url, type) {
+
+    getInfoAboutProduct(url, type,
+        function (data) {
+            console.log(data)
+
+            var table = "<table border='2' class='table'>" + "<thead>" +
+                "<tr><th>ID</th><th>Наименование</th><th>Раздел</th><th>Стоимость</th><th>Кол-во</th>" +
+                "<th>ID поставщика</th><th>Описание товара</th><th>Корзина</th></tr></thead>"
+                + "<tbody>";
+
+            for (var iter = 0; iter < data.length; iter++) {
+                table += "<tr><td>" + data[iter].id + "</td><td>"
+                    + data[iter].name + "</td><td>"
+                    + data[iter].type + "</td><td>"
+                    + data[iter].price + "</td><td>"
+                    + data[iter].count + "</td><td>"
+                    + data[iter].supplierId + "</td><td>"
+                    + data[iter].info + "</td><td>"
+                    + "<button  class=\"buttons_plus\" data-id=" + data[iter].id + ">+</button>" //button-primary plus
+                    + "<button  class=\"buttons_minus\" data-id=" + data[iter].id + ">-</button></tr>" //button-primary minus
+
+            }
+            table += "</tbody></table>";
+            document.getElementById('all_product').innerHTML = table;
+        });
+    /*
+    if (type === 'text') {
+        getInfoAboutProduct(url, type, function (data) {
+            console.log(data)
+            maxPage = Math.round(data / 5);
+            console.log(maxPage)
+            return maxPage;
+        });
+     */
+}
+
+var page = 0;
+var maxPage = 0;
+var countPage = 0;
+var result = 0;
+var resultPage = function getMax(url, type) {
+    getInfoAboutProduct(url, type, function (data) {
+        result = data; //возвращает кол-во всех объектов/товаров
+        maxPage = Math.round(result / 5);
+        console.log(maxPage) //все ок, выводит правильное значение
+        getProductInfo(countPage);
+
+
+        pagination(countPage);
+        var next = document.getElementById('next');
+        var prev = document.getElementById('prev');
+
+        next.onclick = function () {
+            if (countPage <= maxPage) {
+                countPage++;
+                getProductInfo(countPage);
+            }
+        }
+        prev.onclick = function () {
+            if (countPage >= 0) {
+                countPage--;
+                getProductInfo(countPage);
+            }
+        }
+
+    })
+    console.log(result); // выводит 0 (глоб переменную)
+    return result;
+}
+
+
+var pagination = function (count) {
+    var forButton = '<table>' + '<tr><th>';
+
+    forButton += '<th><button id="prev">Prev</button></th><th>' +
+        '<button id="next">Next</button></th>';
+    forButton += '</tr>' +
+        '</table>';
+    document.getElementById('pagination').innerHTML = forButton;
+}
+//переменная для счетчика
+//var count = 0;
+
+function getProductInfo(counter) {
+
+    //селектор для поиска
+    var inp = "<table>" +
+        "<tr>" +
+        "<td>" +
+        "<input id='input' class='input-in' type=\"text\" style='background-color: #fafafa;" +
+        "  border:0;" +
+        "  box-shadow:0 0 4px rgba(0,0,0,0.3);" +
+        "  transition: .3s box-shadow;" +
+        "  width: 600px ; height: 35px '" + "></td>" +
+        "<td><button class='input-selector-one'>Поиск</button></td></tr></table>";
+
+    document.getElementById('inputText').innerHTML = inp;
+
+    var inputIn = document.querySelector('.input-in');
+    var button = document.querySelector('button');
+    var urlHost = document.location.host
+    if (counter == null) {
+        counter = 0;
+    }
+    functionByUrl('http://' + urlHost + '/products?page=' + counter + '&size=5', 'json');
+
+
+    //var k = resultPage('http://' + urlHost + '/count', 'text');
+    //console.log(k)
+    //console.log(maxPage);
+
+    button.onclick = function () {
+        counter=0;
+        var searchName = inputIn.value;
+        console.log(searchName);
+        var newUrl = 'http://' + urlHost + '/products?nameLike=' + searchName + '&page=' + counter;//&size=6
+        functionByUrl(newUrl, 'json');
+    }
+
+}
+
+var urlHost = document.location.host
+resultPage('http://' + urlHost + '/count', 'text');
+//getProductInfo();
+_____________________________________________-РАБОТАЕТ ВСЕ---------------------------------------
+
+//метод для парсинга JSON
+var getInfoAboutProduct = function (url, type, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.responseType = type;
+    xhr.onload = function () {
+        var status = xhr.status;
+        if (status === 200) {
+            callback(xhr.response)
+        } else {
+            callback(status, xhr.response);
+        }
+    };
+    xhr.send();
+};
+
+var functionByUrl = function (url, type) {
+    getInfoAboutProduct(url, type,
+        function (data) {
+            console.log(data)
+            var table = "<table border='2' class='table'>" + "<thead>" +
+                "<tr><th>ID</th><th>Наименование</th><th>Раздел</th><th>Стоимость</th><th>Кол-во</th>" +
+                "<th>ID поставщика</th><th>Описание товара</th><th>Корзина</th></tr></thead>"
+                + "<tbody>";
+
+            for (var iter = 0; iter < data.length; iter++) {
+                table += "<tr><td>" + data[iter].id + "</td><td>"
+                    + data[iter].name + "</td><td>"
+                    + data[iter].type + "</td><td>"
+                    + data[iter].price + "</td><td>"
+                    + data[iter].count + "</td><td>"
+                    + data[iter].supplierId + "</td><td>"
+                    + data[iter].info + "</td><td>"
+                    + "<button  class=\"buttons_plus\" data-id=" + data[iter].id + ">+</button>" //button-primary plus
+                    + "<button  class=\"buttons_minus\" data-id=" + data[iter].id + ">-</button></tr>" //button-primary minus
+            }
+            table += "</tbody></table>";
+            document.getElementById('all_product').innerHTML = table;
+        });
+}
+
+var page = 0;
+var maxPage = 0;
+var countPage = 0;
+var result = 0;
+
+function getMax(url, type,urlForProduct) {
+    getInfoAboutProduct(url, type, function (data) {
+        result = data; //возвращает кол-во всех объектов/товаров
+        maxPage = Math.round(result / 5);
+        console.log(maxPage) //все ок, выводит правильное значение
+        getProductInfo(countPage,urlForProduct+countPage);
+        pagination(countPage);
+        var next = document.getElementById('next');
+        var prev = document.getElementById('prev');
+
+        var kek1=urlForProduct+countPage;
+        console.log(kek1)
+        var kek2= getProductInfo(countPage,urlForProduct+countPage);
+        console.log(kek2)
+        next.onclick = function () {
+            if (countPage <= maxPage) {
+                countPage++;
+                getProductInfo(countPage,urlForProduct+countPage);
+            }
+        }
+        prev.onclick = function () {
+            if (countPage >= 0) {
+                countPage--;
+                getProductInfo(countPage,urlForProduct+countPage);
+            }
+        }
+
+    })
+    console.log(result); // выводит 0 (глоб переменную)
+    return result;
+}
+
+
+var pagination = function nextPrev() {
+    var forButton = '<table>' + '<tr><th>';
+
+    forButton += '<th><button id="prev">Prev</button></th><th>' +
+        '<button id="next">Next</button></th>';
+    forButton += '</tr>' +
+        '</table>';
+    document.getElementById('pagination').innerHTML = forButton;
+}
+//переменная для счетчика
+//var count = 0;
+
+function getProductInfo(counter,urlForProduct) {
+
+    //selector(counter);
+    functionByUrl(urlForProduct,'json');
+   // functionByUrl('http://' + urlHost + '/products?page=' + counter + '&size=5', 'json');
+}
+
+var inp = "<table>" +
+    "<tr>" +
+    "<td>" +
+    "<input id='input' class='input-in' type=\"text\" style='background-color: #fafafa;" +
+    "  border:0;" +
+    "  box-shadow:0 0 4px rgba(0,0,0,0.3);" +
+    "  transition: .3s box-shadow;" +
+    "  width: 600px ; height: 35px '" + "></td>" +
+    "<td><button class='input-selector-one'>Поиск</button></td></tr></table>";
+
+document.getElementById('inputText').innerHTML = inp;
+var inputIn = document.querySelector('.input-in');
+var button = document.querySelector('button');
+
+
+//function selector(counter) {
+    //селектор для поиска
+    /*
+    var inp = "<table>" +
+        "<tr>" +
+        "<td>" +
+        "<input id='input' class='input-in' type=\"text\" style='background-color: #fafafa;" +
+        "  border:0;" +
+        "  box-shadow:0 0 4px rgba(0,0,0,0.3);" +
+        "  transition: .3s box-shadow;" +
+        "  width: 600px ; height: 35px '" + "></td>" +
+        "<td><button class='input-selector-one'>Поиск</button></td></tr></table>";
+
+    document.getElementById('inputText').innerHTML = inp;
+    var inputIn = document.querySelector('.input-in');
+    var button = document.querySelector('button');
+
+     */
+    var urlHost = document.location.host
+
+    button.onclick = function() {
+        countPage=0;
+        var searchName = inputIn.value;
+        console.log(searchName);
+        var newUrl = 'http://' + urlHost + '/products?nameLike=' + searchName + '&page=';//&size=6
+        getMax('http://' + urlHost + '/count?name=' + searchName,'json', newUrl);
+        //functionByUrl(newUrl, 'json',);
+    }
+
+//}
+
+var urlHost = document.location.host
+var kek=inputIn.value
+console.log(kek==="")
+var s='sk';
+if (inputIn.value === "") {
+    getMax('http://' + urlHost + '/count', 'text','http://' + urlHost + '/products?page=');
+} else {
+    countPage=0;
+    getMax('http://' + urlHost + '/count?name=' + inputIn.value);
+}
+//getProductInfo();
+
+---------------------------------
+27.02.21
+-убрать лишний код из product.js
+-еще раз протестить
+
