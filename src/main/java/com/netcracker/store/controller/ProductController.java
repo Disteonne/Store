@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -59,6 +60,13 @@ public class ProductController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(productMapper.toProductDto(productService.save(productMapper.toProduct(productPostDto))));
+    }
+    @PreAuthorize("ROLE_USER")
+    @PostMapping("/getIdToBasket")
+    public @ResponseBody String basket(@RequestBody String jsonInfo){
+        System.out.println(jsonInfo);
+        return jsonInfo;
+        //return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/product/delete{id}")

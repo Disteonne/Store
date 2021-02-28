@@ -193,42 +193,66 @@ function minusFunction(id) {
     //console.log(JSON.stringify(obj));
 }
 
-var getProductById =  function productById(tableBasket,map) {
+var getProductById = function productById(tableBasket, map) {
     getInfoAboutProduct('http://' + urlHost + '/all/products', 'json', function (data) {
-        var listProduct=new Set();
+        var listProduct = new Set();
         for (let i = 0; i < data.length; i++) {
             listProduct.add(data[i]);
         }
-        var sumResult=0;
+        var sumResult = 0;
+        var listJsonProduct = new Map();
+        var jsonProduct;
         for (var [key, values] of map) {
-            for(let item of listProduct) {
-                if(item.id===parseInt(key)) {
+            for (let item of listProduct) {
+                if (item.id === parseInt(key)) {
                     tableBasket += "<tr><td>" + item.name + "</td>"
                         + "<td>" + values + "</td>"
-                        + "<td>"+(item.price*values)+ "</td>";
-                    sumResult+=item.price*values;
+                        + "<td>" + (item.price * values) + "</td>";
+                    sumResult += item.price * values;
+                    listJsonProduct.set(key, values);
                 }
             }
         }
-        tableBasket += "<tr><td></td>"
-            + "<td></td>"
-            + "<td><h2>Итого: "+sumResult+"</h2></td>";
+        jsonProduct = JSON.stringify(map_to_object(listJsonProduct));
+        console.log(jsonProduct);
+        tableBasket += "<tr><td></td><td></td><td><h2>Итого: " + sumResult + "</h2></td>" +
+            "<tr><td></td><td></td><td><button id='buy' formaction='post'>Купить</button></td>";
         tableBasket += "</tr></tbody></table>";
         document.getElementById('basket').innerHTML = tableBasket;
+
+
+        var buttonBuy = document.getElementById('buy');
+        buttonBuy.onclick = function () {
+            searchText(jsonProduct);
+        }
     });
 
 };
+
+function searchText(jsonText) {
+
+    $.ajax({
+        type: "POST",
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        url: "/getIdToBasket",
+        data: jsonText, // Note it is important
+        success: function (result) {
+            // do what ever you want with data
+        }
+    });
+}
 
 function basket(map) {
     var tableBasket = "<h1 align=\"center\">Basket</h1>";
 
     if (map.size === 0) {
-        tableBasket += "<h2>Basket is empty</h2>";
+        tableBasket += "<h2 align='center'>Basket is empty</h2>";
         document.getElementById('basket').innerHTML = tableBasket;
     } else {
         tableBasket += "<br><table border='2' class='table'><thead>" +
-            "<tr><th>Name</th><th>Count</th><th>Price</th>></tr></thead><tbody>";
-        getProductById(tableBasket,map);
+            "<tr><th>Name</th><th>Count</th><th>Price</th></tr></thead><tbody>";
+        getProductById(tableBasket, map);
     }
 }
 
@@ -244,3 +268,4 @@ function map_to_object(map) {
     })
     return out
 }
+
