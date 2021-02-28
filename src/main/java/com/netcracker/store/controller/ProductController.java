@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -78,5 +79,10 @@ public class ProductController {
         Product product = productService.getById(id);
         productService.save(productMapper.patch(product, dto));
         return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/saveMap")
+    public void saveLayout(@RequestParam(value = "saveMapJs") Map<String,Integer> saveMapJs) {
+       System.out.println(saveMapJs.toString());
     }
 }
