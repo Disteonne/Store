@@ -8,16 +8,17 @@ import com.netcracker.store.exception.TypeNotFoundException;
 import com.netcracker.store.mapper.ProductMapper;
 import com.netcracker.store.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class ProductController {
@@ -38,15 +39,15 @@ public class ProductController {
     }
 
     @GetMapping("/all/products")
-    public List<ProductDto> getAllProduct(){
+    public List<ProductDto> getAllProduct() {
         return productMapper.toProductDtoList(productService.getAll());
     }
 
     @GetMapping("/count")
-    public Integer getCount(@RequestParam(required = false, value = "name") String name){
-        if(name==null){
+    public Integer getCount(@RequestParam(required = false, value = "name") String name) {
+        if (name == null) {
             return productService.getCountAll();
-        }else
+        } else
             return productService.getCountByName(name);
     }
 
@@ -61,10 +62,11 @@ public class ProductController {
                 .status(HttpStatus.CREATED)
                 .body(productMapper.toProductDto(productService.save(productMapper.toProduct(productPostDto))));
     }
-    @PreAuthorize("ROLE_USER")
+
     @PostMapping("/getIdToBasket")
-    public @ResponseBody String basket(@RequestBody String jsonInfo){
-        System.out.println(jsonInfo);
+    public @ResponseBody
+    String basket(@RequestBody String jsonInfo) {
+        log.info(jsonInfo);
         return jsonInfo;
         //return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -90,7 +92,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/saveMap")
-    public void saveLayout(@RequestParam(value = "saveMapJs") Map<String,Integer> saveMapJs) {
-       System.out.println(saveMapJs.toString());
+    public void saveLayout(@RequestParam(value = "saveMapJs") Map<String, Integer> saveMapJs) {
+        System.out.println(saveMapJs.toString());
     }
 }

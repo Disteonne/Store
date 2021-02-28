@@ -63,10 +63,10 @@ public class UserMapper {
 
         Set<UsersRole> usersRoles = new HashSet<>();
         if (userPostDto.getCredentials() == null) {
-            usersRoles.add(UsersRole.USER);
+            usersRoles.add(UsersRole.ROLE_USER);
             user.setUsersRoles(usersRoles);
         } else {
-            usersRoles.add(UsersRole.ADMIN);
+            usersRoles.add(UsersRole.ROLE_ADMIN);
             user.setUsersRoles(usersRoles);
         }
         user.setLogin(userPostDto.getLogin());
@@ -90,10 +90,10 @@ public class UserMapper {
 
         Set<UsersRole> usersRoles = new HashSet<>();
         if (userPutDto.getCredentials() == null) {
-            usersRoles.add(UsersRole.USER);
+            usersRoles.add(UsersRole.ROLE_USER);
             user.setUsersRoles(usersRoles);
         } else {
-            usersRoles.add(UsersRole.ADMIN);
+            usersRoles.add(UsersRole.ROLE_ADMIN);
             user.setUsersRoles(usersRoles);
         }
 
@@ -125,7 +125,7 @@ public class UserMapper {
         }
         if (userDto.getUsersRoles() != null) {
             Set<UsersRole> usersRoles = new HashSet<>();
-            usersRoles.add(UsersRole.ADMIN);
+            usersRoles.add(UsersRole.ROLE_ADMIN);
             user.setUsersRoles(usersRoles);
             //user.setCredentials(Credentials.ADMIN.toString());
         }
