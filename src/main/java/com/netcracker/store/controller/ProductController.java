@@ -1,20 +1,28 @@
 package com.netcracker.store.controller;
 
-import com.netcracker.store.dto.ProductDto;
-import com.netcracker.store.dto.ProductPostDto;
-import com.netcracker.store.dto.ProductPutDto;
+import com.netcracker.store.dto.*;
 import com.netcracker.store.entity.Product;
+import com.netcracker.store.entity.User;
 import com.netcracker.store.exception.TypeNotFoundException;
+import com.netcracker.store.mapper.HistoryMapper;
 import com.netcracker.store.mapper.ProductMapper;
+import com.netcracker.store.service.BasketService;
+import com.netcracker.store.service.HistoryService;
 import com.netcracker.store.service.ProductService;
+import com.netcracker.store.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.json.ParseException;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +33,7 @@ public class ProductController {
 
     private final ProductService productService;
     private final ProductMapper productMapper;
+    private final BasketService basketService;
 
     @GetMapping("/products")
     public List<ProductDto> getAll(@RequestParam(required = false) String type,
@@ -63,13 +72,12 @@ public class ProductController {
                 .body(productMapper.toProductDto(productService.save(productMapper.toProduct(productPostDto))));
     }
 
-    @PostMapping("/getIdToBasket")
-    public @ResponseBody
-    String basket(@RequestBody String jsonInfo) {
-        log.info(jsonInfo);
-        return jsonInfo;
-        //return ResponseEntity.status(HttpStatus.OK).build();
+    @PostMapping("/basket")
+    public ResponseEntity<Void> basket(@RequestBody List<BasketDto> basket) {
+        return basketService.addHistory(basket) ? ResponseEntity.status(HttpStatus.OK).build() :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+
 
     @DeleteMapping("/product/delete{id}")
     public ResponseEntity<Void> delete(@PathVariable(value = "id") Long id) {

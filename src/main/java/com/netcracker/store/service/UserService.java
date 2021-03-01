@@ -51,6 +51,10 @@ public class UserService {
         }
         return userRepository.getUser(street, PageRequest.of(page, size, sort));
     }
+
+    public User getByName(String name) {
+        return userRepository.findByName(name);
+    }
     /*
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {

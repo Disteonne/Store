@@ -1,5 +1,6 @@
 package com.netcracker.store.entity;
 
+import com.netcracker.store.dto.ProductDto;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,7 +33,7 @@ public class History {
 
     @Column(name = "info")
     @Type(type = "jsonb")
-    private List<Product> history = new ArrayList<>();
+    private List<ProductDto> history = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id")

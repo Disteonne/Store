@@ -60,6 +60,17 @@ public class ProductMapper {
         productList.forEach(product -> result.add(toProductDto(product)));
         return result;
     }
+    /*
+    public List<Product> toProductList(List<ProductDto> productDtoList){
+        List<Product> result=new ArrayList<>();
+        if(productDtoList==null){
+            return result;
+        }
+        productDtoList.forEach(productDto -> result.add(toProduct(productDto)));
+    }
+
+     */
+
 
     public Product toProduct(ProductPutDto productPutDto) {
         if (productPutDto == null) {

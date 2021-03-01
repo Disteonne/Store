@@ -18,12 +18,24 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    /*
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/**").access("hasRole('USER')")
                 .anyRequest().authenticated().and()
+                .formLogin().permitAll()
+                .and()
+                .logout().permitAll();
+    }
+     */
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable()
+                .authorizeRequests()
+                .anyRequest().authenticated()
+                .and()
                 .formLogin().permitAll()
                 .and()
                 .logout().permitAll();

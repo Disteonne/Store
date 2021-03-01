@@ -40,9 +40,6 @@ button.onclick = function () {
 }
 
 var urlHost = document.location.host
-var kek = inputIn.value
-console.log(kek === "")
-var s = 'sk';
 if (inputIn.value === "") {
     getMax('http://' + urlHost + '/count', 'text', 'http://' + urlHost + '/products?page=');
 } else {
@@ -94,7 +91,6 @@ function getMax(url, type, urlForProduct) {
                 if (countPage <= maxPage) {
                     countPage++;
                     getMax(url, type, urlForProduct);
-                    console.log(kek)
                     functionByUrl(urlForProduct + countPage, 'json');
                 } else {
                     pagination(countPage, maxPage);
@@ -138,52 +134,40 @@ document.onclick = function (event) {
         if (event.target.classList.contains('buttons_minus')) {
             minusFunction(event.target.dataset.id);
         }
+        if (event.target.classList.contains('delete')) {
+            deleteProduct(event.target.dataset.id);
+        }
     } else {
         console.log('basket is full')
     }
 }
+function deleteProduct(id) {
+    var productId=id.substr(1,2);
+    mapBasket.delete(productId);
+    basket(mapBasket);
+}
 var mapBasket = new Map();
 
 function plusFunction(id) {
-    var flag = false;
-    if (mapBasket.size === 0) {
+    if (mapBasket.has(id) === false) {
         mapBasket.set(id, 1);
     } else {
-        for (var [key, value] of mapBasket) {
-            if (key === id) {
-                var kek = value;
-                mapBasket.set(id, ++kek);
-                flag = true;
-                break;
-            }
-        }
-        if (flag === false) {
-            mapBasket.set(id, 1);
-        }
+        var valueById = mapBasket.get(id);
+        mapBasket.set(id, ++valueById);
     }
     //вывод корзины
     basket(mapBasket);
 }
 
 function minusFunction(id) {
-    var flag = false;
-    if (mapBasket.size === 0) {
-        console.log("basket is empty");
-    } else {
-        for (var [key, value] of mapBasket) {
-            if (key === id) {
-                var kek = value;
-                if (--kek === 0) {
-                    mapBasket.delete(key)
-                } else {
-                    mapBasket.set(id, kek);
-                }
-                flag = true;
-                break;
+    if (mapBasket.size !== 0) {
+        if (mapBasket.has(id)) {
+            var valueById = mapBasket.get(id);
+            if ((valueById - 1) !== 0) {
+                mapBasket.set(id, --valueById);
+            } else {
+                mapBasket.delete(id);
             }
-        }
-        if (flag === false) {
-            console.log("product not found")
         }
     }
     basket(mapBasket);//вывод корзины
@@ -193,49 +177,56 @@ function minusFunction(id) {
     //console.log(JSON.stringify(obj));
 }
 
-var getProductById = function productById(tableBasket, map) {
+class Basket {
+    constructor(id, count) {
+        this.id = id;
+        this.count = count;
+    }
+}
+
+var addBasket = function productById(tableBasket, map) {
     getInfoAboutProduct('http://' + urlHost + '/all/products', 'json', function (data) {
         var listProduct = new Set();
         for (let i = 0; i < data.length; i++) {
             listProduct.add(data[i]);
         }
-        var sumResult = 0;
-        var listJsonProduct = new Map();
-        var jsonProduct;
+        var sumOfPurchase = 0;
+        var basket = new Array();
         for (var [key, values] of map) {
             for (let item of listProduct) {
                 if (item.id === parseInt(key)) {
                     tableBasket += "<tr><td>" + item.name + "</td>"
                         + "<td>" + values + "</td>"
-                        + "<td>" + (item.price * values) + "</td>";
-                    sumResult += item.price * values;
-                    listJsonProduct.set(key, values);
+                        + "<td>" + (item.price * values) + "</td>"
+                        + "<td><button class='delete' data-id=\"d"+ key + "\">Удалить</button></td>";
+                    sumOfPurchase += item.price * values;
+                    basket.push(new Basket(item.id, values));
                 }
             }
         }
-        jsonProduct = JSON.stringify(map_to_object(listJsonProduct));
-        console.log(jsonProduct);
-        tableBasket += "<tr><td></td><td></td><td><h2>Итого: " + sumResult + "</h2></td>" +
-            "<tr><td></td><td></td><td><button id='buy' formaction='post'>Купить</button></td>";
+        var jsonBasket = JSON.stringify(basket);
+        tableBasket += "<tr><td></td><td></td><td></td><td><h2>Итого: " + sumOfPurchase + "</h2></td>" +
+            "<tr><td></td><td></td><td></td><td><button id='buy' formaction='post'>Купить</button></td>";
         tableBasket += "</tr></tbody></table>";
         document.getElementById('basket').innerHTML = tableBasket;
 
 
         var buttonBuy = document.getElementById('buy');
         buttonBuy.onclick = function () {
-            searchText(jsonProduct);
+            sendBasketToSpring(jsonBasket);
+            document.getElementById('basketTable').remove();
+            alert('Куплено');
+            mapBasket.clear();
         }
     });
-
 };
 
-function searchText(jsonText) {
+function sendBasketToSpring(jsonText) {
 
     $.ajax({
         type: "POST",
         contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        url: "/getIdToBasket",
+        url: "/basket",
         data: jsonText, // Note it is important
         success: function (result) {
             // do what ever you want with data
@@ -250,9 +241,9 @@ function basket(map) {
         tableBasket += "<h2 align='center'>Basket is empty</h2>";
         document.getElementById('basket').innerHTML = tableBasket;
     } else {
-        tableBasket += "<br><table border='2' class='table'><thead>" +
-            "<tr><th>Name</th><th>Count</th><th>Price</th></tr></thead><tbody>";
-        getProductById(tableBasket, map);
+        tableBasket += "<br><table id='basketTable' border='2' class='table'><thead>" +
+            "<tr><th>Name</th><th>Count</th><th>Price</th><th></th></tr></thead><tbody>";
+        addBasket(tableBasket, map);
     }
 }
 

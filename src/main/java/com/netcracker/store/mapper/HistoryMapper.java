@@ -1,7 +1,9 @@
 package com.netcracker.store.mapper;
 
 import com.netcracker.store.dto.HistoryDto;
+import com.netcracker.store.dto.HistoryPostDto;
 import com.netcracker.store.entity.History;
+import com.netcracker.store.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -21,8 +23,18 @@ public class HistoryMapper {
         HistoryDto dto = new HistoryDto();
         dto.setId(history.getId());
         dto.setDate(history.getDate());
-        dto.setHistory(productMapper.toProductDtoList(history.getHistory()));
+        dto.setHistory(history.getHistory());
         return dto;
+    }
+
+    public History toHistory(HistoryPostDto historyPostDto){
+        History history=new History();
+        history.setDate(historyPostDto.getDate());
+        history.setHistory(historyPostDto.getHistory());
+        User user=new User();
+        user.setId(historyPostDto.getUser_id());
+        history.setUser(user);
+        return history;
     }
 
     public List<HistoryDto> toHistoryDtoList(List<History> historyList) {
