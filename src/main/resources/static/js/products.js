@@ -51,7 +51,6 @@ if (inputIn.value === "") {
 var functionByUrl = function (url, type) {
     getInfoAboutProduct(url, type,
         function (data) {
-            console.log(data)
             var table = "<table border='2' class='table'>" + "<thead>" +
                 "<tr><th>ID</th><th>Наименование</th><th>Раздел</th><th>Стоимость</th><th>Кол-во</th>" +
                 "<th>ID поставщика</th><th>Описание товара</th><th>Корзина</th></tr></thead>"
@@ -246,7 +245,6 @@ function basket(map) {
         addBasket(tableBasket, map);
     }
 }
-
 
 function map_to_object(map) {
     const out = Object.create(null)

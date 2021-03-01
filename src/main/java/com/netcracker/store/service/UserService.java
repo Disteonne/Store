@@ -6,10 +6,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -55,6 +58,46 @@ public class UserService {
     public User getByName(String name) {
         return userRepository.findByName(name);
     }
+
+    public User getCurrent(){
+        return getByName(getCurrentUsername());
+    }
+
+    public User getUpdated(Map<String,String> update){
+        User user=getCurrent();
+        for (Map.Entry<String,String> entry: update.entrySet()
+        ) {
+            if(entry.getKey().equals("name")){
+                user.setName(entry.getValue());
+                //return true;
+            }
+            if(entry.getKey().equals("surname")){
+                user.setSurname(entry.getValue());
+                //return true;
+            }
+            if(entry.getKey().equals("age")){
+                user.setAge(Integer.parseInt(entry.getValue()));
+                //return true;
+            }
+            if(entry.getKey().equals("login")){
+                user.setLogin(entry.getValue());
+                //return true;
+            }
+            if(entry.getKey().equals("password")){
+                if(passwordEncoder.matches(entry.getValue(),user.getPassword())){
+                    user.setPassword(passwordEncoder.encode(entry.getValue()));
+                    //return true;
+                }
+            }
+        }
+        return user;
+    }
+
+    private String getCurrentUsername() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
+    }
+
     /*
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {

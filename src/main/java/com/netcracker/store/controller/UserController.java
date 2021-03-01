@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,6 +40,11 @@ public class UserController {
         return userMapper.toUserDto(userService.getById(id));
     }
 
+    @GetMapping("/user/current")
+    public UserDto currentUser(){
+        return userMapper.toUserDto(userService.getCurrent());
+    }
+
     @PostMapping("/user")
     public ResponseEntity<UserDto> save(@Valid @RequestBody UserPostDto userPostDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userMapper.toUserDto(userService.save(userMapper.toUser(userPostDto))));
@@ -52,6 +58,11 @@ public class UserController {
     @PutMapping("/user")
     public ResponseEntity<UserDto> put(@Valid @RequestBody UserPutDto userPutDto) {
         return ResponseEntity.ok(userMapper.toUserDto(userService.save(userMapper.toUser(userPutDto))));
+    }
+
+    @PatchMapping("/user/current")
+    public ResponseEntity<UserDto> patch(@RequestBody Map<String,String> update){
+        return ResponseEntity.ok(userMapper.toUserDto(userService.save(userService.getUpdated(update))));
     }
 
     @PatchMapping("/user/{id}")
