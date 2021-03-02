@@ -37,6 +37,9 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
+    public User findByLogin(String login){
+        return userRepository.findByLogin(login);
+    }
 
     public boolean deleteById(Long id) {
         try {
@@ -60,7 +63,7 @@ public class UserService {
     }
 
     public User getCurrent(){
-        return getByName(getCurrentUsername());
+        return findByLogin(getCurrentUsername());
     }
 
     public User getUpdated(Map<String,String> update){
@@ -93,7 +96,7 @@ public class UserService {
         return user;
     }
 
-    private String getCurrentUsername() {
+    private String getCurrentUsername() {//login
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getName();
     }

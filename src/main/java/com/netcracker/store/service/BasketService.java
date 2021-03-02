@@ -49,7 +49,7 @@ public class BasketService {
             HistoryPostDto historyPostDto = new HistoryPostDto();
             historyPostDto.setHistory(history);
             historyPostDto.setDate(LocalDateTime.now());
-            historyPostDto.setUser_id(userService.getByName(getCurrentUsername()).getId());
+            historyPostDto.setUser_id(userService.findByLogin(getCurrentUsername()).getId());
             historyService.save(historyMapper.toHistory(historyPostDto));
             return true;
         }

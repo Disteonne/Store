@@ -18,6 +18,6 @@ public class UserDto {
     private String login;
     private String password;
     private Long addressId;
-    private Long historyId;
+    private Long historyId; //убери
 
 }

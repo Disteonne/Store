@@ -42,7 +42,7 @@ public class User implements UserDetails {
     private String password;
 
     @Column(name = "mail", unique = true)
-    private String mail;
+    private String mail; //можно удалить
 
     @ManyToOne
     @JoinColumn(name = "address_id")
@@ -59,7 +59,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return getName();
+        return getLogin();
     }
 
     @Override

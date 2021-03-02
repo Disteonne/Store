@@ -19,37 +19,55 @@ function profile(){
             "<thead>" +
             "<tr><th>Поля</th><th>Информация</th><th></th><tbody>"+
             "<tr><td>id</td><td>"+data.id+"</td><td></td></tr>"+
-            "<tr><td>Name</td><td>"+data.name+"</td><td><input id='input' class='input-in' type='text'><button id='name' class='changeName'>Изменить</button></td></tr>"+
-            "<tr><td>Surname</td><td>"+data.surname+"</td><td><input id='input' class='input-in' type='text'><button id='surname' class='change'>Изменить</button></td></tr>"+
-            "<tr><td>Age</td><td>"+data.age+"</td><td><input id='input' class='input-in' type='text'><button id='age' class='age'>Изменить</button></td></tr>"+
-            "<tr><td>Login</td><td>"+data.login+"</td><td><input id='input' class='input-in' type='text'><button id='login' class='change'>Изменить</button></td></tr>"+
-            "<tr><td>Password</td><td>********</td><td><input id='input' class='input-in' type='text'><button id='password' class='change'>Изменить</button></td></tr></tbody>"+
+            "<tr><td>Name</td><td>"+data.name+"</td><td><input id='input1' class='input-in' type='text'><button data-id='name' class='changeName'>Изменить</button></td></tr>"+
+            "<tr><td>Surname</td><td>"+data.surname+"</td><td><input id='input2' class='input-in surname' type='text'><button data-id='surname' class='changeSurname'>Изменить</button></td></tr>"+
+            "<tr><td>Age</td><td>"+data.age+"</td><td><input id='input3' class='input-in age' type='text'><button data-id='age' class='changeAge'>Изменить</button></td></tr>"+
+            "<tr><td>Login</td><td>"+data.login+"</td><td><input id='input4' class='input-in login' type='text'><button data-id='login' class='changeLogin'>Изменить</button></td></tr>"+
+            "<tr><td>Password</td><td>********</td><td><input id='input5' class='input-in password' type='text'><button data-id='password' class='changePassword'>Изменить</button></td></tr></tbody>"+
             "</table>";
         document.getElementById('info').innerHTML=table;
     });
 }
 document.onclick=function (event){
     if(event.target.classList.contains('changeName')){
+        console.log(event.target.dataset.id);
+        patch(event.target.dataset.id);
+    }
+    if(event.target.classList.contains('changeSurname')){
+        patch(event.target.dataset.id);
+    }
+    if(event.target.classList.contains('changeAge')){
+        patch(event.target.dataset.id);
+    }
+    if(event.target.classList.contains('changeLogin')){
+        patch(event.target.dataset.id);
+    }
+    if(event.target.classList.contains('changePassword')){
         patch(event.target.dataset.id);
     }
 }
 function patch(id) {
     var inputText=new Map();
-
+    var value;
     if(id==="name"){
-        inputText.set("name",document.querySelector('input-in'));
+        value=document.querySelector('.input-in')
+        inputText.set("name",value.value);
     }
     if(id==="surname"){
-        inputText.set("surname",document.querySelector('input-in'));
+        value=document.querySelector('.input-in surname')
+        inputText.set("surname",value.value);
     }
     if(id==="age"){
-        inputText.set("age",document.querySelector('input-in'));
+        value=document.querySelector('.input-in age')
+        inputText.set("age",value.value);
     }
     if(id==="login"){
-        inputText.set("login",document.querySelector('input-in'));
+        value=document.querySelector('.input-in login')
+        inputText.set("login",value.value);
     }
     if(id==="password"){
-        inputText.set("password",document.querySelector('input-in'));
+        value=document.querySelector('.input-in password')
+        inputText.set("password",value.value);
     }
    sendToSpring(JSON.stringify(inputText));
 }
