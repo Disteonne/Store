@@ -49,7 +49,7 @@ public class InfoController {
         log.info(password.getPassword());
         User user = userService.findByLogin(getCurrentUserLogin());
         if(!bCryptPasswordEncoder.matches(password.getPassword(), user.getPassword())){
-            user.setPassword(bCryptPasswordEncoder.encode(password.getPassword()));
+            user.setPassword(password.getPassword());
             userService.save(user);
         }
             return password.getPassword();
