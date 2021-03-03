@@ -10,7 +10,8 @@ import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.validation.constraints.Pattern;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,8 @@ public class History {
     private Long id;
 
     @Column(name = "date")
-    private LocalDateTime date;
+    // @Pattern(regexp = "[0-9]{4}-[0-9]{2}-[0-9]{2}")
+    private LocalDate date;
 
     @Column(name = "info")
     @Type(type = "jsonb")

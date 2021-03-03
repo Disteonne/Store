@@ -15,7 +15,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +32,8 @@ public class BasketService {
     private final ProductService productService;
     private final ProductMapper productMapper;
     private final UserService userService;
+
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public boolean addHistory(List<BasketDto> basket) {
         if (basket != null) {
@@ -48,7 +52,7 @@ public class BasketService {
             }
             HistoryPostDto historyPostDto = new HistoryPostDto();
             historyPostDto.setHistory(history);
-            historyPostDto.setDate(LocalDateTime.now());
+            historyPostDto.setDate(LocalDate.now());
             historyPostDto.setUser_id(userService.findByLogin(getCurrentUserLogin()).getId());
             historyService.save(historyMapper.toHistory(historyPostDto));
             return true;
