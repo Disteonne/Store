@@ -49,14 +49,14 @@ public class BasketService {
             HistoryPostDto historyPostDto = new HistoryPostDto();
             historyPostDto.setHistory(history);
             historyPostDto.setDate(LocalDateTime.now());
-            historyPostDto.setUser_id(userService.findByLogin(getCurrentUsername()).getId());
+            historyPostDto.setUser_id(userService.findByLogin(getCurrentUserLogin()).getId());
             historyService.save(historyMapper.toHistory(historyPostDto));
             return true;
         }
         return false;
     }
 
-    private String getCurrentUsername() {
+    private String getCurrentUserLogin() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getName();
     }

@@ -65,11 +65,6 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toUserDto(userService.save(userMapper.toUser(userPutDto))));
     }
 
-    @PatchMapping("/user/current")
-    public ResponseEntity<UserDto> patch(@RequestBody Map<String,String> update){
-        return ResponseEntity.ok(userMapper.toUserDto(userService.save(userService.getUpdated(update))));
-    }
-
     @PatchMapping("/user/{id}")
     public ResponseEntity<UserDto> patch(@PathVariable(name = "id") Long id, @RequestBody UserDto userDto) {
         User user = userService.getById(id);

@@ -13,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -73,56 +72,11 @@ public class UserService {
     }
 
     public User getCurrent() {
-        return findByLogin(getCurrentUsername());
+        return findByLogin(getCurrentUserLogin());
     }
-
-    public User getUpdated(Map<String, String> update) {
-        User user = getCurrent();
-        for (Map.Entry<String, String> entry : update.entrySet()
-        ) {
-            if (entry.getKey().equals("name")) {
-                user.setName(entry.getValue());
-                //return true;
-            }
-            if (entry.getKey().equals("surname")) {
-                user.setSurname(entry.getValue());
-                //return true;
-            }
-            if (entry.getKey().equals("age")) {
-                user.setAge(Integer.parseInt(entry.getValue()));
-                //return true;
-            }
-            if (entry.getKey().equals("login")) {
-                user.setLogin(entry.getValue());
-                //return true;
-            }
-            if (entry.getKey().equals("password")) {
-                if (passwordEncoder.matches(entry.getValue(), user.getPassword())) {
-                    user.setPassword(passwordEncoder.encode(entry.getValue()));
-                    //return true;
-                }
-            }
-        }
-        return user;
-    }
-
-    private String getCurrentUsername() {//login
+    private String getCurrentUserLogin() {//login
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getName();
     }
 
-    /*
-    @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userRepository.findByLogin(s);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found.");
-        }
-
-        Set<GrantedAuthority> grantedAuthorities=new HashSet<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(Credentials.USER.toString()));
-        grantedAuthorities.add(new SimpleGrantedAuthority(Credentials.ADMIN.toString()));
-        return new org.springframework.security.core.userdetails.User(user.getLogin(),user.getPassword(),grantedAuthorities);
-    }
-     */
 }
