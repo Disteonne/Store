@@ -7,6 +7,7 @@ import com.netcracker.store.entity.User;
 import com.netcracker.store.mapper.UserMapper;
 import com.netcracker.store.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -51,7 +53,8 @@ public class UserController {
     }
 
     @DeleteMapping("/user/delete/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<Void> deleteById(@PathVariable(value = "id") Long id,@RequestBody String empty) {
+        log.info(empty);
         return userService.deleteById(id) ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 

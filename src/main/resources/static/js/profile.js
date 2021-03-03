@@ -54,7 +54,11 @@ document.onclick = function (event) {
     if(event.target.classList.contains('sendPassword')){
         sendPassword();
     }
+    if(event.target.classList.contains('delete')){
+        deleteUser();
+    }
 }
+
     /*
     Адрес изменяется
     1 юзер-1 адрес
@@ -72,6 +76,14 @@ function password() {
     document.getElementById('actionsPassword').innerHTML=inputs;
     //document.getElementById('actionsPassword').innerHTML=send;
 }
+function deleteUser() {
+    userInfo("http://" + document.location.host + "/info",function (data){
+        sendToSpring(JSON.stringify(""),"http://" + document.location.host + "/user/delete/"+parseInt(data.userId),"delete");
+        if(confirm("Вы уверены?")) {
+            window.location.replace('http://' + document.location.host + '/login');
+        }
+    })
+}
 function sendMain() {
     var nameValue = document.querySelector('.name');
     var surnameValue = document.querySelector('.surname');
@@ -82,7 +94,7 @@ function sendMain() {
     var streetValue = document.querySelector('.street');
     var buildingValue = document.querySelector('.building');
     sendToSpring(JSON.stringify(new InfoDto(nameValue.value,surnameValue.value,ageValue.value,loginValue.value,countryValue.value,cityValue.value,
-        streetValue.value,buildingValue.value)),"/info");
+        streetValue.value,buildingValue.value)),"/info","POST");
     alert("Изменено!");
     window.location.replace('http://'+document.location.host+'/profile.html');//редирект
 }
@@ -91,7 +103,8 @@ function sendPassword() {
     if(passwordValue.value===""){
         alert("Пароль не был изменен!")
     }else {
-        sendToSpring(JSON.stringify(new PasswordDto(passwordValue.value)), "/password");
+        alert("Пароль изменен!")
+        sendToSpring(JSON.stringify(new PasswordDto(passwordValue.value)), "/password","POST");
         window.location.replace('http://' + document.location.host + '/login');
     }
 }
@@ -127,10 +140,10 @@ class PasswordDto{
         this.password=password;
     }
 }
-function sendToSpring(jsonText,url) {
+function sendToSpring(jsonText,url,type) {
 
     $.ajax({
-        type: "POST",
+        type: type,
         contentType: 'application/json; charset=utf-8',
         url: url,
         data: jsonText, // Note it is important
