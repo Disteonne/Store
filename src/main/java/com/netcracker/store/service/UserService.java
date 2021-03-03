@@ -3,6 +3,7 @@ package com.netcracker.store.service;
 import com.netcracker.store.entity.User;
 import com.netcracker.store.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -33,11 +35,19 @@ public class UserService {
         if (user == null) {
             throw new IllegalArgumentException();
         }
+        //при любом сохранении энкодит пароль,поэтому логика вынесена в отдельном методе savePassword
+        // user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setLogin(user.getLogin());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(user.getPassword());
         return userRepository.save(user);
     }
-    public User findByLogin(String login){
+
+    public User savePassword(User user){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return user;
+    }
+
+    public User findByLogin(String login) {
         return userRepository.findByLogin(login);
     }
 
@@ -62,32 +72,32 @@ public class UserService {
         return userRepository.findByName(name);
     }
 
-    public User getCurrent(){
+    public User getCurrent() {
         return findByLogin(getCurrentUsername());
     }
 
-    public User getUpdated(Map<String,String> update){
-        User user=getCurrent();
-        for (Map.Entry<String,String> entry: update.entrySet()
+    public User getUpdated(Map<String, String> update) {
+        User user = getCurrent();
+        for (Map.Entry<String, String> entry : update.entrySet()
         ) {
-            if(entry.getKey().equals("name")){
+            if (entry.getKey().equals("name")) {
                 user.setName(entry.getValue());
                 //return true;
             }
-            if(entry.getKey().equals("surname")){
+            if (entry.getKey().equals("surname")) {
                 user.setSurname(entry.getValue());
                 //return true;
             }
-            if(entry.getKey().equals("age")){
+            if (entry.getKey().equals("age")) {
                 user.setAge(Integer.parseInt(entry.getValue()));
                 //return true;
             }
-            if(entry.getKey().equals("login")){
+            if (entry.getKey().equals("login")) {
                 user.setLogin(entry.getValue());
                 //return true;
             }
-            if(entry.getKey().equals("password")){
-                if(passwordEncoder.matches(entry.getValue(),user.getPassword())){
+            if (entry.getKey().equals("password")) {
+                if (passwordEncoder.matches(entry.getValue(), user.getPassword())) {
                     user.setPassword(passwordEncoder.encode(entry.getValue()));
                     //return true;
                 }

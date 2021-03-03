@@ -27,6 +27,14 @@ public class AddressMapper {
         }
         return addressDto;
     }
+    public AddressPostDto toAddressPostDto(AddressDto addressDto){
+        AddressPostDto addressPostDto = new AddressPostDto();
+        addressPostDto.setCountry(addressDto.getCountry());
+        addressPostDto.setCity(addressDto.getCity());
+        addressPostDto.setStreet(addressDto.getStreet());
+        addressPostDto.setBuilding(addressDto.getBuilding());
+        return addressPostDto;
+    }
 
     public List<AddressDto> toAddressDtoList(List<Address> all) {
         List<AddressDto> result = new ArrayList<>();

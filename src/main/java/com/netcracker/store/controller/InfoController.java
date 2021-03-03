@@ -39,8 +39,11 @@ public class InfoController {
 
     @PostMapping("/info")
     public InfoPostDto saveInfo(@RequestBody InfoPostDto infoPostDto) {
-        userService.save(infoMapper.toUser(infoPostDto, getCurrentUserLogin()));
-        addressService.save(infoMapper.toAddress(infoPostDto, getCurrentUserLogin()));
+        User user = infoMapper.toUser(infoPostDto, getCurrentUserLogin());
+        Address newAddress = addressService.save(infoMapper.toAddress(infoPostDto, getCurrentUserLogin()));
+        user.setAddress(newAddress);
+        //userService.save(infoMapper.toUser(infoPostDto, getCurrentUserLogin()));
+        userService.save(user);
         return infoPostDto;
     }
 
@@ -48,11 +51,12 @@ public class InfoController {
     public String changePassword(@RequestBody PasswordDto password) {
         log.info(password.getPassword());
         User user = userService.findByLogin(getCurrentUserLogin());
-        if(!bCryptPasswordEncoder.matches(password.getPassword(), user.getPassword())){
+        if (!bCryptPasswordEncoder.matches(password.getPassword(), user.getPassword())) {
             user.setPassword(password.getPassword());
+            userService.savePassword(user);
             userService.save(user);
         }
-            return password.getPassword();
+        return password.getPassword();
     }
 
     private String getCurrentUserLogin() {

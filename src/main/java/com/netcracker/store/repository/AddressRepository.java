@@ -13,4 +13,6 @@ public interface AddressRepository extends JpaRepository<Address,Long> {
     List<Address> getAddressesByCountryAndCityAndStreet(String country, String  city, String street, Pageable pageable);
 
     List<Address> getAddressesByCity(String city,Pageable pageable);
+
+    Address getAddressByCountryAndCityAndStreetAndBuilding(String country,String city,String street,String building);
 }

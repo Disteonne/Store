@@ -55,4 +55,8 @@ public class AddressService {
         return addressRepository.getAddressesByCountryAndCityAndStreet(country,city,street,PageRequest.of(page,size,sort));
     }
 
+    public Address find(String country,String city,String street,String building){
+        return addressRepository.getAddressByCountryAndCityAndStreetAndBuilding(country,city,street,building);
+    }
+
 }
