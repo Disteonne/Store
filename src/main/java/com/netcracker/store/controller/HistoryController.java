@@ -32,7 +32,7 @@ public class HistoryController {
         return null;
     }
 
-    @GetMapping("/kek")
+    @GetMapping("/history")
     public List<HistoryDto> get(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                 @RequestParam(required = false, defaultValue = "0") Integer page,
                                 @RequestParam(required = false, defaultValue = "5") Integer size,

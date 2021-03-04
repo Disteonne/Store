@@ -190,6 +190,7 @@ var addBasket = function productById(tableBasket, map) {
             listProduct.add(data[i]);
         }
         var sumOfPurchase = 0;
+        //var basket = new Array();
         var basket = new Array();
         for (var [key, values] of map) {
             for (let item of listProduct) {

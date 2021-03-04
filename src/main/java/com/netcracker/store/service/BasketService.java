@@ -33,7 +33,6 @@ public class BasketService {
     private final ProductMapper productMapper;
     private final UserService userService;
 
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public boolean addHistory(List<BasketDto> basket) {
         if (basket != null) {
