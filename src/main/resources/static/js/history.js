@@ -13,38 +13,103 @@ function getHistories(url, callback) {
     xhr.send();
 };
 
-function alreadyOutput(date, page) { //почти вывод
-    f(date, page);
+
+var page = 0;
+var urlQuery = "";
+selector();
+var inputIn = document.querySelector('.input-in');
+var button = document.querySelector('button');
+output();
+
+function selector() {
+    var inp = "<table>" +
+        "<tr>" +
+        "<td>" +
+        "<input id='input' class='input-in' type=\"text\" style='background-color: #fafafa;" +
+        "  border:0;" +
+        "  box-shadow:0 0 4px rgba(0,0,0,0.3);" +
+        "  transition: .3s box-shadow;" +
+        "  width: 600px ; height: 35px '" + "></td>" +
+        "<td><button class='input-selector-one'>Поиск</button></td></tr></table>";
+
+    document.getElementById('inputText').innerHTML = inp;
 }
 
-function f(date, page) {
+function outputHistory(page, url) {
     var tableHistory = "<table border='2' class='table'>" +
         "<thead>" +
-        "<tr><th>ID</th><th>Date</th><th>Info</th></tr>" +
-        "</thead>"+
+        "<tr><th>ID</th><th>Date</th><th>Info</th><th>Sum</th></tr>" +
+        "</thead>" +
         "<tbody>";
-    getHistories("/history?date=" + date + "&page=" + page, function (data) {
-        for (let i = 0; i < data.length; i++) {
-
-            tableHistory += "<tr><td>" + data[i].id + "</td><td>"
-                + data[i].date + "</td><td>";
-
-            for (let j = 0; j < data[i].history.length; j++) {
-                tableHistory += "Наименование: " + data[i].history[j].name + ".\nТип: " + data[i].history[j].type + ".\nСтоимость товара: " +
-                    data[i].history[j].price ;
-                //summ += data[i].history[j].price*data[i].history[j].count;
-                //tableHistory+=data[i].history[j].info+"\n"
+    getHistories(url + page, function (data) {
+        if (data.length === 0) {
+            page = 0
+            var divFor = document.createElement("div");
+            //для изменения глоб переменной
+            document.body.appendChild(divFor);
+            divFor.id = "isNull";
+            outputHistory(page, urlQuery);
+        } else {
+            for (let i = 0; i < data.length; i++) {
+                tableHistory += "<tr><td>" + data[i].id + "</td><td>"
+                    + data[i].date + "</td><td>";
+                var sum = 0;
+                for (let j = 0; j < data[i].history.length; j++) {
+                    tableHistory += "Наименование: " + data[i].history[j].name + ".\n Тип: " + data[i].history[j].type + ".\n Стоимость товара: " +
+                        data[i].history[j].price + " Кол-во: " + data[i].history[j].count;
+                    sum += data[i].history[j].price * data[i].history[j].count;
+                }
+                tableHistory += "</td><td>Сумма покупки: " + sum + "</td></tr>";
             }
-            tableHistory +="</td></tr>";
+            tableHistory += "</tbody></table>";
+            drawButtons(page);
 
+            document.getElementById('history').innerHTML = tableHistory;
         }
-        tableHistory+="</tbody></table>";
-        document.getElementById('history').innerHTML = tableHistory;
     })
 }
 
-function output() {
-    alreadyOutput("2021-03-04", 0);
+function checkPage() {
+    //если есть тег,добавленный в документ при получении пустой информации,то стр=0 и тег удаляется
+    if (document.getElementById('isNull') !== null) {
+        page = 0;
+        if (document.getElementById('isNull') !== null) {
+            document.getElementById('isNull').remove();
+        }
+    }
 }
 
-output();
+function drawButtons(numberPage) {
+    var inputButton = '<table>' + '<tr><th>';
+    if (numberPage === 0) {
+        inputButton += '<button id="next" class="next">Next</button></th>';
+    } else {
+        inputButton += '<th><button id="prev" class="prev">Prev</button></th><th>' +
+            '<button id="next" class="next">Next</button></th>';
+    }
+    inputButton += '</tr>' +
+        '</table>';
+    document.getElementById('pagination').innerHTML = inputButton;
+}
+
+function output() {
+    urlQuery = "/history?page="
+    outputHistory(page, urlQuery);//покажем всех
+}
+
+document.onclick = function (event) {
+    if (event.target.classList.contains('next')) {
+        checkPage();
+        page++;
+        console.log(page);
+        outputHistory(page, urlQuery);
+    }
+    if (event.target.classList.contains('prev')) {
+        page--;
+        outputHistory(page, urlQuery);
+    }
+}
+button.onclick = function () {
+    urlQuery = "/history?date=" + inputIn.value + "&page=";
+    outputHistory(page, urlQuery);
+}

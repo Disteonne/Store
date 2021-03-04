@@ -1,5 +1,6 @@
 package com.netcracker.store.mapper;
 
+import com.netcracker.store.dto.ProductBasketDto;
 import com.netcracker.store.dto.ProductDto;
 import com.netcracker.store.dto.ProductPostDto;
 import com.netcracker.store.dto.ProductPutDto;
@@ -30,6 +31,21 @@ public class ProductMapper {
             productDto.setSupplierId(product.getSupplier().getId());
         }
         return productDto;
+    }
+
+    public ProductBasketDto toProductBasketDto(Product product,int count){
+        if(product==null){
+            return null;
+        }
+        ProductBasketDto productBasketDto=new ProductBasketDto();
+        productBasketDto.setId(product.getId());
+        productBasketDto.setCount(count);//кол-во из корзины
+        productBasketDto.setName(product.getName());
+        productBasketDto.setType(product.getType());
+        productBasketDto.setInfo(product.getInfo());
+        productBasketDto.setPrice(product.getPrice());
+        productBasketDto.setSupplierId(toProductDto(product).getSupplierId());
+        return productBasketDto;
     }
 
     public Product toProduct(ProductPostDto productPostDto) throws TypeNotFoundException {

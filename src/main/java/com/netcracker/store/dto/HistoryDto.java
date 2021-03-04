@@ -14,5 +14,5 @@ public class HistoryDto {
 
     private Long id;
     private LocalDate date;
-    private List<ProductDto> history = new ArrayList<>();
+    private List<ProductBasketDto> history = new ArrayList<>();
 }

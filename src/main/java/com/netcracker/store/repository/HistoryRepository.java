@@ -16,4 +16,5 @@ public interface HistoryRepository extends JpaRepository<History, Long> {
 
     @Query(value = "SELECT h FROM History h WHERE h.date=:date AND h.user.id=:id")
     List<History> findAllByDate(@Param("date") LocalDate date,@Param("id") Long id,Pageable pageable);
+
 }

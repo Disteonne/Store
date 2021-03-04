@@ -2,6 +2,7 @@ package com.netcracker.store.service;
 
 import com.netcracker.store.dto.BasketDto;
 import com.netcracker.store.dto.HistoryPostDto;
+import com.netcracker.store.dto.ProductBasketDto;
 import com.netcracker.store.dto.ProductDto;
 import com.netcracker.store.entity.History;
 import com.netcracker.store.entity.Product;
@@ -36,7 +37,7 @@ public class BasketService {
 
     public boolean addHistory(List<BasketDto> basket) {
         if (basket != null) {
-            List<ProductDto> history = new ArrayList<>();
+            List<ProductBasketDto> history = new ArrayList<>();
             for (BasketDto basketObj : basket
             ) {
                 Product product = productService.getById(basketObj.getId());
@@ -46,7 +47,7 @@ public class BasketService {
                 } else {
                     product.setCount(product.getCount() - basketObj.getCount());
                 }
-                history.add(productMapper.toProductDto(product));
+                history.add(productMapper.toProductBasketDto(product, basketObj.getCount()));
                 productService.save(product);
             }
             HistoryPostDto historyPostDto = new HistoryPostDto();

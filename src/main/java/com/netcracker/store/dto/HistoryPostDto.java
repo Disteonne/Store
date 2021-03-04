@@ -15,6 +15,6 @@ public class HistoryPostDto {
 
 
     private LocalDate date;
-    private List<ProductDto> history = new ArrayList<>();
+    private List<ProductBasketDto> history = new ArrayList<>();
     private Long user_id;
 }

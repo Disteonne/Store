@@ -47,6 +47,9 @@ public class HistoryService {
 
 
     public List<History> findByUserId(LocalDate date,int page,int size,Sort sort) {
+        if(date==null){
+          return getAll(page,size,sort);
+        }
         return historyRepository.findAllByDate(date,userService.getCurrent().getId(),PageRequest.of(page,size,sort));
     }
 }
