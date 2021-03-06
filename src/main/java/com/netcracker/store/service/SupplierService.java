@@ -1,5 +1,6 @@
 package com.netcracker.store.service;
 
+import com.netcracker.store.entity.Address;
 import com.netcracker.store.entity.Supplier;
 import com.netcracker.store.repository.SupplierRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,10 @@ public class SupplierService {
 
     public Supplier getById(Long id) {
         return supplierRepository.getOne(id);
+    }
+
+    public Supplier getByAll(String name, String mail, Address address){
+        return supplierRepository.findByNameAndMailAndAddress(name,mail,address);
     }
 
     public Supplier save(Supplier supplier){

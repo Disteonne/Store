@@ -15,7 +15,7 @@ public class ProductPostDto {
     private String name;
     private String type;
     @NotNull
-    private BigDecimal price;
+    private BigDecimal price=new BigDecimal(0);
     @Min(1)
     private int count;
     @NotNull

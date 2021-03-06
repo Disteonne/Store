@@ -1,12 +1,14 @@
 package com.netcracker.store.service;
 
 import com.netcracker.store.entity.Product;
+import com.netcracker.store.entity.Supplier;
 import com.netcracker.store.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -19,11 +21,11 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Integer getCountAll(){
+    public Integer getCountAll() {
         return productRepository.countAllProduct();
     }
 
-    public Integer getCountByName(String name){
+    public Integer getCountByName(String name) {
         return productRepository.countByNameContaining(name);
     }
 
@@ -45,12 +47,20 @@ public class ProductService {
     }
 
     public List<Product> getAll(String type, String name, int page, int size, Sort sort) {
-        if (name == null && type==null) {
+        if (name == null && type == null) {
             return productRepository.findAll(PageRequest.of(page, size, sort)).getContent();
         }
-        if(type!=null && name==null){
-            return productRepository.findAllByType(type,PageRequest.of(page,size,sort));
+        if (type != null && name == null) {
+            return productRepository.findAllByType(type, PageRequest.of(page, size, sort));
         }
         return productRepository.findAllByNameContaining(name, PageRequest.of(page, size, sort));
+    }
+
+    public Product getByName(String name){
+        return productRepository.findByName(name);
+    }
+
+    public Product getByAll(String name, String type, BigDecimal price, Integer count, String info, Supplier supplier) {
+        return productRepository.findByNameAndCountAndInfoAndPriceAndTypeAndSupplier(name, count, info, price, type, supplier);
     }
 }
