@@ -32,6 +32,7 @@ public class HistoryController {
         return null;
     }
 
+    //можно выводить с поставщиком
     @GetMapping("/history")
     public List<HistoryDto> get(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                 @RequestParam(required = false, defaultValue = "0") Integer page,

@@ -1,10 +1,13 @@
 package com.netcracker.store.service;
 
+import com.netcracker.store.dto.WarehousePatchDto;
 import com.netcracker.store.dto.WarehousePostDto;
 import com.netcracker.store.entity.Address;
 import com.netcracker.store.entity.Product;
 import com.netcracker.store.entity.Supplier;
+import com.netcracker.store.exception.AddressException;
 import com.netcracker.store.exception.InputException;
+import com.netcracker.store.exception.SupplierException;
 import com.netcracker.store.exception.TypeNotFoundException;
 import com.netcracker.store.mapper.AddressMapper;
 import com.netcracker.store.mapper.SupplierMapper;
@@ -28,7 +31,6 @@ public class WarehouseService {
 
     public WarehousePostDto saveWarehouse(WarehousePostDto warehousePostDto) {
         try {
-
             //part with address
             Address address = warehouseMapper.toAddress(warehousePostDto);
             if (existsAddress(address) == null) {
@@ -47,10 +49,10 @@ public class WarehouseService {
 
             //part with product
             Product product = warehouseMapper.toProduct(warehousePostDto, supplierMapper.toSupplierDto(supplier));
-            if(existsProduct(product)==null){
+            if (existsProduct(product) == null) {
                 productService.save(product);
-            }else {
-                product=existsProduct(product);
+            } else {
+                product = existsProduct(product);
             }
 
         } catch (InputException | TypeNotFoundException exception) {
@@ -70,7 +72,13 @@ public class WarehouseService {
 
     private Product existsProduct(Product product) {
         return productService.getByName(product.getName());
-        //return productService.getByAll(product.getName(), product.getType(), product.getPrice(),
-                //product.getCount(), product.getInfo(), product.getSupplier());
+    }
+
+    public Product editNewSupplier(WarehousePatchDto warehouse) throws SupplierException, AddressException {
+        return warehouseMapper.toProductNewSupplier(warehouse);
+    }
+
+    public Product editEditSupplier(WarehousePatchDto warehouse){
+        return warehouseMapper.toProductEditSupplier(warehouse);
     }
 }

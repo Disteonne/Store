@@ -1,6 +1,8 @@
 function inputHtml() {
     var inHtml = "<table><tbody>" +
         "<tr><td>NameProduct</td><td><input class='NameProduct' type='text'></td></tr>" +
+        "<tr><td>Поля для изменений: </td><td></td></tr>" +
+        "<tr><td>NewNameProduct</td><td><input class='newNameProduct' type='text'></td></tr>" +
         "<tr><td>TypeProduct</td><td><input class='TypeProduct' type='text'></td></tr>" +
         "<tr><td>PriceProduct</td><td><input class='PriceProduct' type='text'></td></tr>" +
         "<tr><td>CountProduct</td><td><input class='CountProduct' type='text'></td></tr>" +
@@ -13,7 +15,7 @@ function inputHtml() {
         "<tr><td>BuildingSupplierAddress</td><td><input class='BuildingSupplierAddress' type='text'></td></tr>" +
         "<tr><td><button class='sendToSpring'>Send</button></td><td></td></tr>" +
         "</tbody></table>";
-    document.getElementById('inputProduct').innerHTML=inHtml;
+    document.getElementById('editProductEditSupp').innerHTML=inHtml;
 }
 
 document.onclick = function (event) {
@@ -22,8 +24,10 @@ document.onclick = function (event) {
     }
 }
 
-class Warehouse {
-    productName;
+class editProductNewSupp {
+    productOldName;
+    productNewName;
+
     type;
     price;
     count;
@@ -35,8 +39,9 @@ class Warehouse {
     city;
     street;
     building;
-    constructor(nameP, typeP, priceP, countP, infoP, nameS, mailS, countrySA, citySA, streetSA, buildingSA) {
-        this.productName = nameP;
+    constructor(nameP,newNameP, typeP, priceP, countP, infoP, nameS, mailS, countrySA, citySA, streetSA, buildingSA) {
+        this.productOldName = nameP;
+        this.productNewName=newNameP;
         this.type = typeP;
         this.price = priceP;
         this.count = countP;
@@ -52,7 +57,8 @@ class Warehouse {
 }
 
 function send() {
-    var obj = new Warehouse(document.querySelector('.NameProduct').value,
+    var obj = new editProductNewSupp(document.querySelector('.NameProduct').value,
+        document.querySelector('.newNameProduct').value,
         document.querySelector('.TypeProduct').value,
         document.querySelector('.PriceProduct').value,
         document.querySelector('.CountProduct').value,
@@ -63,8 +69,8 @@ function send() {
         document.querySelector('.CitySupplierAddress').value,
         document.querySelector('.StreetSupplierAddress').value,
         document.querySelector('.BuildingSupplierAddress').value);
-        console.log(JSON.stringify(obj));
-        sendToSpring(JSON.stringify(obj),"http://"+document.location.host+"/warehouse",'POST');
+    console.log(JSON.stringify(obj));
+    sendToSpring(JSON.stringify(obj),"http://"+document.location.host+"/warehouse/edit/editSupplier",'PATCH');
 }
 
 function sendToSpring(jsonText,url,type) {
