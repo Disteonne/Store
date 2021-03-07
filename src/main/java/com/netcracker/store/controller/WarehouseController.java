@@ -4,6 +4,7 @@ import com.netcracker.store.dto.WarehousePatchDto;
 import com.netcracker.store.dto.WarehousePostDto;
 import com.netcracker.store.entity.Product;
 import com.netcracker.store.exception.AddressException;
+import com.netcracker.store.exception.InputException;
 import com.netcracker.store.exception.SupplierException;
 import com.netcracker.store.service.WarehouseService;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +19,13 @@ public class WarehouseController {
 
     private final WarehouseService warehouseService;
 
-    @PostMapping("/warehouse/new")
-    public WarehousePostDto save(@RequestBody WarehousePostDto warehouse) {
+    @PatchMapping("/warehouse/new")
+    public Product save(@RequestBody WarehousePatchDto warehouse) {
         return warehouseService.saveWarehouse(warehouse);
     }
 
     @PatchMapping("/warehouse/edit/newSupplier")
-    public Product editNewSupplier(@RequestBody WarehousePatchDto warehouse) throws SupplierException, AddressException {
+    public Product editNewSupplier(@RequestBody WarehousePatchDto warehouse){
         return warehouseService.editNewSupplier(warehouse);
     }
 
