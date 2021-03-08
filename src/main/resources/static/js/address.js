@@ -1,4 +1,4 @@
-function getHistories(url, callback) {
+function getAddresses(url, callback) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
     xhr.responseType = 'json';
@@ -17,7 +17,7 @@ var page = 0;
 selector();
 var inputIn = document.querySelector('.input-in');
 var button = document.querySelector('button');
-var queryUrl="http://" + document.location.host + "/addresses?page=";
+var queryUrl = "http://" + document.location.host + "/addresses?page=";
 
 function selector() {
     var search = "<table><tbody>" +
@@ -31,8 +31,8 @@ function selector() {
 }
 
 function start(url) {
-    var startTable = "<table border='2' class='table'><thead><th>Страна</th><th>Город</th><th>Улица</th><th>Здание/кв</th></thead><tbody>";
-    getHistories(url + page, function (data) {
+    var startTable = "<table border='2' class='table'><thead><th>Страна</th><th>Город</th><th>Улица</th><th>Здание/кв</th><th></th></thead><tbody>";
+    getAddresses(url + page, function (data) {
         if (data.length === 0) {
             page = 0
             var divFor = document.createElement("div");
@@ -42,7 +42,8 @@ function start(url) {
             start(url);
         }
         for (let i = 0; i < data.length; i++) {
-            startTable += "<tr><td>" + data[i].country + "</td><td>" + data[i].city + "</td><td>" + data[i].street + "</td><td>" + data[i].building + "</td></tr>";
+            startTable += "<tr><td>" + data[i].country + "</td><td>" + data[i].city + "</td><td>"
+                + data[i].street + "</td><td>" + data[i].building + "</td><td><button class='change' data-id=\"" + data[i].id + "\">Изменить</button></td></tr>";
         }
         document.getElementById("address").innerHTML = startTable;
         drawButtons(page);
@@ -72,6 +73,17 @@ function drawButtons(numberPage) {
     document.getElementById('pagination').innerHTML = inputButton;
 }
 
+class AddressPutDto {
+    constructor(id, country, city, street, building) {
+        this.id = id;
+        this.country = country;
+        this.city = city;
+        this.street = street;
+        this.building=building;
+    }
+}
+
+var changeId;
 document.onclick = function (event) {
     if (event.target.classList.contains('next')) {
         checkPage();
@@ -82,66 +94,71 @@ document.onclick = function (event) {
         page--;
         start(queryUrl);
     }
-    /*
-    if(event.target.classList.contains('search')){
-        var country=document.querySelector('.country').value;
-        var city=document.querySelector('.city').value;
-        var street=document.querySelector('.street').value;
-        if(country==="" && city==="" && street===""){
-            street(queryUrl);
-        }else if(country!=="" && city==="" && street===""){
-            queryUrl="http://" + document.location.host + "/addresses?country="+country+"&page=";
-        }else if(country==="" && city!=="" && street===""){
-            queryUrl="http://" + document.location.host + "/addresses?city="+city+"&page=";
-        }else if(country==="" && city==="" && street!==""){
-            queryUrl="http://" + document.location.host + "/addresses?street="+street+"&page=";
-        }else if(country!=="" && city!=="" && street===""){
-            queryUrl="http://" + document.location.host + "/addresses?country="+country+"&city"+city+"&page=";
-        }else if(country==="" && city!=="" && street!==""){
-            queryUrl="http://" + document.location.host + "/addresses?city"+city+"&street="+street+"&page=";
-        }else if(country!=="" && city==="" && street!==""){
-            queryUrl="http://" + document.location.host + "/addresses?country="+country+"&street"+street+"&page=";
-        }
-        else if(country!=="" && city!=="" && street!=="") {
-            queryUrl = "http://" + document.location.host + "/addresses?country=" + country + "&city" + city + "&street=" + street + "&page=";
-        }
-        start(queryUrl);
-
-     */
-
-    //}
+    if (event.target.classList.contains('change')) {
+        changeId = event.target.dataset.id;
+        console.log(changeId);
+        var changes = "<table><tbody>" +
+            "<tr><td>Country</td><td><input class='changeCountry' type='text'></td></tr>" +
+            "<tr><td>City</td><td><input class='changeCity' type='text'></td></tr>" +
+            "<tr><td>Street</td><td><input class='changeStreet' type='text'></td></tr>" +
+            "<tr><td>Building</td><td><input class='changeBuilding' type='text'></td></tr>" +
+            "<tr><td><button class='changeAddress'>Change</button></td><td></td></tr>" +
+            "</tbody>";
+        document.getElementById("changeAdd").innerHTML = changes;
+    }
+    if (event.target.classList.contains('changeAddress')) {
+        new AddressPutDto(changeId, document.querySelector('.changeCountry').value, document.querySelector('.changeCity').value,
+            document.querySelector('.changeStreet').value, document.querySelector('.changeBuilding').value,"");
+        sendToSpring(JSON.stringify(new AddressPutDto(changeId, document.querySelector('.changeCountry').value, document.querySelector('.changeCity').value,
+            document.querySelector('.changeStreet').value, document.querySelector('.changeBuilding').value)),"/address/"+changeId);
+        alert("Адрес изменен");
+        window.location.reload();
+    }
 }
 
-button.onclick=function (){
-    var country=document.querySelector('.country').value;
-    var city=document.querySelector('.city').value;
-    var street=document.querySelector('.street').value;
+button.onclick = function () {
+    var country = document.querySelector('.country').value;
+    var city = document.querySelector('.city').value;
+    var street = document.querySelector('.street').value;
     console.log(country);
     console.log(city);
     console.log(street);
-    if(country==="" && city==="" && street===""){
+    if (country === "" && city === "" && street === "") {
         //street(queryUrl);
-        queryUrl="http://" + document.location.host + "/addresses?page=";
-    }else if(country!=="" && city==="" && street===""){
-        queryUrl="http://" + document.location.host + "/addresses?country="+country+"&page=";
-    }else if(country==="" && city!=="" && street===""){
-        queryUrl="http://" + document.location.host + "/addresses?city="+city+"&page=";
-    }else if(country==="" && city==="" && street!==""){
-        queryUrl="http://" + document.location.host + "/addresses?street="+street+"&page=";
-    }else if(country!=="" && city!=="" && street===""){
-        queryUrl="http://" + document.location.host + "/addresses?country="+country+"&city="+city+"&page=";
-    }else if(country==="" && city!=="" && street!==""){
-        queryUrl="http://" + document.location.host + "/addresses?city="+city+"&street="+street+"&page=";
-    }else if(country!=="" && city==="" && street!==""){
-        queryUrl="http://" + document.location.host + "/addresses?country="+country+"&street="+street+"&page=";
-    }
-    else if(country!=="" && city!=="" && street!=="") {
+        queryUrl = "http://" + document.location.host + "/addresses?page=";
+    } else if (country !== "" && city === "" && street === "") {
+        queryUrl = "http://" + document.location.host + "/addresses?country=" + country + "&page=";
+    } else if (country === "" && city !== "" && street === "") {
+        queryUrl = "http://" + document.location.host + "/addresses?city=" + city + "&page=";
+    } else if (country === "" && city === "" && street !== "") {
+        queryUrl = "http://" + document.location.host + "/addresses?street=" + street + "&page=";
+    } else if (country !== "" && city !== "" && street === "") {
+        queryUrl = "http://" + document.location.host + "/addresses?country=" + country + "&city=" + city + "&page=";
+    } else if (country === "" && city !== "" && street !== "") {
+        queryUrl = "http://" + document.location.host + "/addresses?city=" + city + "&street=" + street + "&page=";
+    } else if (country !== "" && city === "" && street !== "") {
+        queryUrl = "http://" + document.location.host + "/addresses?country=" + country + "&street=" + street + "&page=";
+    } else if (country !== "" && city !== "" && street !== "") {
         queryUrl = "http://" + document.location.host + "/addresses?country=" + country + "&city=" + city + "&street=" + street + "&page=";
     }
     start(queryUrl);
 }
+
 function first() {
     start("http://" + document.location.host + "/addresses?page=");//стартуем с изначальным url
+}
+
+function sendToSpring(jsonText, url) {
+
+    $.ajax({
+        type: "PATCH",
+        contentType: 'application/json; charset=utf-8',
+        url: url,
+        data: jsonText, // Note it is important
+        success: function (result) {
+            // do what ever you want with data
+        }
+    });
 }
 
 first();

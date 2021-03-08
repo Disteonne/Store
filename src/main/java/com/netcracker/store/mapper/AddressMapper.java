@@ -79,16 +79,16 @@ public class AddressMapper {
         if(addressDto==null){
             return address;
         }
-        if(addressDto.getCountry()!=null){
+        if(!addressDto.getCountry().equals("")){
             address.setCountry(addressDto.getCountry());
         }
-        if(addressDto.getCity()!=null){
+        if(!addressDto.getCity().equals("")){
             address.setCity(addressDto.getCity());
         }
-        if(addressDto.getStreet()!=null){
+        if(!addressDto.getStreet().equals("")){
             address.setStreet(addressDto.getStreet());
         }
-        if(addressDto.getBuilding()!=null){
+        if(!addressDto.getBuilding().equals("")){
             address.setBuilding(addressDto.getBuilding());
         }
         return address;

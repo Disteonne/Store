@@ -1,6 +1,7 @@
 package com.netcracker.store.controller;
 
 import com.netcracker.store.dto.SupplierDto;
+import com.netcracker.store.dto.SupplierGetDto;
 import com.netcracker.store.dto.SupplierPostDto;
 import com.netcracker.store.dto.SupplierPutDto;
 import com.netcracker.store.entity.Supplier;
@@ -23,14 +24,14 @@ public class SupplierController {
     private final SupplierMapper supplierMapper;
 
     @GetMapping("/suppliers") //
-    public List<SupplierDto> getAll(@RequestParam(required = false) String nameLike,
-                                    @RequestParam(required = false, defaultValue = "0") Integer page,
-                                    @RequestParam(required = false, defaultValue = "10") Integer size,
-                                    @RequestParam(required = false, defaultValue = "name") String sortName,
-                                    @RequestParam(required = false, defaultValue = "asc") String orderBy) {
+    public List<SupplierGetDto> getAll(@RequestParam(required = false) String nameLike,
+                                       @RequestParam(required = false, defaultValue = "0") Integer page,
+                                       @RequestParam(required = false, defaultValue = "10") Integer size,
+                                       @RequestParam(required = false, defaultValue = "name") String sortName,
+                                       @RequestParam(required = false, defaultValue = "asc") String orderBy) {
 
         return supplierMapper
-                .toSupplierDtoList(supplierService
+                .toSupplierGetDtoList(supplierService
                         .getAll(nameLike, page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)));
     }
 

@@ -10,15 +10,15 @@ import javax.validation.constraints.Pattern;
 @Setter
 public class AddressPutDto {
 
-    @NotNull
+    //@NotNull
     private Long id;
-    @NotNull
+    //@NotNull
     @Pattern(regexp = "^[A-ZА-Я][a-zа-я-]+")
     private String country;
-    @NotNull
+    //@NotNull
     @Pattern(regexp = "^[A-ZА-Я][a-zа-я-]+")
     private String city;
-    @NotNull
+    //@NotNull
     @Pattern(regexp = "^[A-ZА-Я][a-zа-я-]+")
     private String street;
     private String building;

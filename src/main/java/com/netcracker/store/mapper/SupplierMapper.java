@@ -1,6 +1,7 @@
 package com.netcracker.store.mapper;
 
 import com.netcracker.store.dto.SupplierDto;
+import com.netcracker.store.dto.SupplierGetDto;
 import com.netcracker.store.dto.SupplierPostDto;
 import com.netcracker.store.dto.SupplierPutDto;
 import com.netcracker.store.entity.Address;
@@ -79,5 +80,29 @@ public class SupplierMapper {
             supplier.setAddress(address);
         }
         return supplier;
+    }
+
+    public SupplierGetDto toSupplierGetDto(Supplier supplier){
+        if(supplier==null){
+            return null;
+        }
+        SupplierGetDto supplierGetDto=new SupplierGetDto();
+        supplierGetDto.setId(supplierGetDto.getId());
+        supplierGetDto.setName(supplier.getName());
+        supplierGetDto.setMail(supplier.getMail());
+        supplierGetDto.setCountry(supplier.getAddress().getCountry());
+        supplierGetDto.setCity(supplier.getAddress().getCity());
+        supplierGetDto.setStreet(supplier.getAddress().getStreet());
+        supplierGetDto.setBuilding(supplier.getAddress().getBuilding());
+        return supplierGetDto;
+    }
+
+    public List<SupplierGetDto> toSupplierGetDtoList(List<Supplier> suppliers){
+        List<SupplierGetDto> result=new ArrayList<>();
+        if(suppliers==null){
+            return result;
+        }
+        suppliers.forEach(supplier -> result.add(toSupplierGetDto(supplier)));
+        return result;
     }
 }
