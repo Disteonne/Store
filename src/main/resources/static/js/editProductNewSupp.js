@@ -71,6 +71,7 @@ function send() {
         document.querySelector('.BuildingSupplierAddress').value);
     console.log(JSON.stringify(obj));
     sendToSpring(JSON.stringify(obj),"http://"+document.location.host+"/warehouse/edit/newSupplier",'PATCH');
+    window.location.replace('http://' + document.location.host + '//withNewSupplier.html');
 }
 
 function sendToSpring(jsonText,url,type) {

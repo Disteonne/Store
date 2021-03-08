@@ -21,19 +21,20 @@ public class AddressController {
 
     private final AddressService addressService;
     private final AddressMapper addressMapper;
-
+    //пагинация дял селектора
     @GetMapping("/addresses")
     public List<AddressDto> getAll(@RequestParam(required = false) String country,
                                    @RequestParam(required = false) String city,
                                    @RequestParam(required = false) String street,
                                    @RequestParam(required = false, defaultValue = "0") Integer page,
                                    @RequestParam(required = false, defaultValue = "10") Integer size,
-                                   @RequestParam(required = false, defaultValue = "country") String sortName,
+                                   @RequestParam(required = false, defaultValue = "street") String sortName,
                                    @RequestParam(required = false, defaultValue = "asc") String orderBy) {
         return addressMapper
                 .toAddressDtoList(addressService
                         .getAll(country, city, street, page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)));
     }
+
 
     @GetMapping("/address/{id}")
     public AddressDto getById(@PathVariable(value = "id") Long id) {

@@ -1,5 +1,6 @@
 package com.netcracker.store.service;
 
+import com.netcracker.store.dto.WarehouseDeleteDto;
 import com.netcracker.store.dto.WarehousePatchDto;
 import com.netcracker.store.dto.WarehousePostDto;
 import com.netcracker.store.entity.Address;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class WarehouseService {
 
     private final WarehouseMapper warehouseMapper;
+    private final ProductService productService;
 
     public Product saveWarehouse(WarehousePatchDto warehousePostDto) {
         try {
@@ -27,6 +29,7 @@ public class WarehouseService {
             //Supplier supplier = warehouseMapper.toSupplier(warehousePostDto);
             //part with product
             Product product = warehouseMapper.toProduct(warehousePostDto);
+            productService.save(product);
             return product;
         } catch (InputException | AddressException | ProductException |SupplierException exception ) {
             exception.printStackTrace();
@@ -46,5 +49,9 @@ public class WarehouseService {
 
     public Product editEditSupplier(WarehousePatchDto warehouse){
         return warehouseMapper.toProductEditSupplier(warehouse);
+    }
+
+    public boolean delete(WarehouseDeleteDto warehouse){
+        return productService.deleteById(productService.getByName(warehouse.getName()).getId());
     }
 }

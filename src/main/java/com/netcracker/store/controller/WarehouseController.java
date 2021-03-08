@@ -1,17 +1,13 @@
 package com.netcracker.store.controller;
 
+import com.netcracker.store.dto.WarehouseDeleteDto;
 import com.netcracker.store.dto.WarehousePatchDto;
-import com.netcracker.store.dto.WarehousePostDto;
 import com.netcracker.store.entity.Product;
-import com.netcracker.store.exception.AddressException;
-import com.netcracker.store.exception.InputException;
-import com.netcracker.store.exception.SupplierException;
 import com.netcracker.store.service.WarehouseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,12 +21,17 @@ public class WarehouseController {
     }
 
     @PatchMapping("/warehouse/edit/newSupplier")
-    public Product editNewSupplier(@RequestBody WarehousePatchDto warehouse){
+    public Product editNewSupplier(@RequestBody WarehousePatchDto warehouse) {
         return warehouseService.editNewSupplier(warehouse);
     }
 
     @PatchMapping("/warehouse/edit/editSupplier")
-    public Product editEditSupplier(@RequestBody WarehousePatchDto warehouse){
+    public Product editEditSupplier(@RequestBody WarehousePatchDto warehouse) {
         return warehouseService.editEditSupplier(warehouse);
+    }
+
+    @DeleteMapping("/warehouse/delete")
+    public ResponseEntity<Void> delete(@RequestBody WarehouseDeleteDto warehouse) {
+        return warehouseService.delete(warehouse) ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 }

@@ -13,7 +13,7 @@ function inputHtml() {
         "<tr><td>BuildingSupplierAddress</td><td><input class='BuildingSupplierAddress' type='text'></td></tr>" +
         "<tr><td><button class='sendToSpring'>Send</button></td><td></td></tr>" +
         "</tbody></table>";
-    document.getElementById('inputProduct').innerHTML=inHtml;
+    document.getElementById('inputProduct').innerHTML = inHtml;
 }
 
 document.onclick = function (event) {
@@ -36,9 +36,10 @@ class NewProduct {
     city;
     street;
     building;
-    constructor(nameP,nameN, typeP, priceP, countP, infoP, nameS, mailS, countrySA, citySA, streetSA, buildingSA) {
+
+    constructor(nameP, nameN, typeP, priceP, countP, infoP, nameS, mailS, countrySA, citySA, streetSA, buildingSA) {
         this.productOldName = nameP;
-        this.productNewName=nameN;
+        this.productNewName = nameN;
         this.type = typeP;
         this.price = priceP;
         this.count = countP;
@@ -54,7 +55,7 @@ class NewProduct {
 }
 
 function send() {
-    var obj = new NewProduct(document.querySelector('.NameProduct').value,"",
+    var obj = new NewProduct(document.querySelector('.NameProduct').value, "",
         document.querySelector('.TypeProduct').value,
         document.querySelector('.PriceProduct').value,
         document.querySelector('.CountProduct').value,
@@ -65,11 +66,12 @@ function send() {
         document.querySelector('.CitySupplierAddress').value,
         document.querySelector('.StreetSupplierAddress').value,
         document.querySelector('.BuildingSupplierAddress').value);
-        console.log(JSON.stringify(obj));
-        sendToSpring(JSON.stringify(obj),"http://"+document.location.host+"/warehouse/new",'PATCH');
+    console.log(JSON.stringify(obj));
+    sendToSpring(JSON.stringify(obj), "http://" + document.location.host + "/warehouse/new", 'PATCH');
+    window.location.replace('http://' + document.location.host + '/newProduct.html');
 }
 
-function sendToSpring(jsonText,url,type) {
+function sendToSpring(jsonText, url, type) {
 
     $.ajax({
         type: type,
