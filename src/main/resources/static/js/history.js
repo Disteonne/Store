@@ -16,12 +16,9 @@ function getHistories(url, callback) {
 
 var page = 0;
 var urlQuery = "";
-selector();
-var inputIn = document.querySelector('.input-in');
-var button = document.querySelector('button');
 output();
 
-function selector() {
+function getSelector() {
     var inp = "<table>" +
         "<tr>" +
         "<td>" +
@@ -80,12 +77,12 @@ function checkPage() {
 }
 
 function drawButtons(numberPage) {
-    var inputButton = '<table>' + '<tr><th>';
+    var inputButton = '<table align="center">' + '<tr><th>';
     if (numberPage === 0) {
-        inputButton += '<button id="next" class="next">Next</button></th>';
+        inputButton += '<button id="next" class="pagination_next">Next</button></th>';
     } else {
-        inputButton += '<th><button id="prev" class="prev">Prev</button></th><th>' +
-            '<button id="next" class="next">Next</button></th>';
+        inputButton += '<th><button id="prev" class="pagination_prev">Prev</button></th><th>' +
+            '<button id="next" class="pagination_next">Next</button></th>';
     }
     inputButton += '</tr>' +
         '</table>';
@@ -98,18 +95,27 @@ function output() {
 }
 
 document.onclick = function (event) {
-    if (event.target.classList.contains('next')) {
+    if (event.target.classList.contains('pagination_next')) {
         checkPage();
         page++;
         console.log(page);
         outputHistory(page, urlQuery);
     }
-    if (event.target.classList.contains('prev')) {
+    if (event.target.classList.contains('pagination_prev')) {
         page--;
         outputHistory(page, urlQuery);
     }
-}
-button.onclick = function () {
-    urlQuery = "/history?date=" + inputIn.value + "&page=";
-    outputHistory(page, urlQuery);
+    if(event.target.classList.contains('headers')){
+        getSelector();
+    }
+    if(event.target.classList.contains('input-selector-one')){
+        urlQuery = "/history?date=" + document.querySelector('.input-in').value + "&page=";
+        outputHistory(page, urlQuery);
+    }
+    if(event.target.classList.contains('logout')){
+        window.location.replace('http://'+document.location.host+"/logout");
+    }
+    if(event.target.classList.contains('mainMenu')){
+        window.location.replace("http://"+document.location.host+"/mainMenu.html");
+    }
 }

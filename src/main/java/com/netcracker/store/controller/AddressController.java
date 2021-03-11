@@ -6,7 +6,7 @@ import com.netcracker.store.dto.AddressPutDto;
 import com.netcracker.store.entity.Address;
 import com.netcracker.store.mapper.AddressMapper;
 import com.netcracker.store.service.AddressService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +16,13 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 public class AddressController {
 
-    private final AddressService addressService;
-    private final AddressMapper addressMapper;
+    @Autowired
+    private AddressService addressService;
+    @Autowired
+    private AddressMapper addressMapper;
+
     //пагинация дял селектора
     @GetMapping("/addresses")
     public List<AddressDto> getAll(@RequestParam(required = false) String country,

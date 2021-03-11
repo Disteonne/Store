@@ -4,16 +4,33 @@
     <meta charset="UTF-8">
     <title>History</title>
     <style>
-        @import "css/history.css";
+        @import "css/pagination_button.css";
+        @import "css/style.css";
     </style>
 </head>
 <body>
-<h1>I`m from history</h1>
+<header>
+    <button class="headers" type="button" onclick="getSelector">Поиск</button>
+</header>
+<br>
 <div id="inputText"></div>
 <div id="history"></div>
 <div id="pagination"></div>
 
 <div id="isNull"></div>
+
+<div align="center">
+    <table>
+        <tr>
+            <td>
+                <button class="logout" type="button">Logout</button>
+            </td>
+            <td>
+                <button class="mainMenu" type="button">Главное меню</button>
+            </td>
+        </tr>
+    </table>
+</div>
 <script src="/js/history.js"></script>
 </body>
 </html>

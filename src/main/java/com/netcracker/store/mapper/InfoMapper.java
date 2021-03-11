@@ -7,17 +7,20 @@ import com.netcracker.store.entity.Address;
 import com.netcracker.store.entity.User;
 import com.netcracker.store.service.AddressService;
 import com.netcracker.store.service.UserService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class InfoMapper {
 
-    private final UserService userService;
-    private final AddressService addressService;
-    private final AddressMapper addressMapper;
-    private final UserMapper userMapper;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private AddressService addressService;
+    @Autowired
+    private AddressMapper addressMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     public InfoDto toInfoDto(User user, Address address) {
         InfoDto infoDto = new InfoDto();

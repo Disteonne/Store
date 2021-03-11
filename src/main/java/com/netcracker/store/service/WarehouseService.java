@@ -11,16 +11,18 @@ import com.netcracker.store.mapper.AddressMapper;
 import com.netcracker.store.mapper.SupplierMapper;
 import com.netcracker.store.mapper.WarehouseMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
 @Component
-@RequiredArgsConstructor
 public class WarehouseService {
 
-    private final WarehouseMapper warehouseMapper;
-    private final ProductService productService;
+    @Autowired
+    private WarehouseMapper warehouseMapper;
+    @Autowired
+    private ProductService productService;
 
     public Product saveWarehouse(WarehousePatchDto warehousePostDto) {
         try {

@@ -5,16 +5,17 @@ import com.netcracker.store.dto.HistoryPostDto;
 import com.netcracker.store.entity.History;
 import com.netcracker.store.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@RequiredArgsConstructor
 public class HistoryMapper {
 
-    private final ProductMapper productMapper;
+    @Autowired
+    private ProductMapper productMapper;
 
     public HistoryDto toHistoryDto(History history) {
         if (history == null) {

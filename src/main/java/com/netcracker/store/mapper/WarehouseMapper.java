@@ -9,15 +9,17 @@ import com.netcracker.store.service.AddressService;
 import com.netcracker.store.service.ProductService;
 import com.netcracker.store.service.SupplierService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@AllArgsConstructor
 @Component
 public class WarehouseMapper {
 
-
+    @Autowired
     private ProductService productService;
+    @Autowired
     private SupplierService supplierService;
+    @Autowired
     private AddressService addressService;
 
     public Address toAddress(WarehousePatchDto warehouse) throws InputException, AddressException {

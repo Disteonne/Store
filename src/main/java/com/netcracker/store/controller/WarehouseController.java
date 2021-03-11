@@ -5,15 +5,16 @@ import com.netcracker.store.dto.WarehousePatchDto;
 import com.netcracker.store.entity.Product;
 import com.netcracker.store.service.WarehouseService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequiredArgsConstructor
 public class WarehouseController {
 
-    private final WarehouseService warehouseService;
+    @Autowired
+    private WarehouseService warehouseService;
 
     @PatchMapping("/warehouse/new")
     public Product save(@RequestBody WarehousePatchDto warehouse) {

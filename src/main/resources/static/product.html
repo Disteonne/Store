@@ -6,31 +6,36 @@
     <!-- <script src="/js/products.js"></script>-->
     <style>
         @import "css/products.css";
+        @import "css/pagination_button.css";
+        @import "css/style.css";
     </style>
     <script type="text/javascript" src=" https://code.jquery.com/jquery-1.11.2.js "></script>
 </head>
 <body>
 
+<header>
+    <button class="headers" type="button" onclick="getSelector">Поиск</button>
+</header>
 <div id="inputText"></div>
 <div id="all_product"></div>
 
 <div id="pagination">
-  <!--  <ul class="pagination">
-        <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1">Страница</a>
-        </li>
-        <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1">1</a>
-        </li>
-
-    </ul>
-    -->
 </div>
 
 <div id="basket">
-
 </div>
-
+<div align="center">
+    <table>
+        <tr>
+            <td>
+                <button class="logout" type="button">Logout</button>
+            </td>
+            <td>
+                <button class="mainMenu" type="button">Главное меню</button>
+            </td>
+        </tr>
+    </table>
+</div>
 <script src="/js/products.js">
 
 </script>

@@ -14,23 +14,18 @@ function getSuppliers(url, callback) {
 };
 var page=0;
 
-var inp = "<table>" +
-    "<tr>" +
-    "<td>" +
-    "<input id='input' class='input-in' type=\"text\" style='background-color: #fafafa;" +
-    "  border:0;" +
-    "  box-shadow:0 0 4px rgba(0,0,0,0.3);" +
-    "  transition: .3s box-shadow;" +
-    "  width: 600px ; height: 35px '" + "></td>" +
-    "<td><button class='input-selector-one'>Поиск</button></td></tr></table>";
+function selector() {
 
-document.getElementById('inputText').innerHTML = inp;
-var inputIn = document.querySelector('.input-in');
-var button = document.querySelector('button');
-
-button.onclick=function() {
-    queryUrl="http://"+document.location.host+"/suppliers?nameLike="+inputIn.value+"&page=";
-    output(queryUrl);
+    var inp = "<table>" +
+        "<tr>" +
+        "<td>" +
+        "<input id='input' class='input-in' type=\"text\" style='background-color: #fafafa;" +
+        "  border:0;" +
+        "  box-shadow:0 0 4px rgba(0,0,0,0.3);" +
+        "  transition: .3s box-shadow;" +
+        "  width: 600px ; height: 35px '" + "></td>" +
+        "<td><button class='input-selector-one'>Поиск</button></td></tr></table>";
+    document.getElementById('inputText').innerHTML = inp;
 }
 
 var queryUrl="http://"+document.location.host+"/suppliers?page="
@@ -68,12 +63,12 @@ function checkPage() {
 }
 
 function drawButtons(numberPage) {
-    var inputButton = '<table>' + '<tr><th>';
+    var inputButton = '<table align="center">' + '<tr><th>';
     if (numberPage === 0) {
-        inputButton += '<button id="next" class="next">Next</button></th>';
+        inputButton += '<button id="next" class="pagination_next">Next</button></th>';
     } else {
-        inputButton += '<th><button id="prev" class="prev">Prev</button></th><th>' +
-            '<button id="next" class="next">Next</button></th>';
+        inputButton += '<th><button id="prev" class="pagination_prev">Prev</button></th><th>' +
+            '<button id="next" class="pagination_next">Next</button></th>';
     }
     inputButton += '</tr>' +
         '</table>';
@@ -81,14 +76,27 @@ function drawButtons(numberPage) {
 }
 
 document.onclick = function (event) {
-    if (event.target.classList.contains('next')) {
+    if (event.target.classList.contains('pagination_next')) {
         checkPage();
         page++;
         output(queryUrl);
     }
-    if (event.target.classList.contains('prev')) {
+    if (event.target.classList.contains('pagination_prev')) {
         page--;
         output(queryUrl);
+    }
+    if (event.target.classList.contains('headers')){
+        selector();
+    }
+    if(event.target.classList.contains('input-selector-one')){
+        queryUrl="http://"+document.location.host+"/suppliers?nameLike="+document.querySelector('.input-in').value+"&page=";
+        output(queryUrl);
+    }
+    if (event.target.classList.contains('logout')){
+        window.location.replace('http://'+document.location.host+"/logout");
+    }
+    if (event.target.classList.contains('mainMenu')){
+        window.location.replace("http://"+document.location.host+"/mainMenu.html");
     }
 }
 output(queryUrl);

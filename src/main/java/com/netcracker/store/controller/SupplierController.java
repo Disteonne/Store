@@ -7,7 +7,7 @@ import com.netcracker.store.dto.SupplierPutDto;
 import com.netcracker.store.entity.Supplier;
 import com.netcracker.store.mapper.SupplierMapper;
 import com.netcracker.store.service.SupplierService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +17,12 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 public class SupplierController {
 
-    private final SupplierService supplierService;
-    private final SupplierMapper supplierMapper;
+    @Autowired
+    private SupplierService supplierService;
+    @Autowired
+    private SupplierMapper supplierMapper;
 
     @GetMapping("/suppliers") //
     public List<SupplierGetDto> getAll(@RequestParam(required = false) String nameLike,

@@ -1,14 +1,20 @@
 function inputHtml() {
-    var inHtml = "<table><tbody>" +
-        "<tr><td>NameProduct</td><td><input class='NameProduct' type='text'></td></tr>" +
-        "<tr><td><button class='sendToSpring'>Send</button></td><td></td></tr>" +
+    var inHtml = "<table class='table'><tbody>" +
+        "<tr><td>Наименование товара</td><td><input class='NameProduct' type='text'></td></tr>" +
+        "<tr><td><button class='input-selector-one'>Send</button></td><td></td></tr>" +
         "</tbody></table>";
     document.getElementById('deleteProduct').innerHTML=inHtml;
 }
 
 document.onclick = function (event) {
-    if (event.target.classList.contains('sendToSpring')) {
+    if (event.target.classList.contains('input-selector-one')) {
         send();
+    }
+    if(event.target.classList.contains('logout')){
+        window.location.replace('http://'+document.location.host+"/logout");
+    }
+    if(event.target.classList.contains('mainMenu')){
+        window.location.replace("http://"+document.location.host+"/mainMenu.html");
     }
 }
 

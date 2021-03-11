@@ -1,17 +1,17 @@
 function inputHtml() {
-    var inHtml = "<table><tbody>" +
-        "<tr><td>NameProduct</td><td><input class='NameProduct' type='text'></td></tr>" +
-        "<tr><td>TypeProduct</td><td><input class='TypeProduct' type='text'></td></tr>" +
-        "<tr><td>PriceProduct</td><td><input class='PriceProduct' type='text'></td></tr>" +
-        "<tr><td>CountProduct</td><td><input class='CountProduct' type='text'></td></tr>" +
-        "<tr><td>InfoProduct</td><td><input class='InfoProduct' type='text'></td></tr>" +
-        "<tr><td>NameSupplier</td><td><input class='NameSupplier' type='text'></td></tr>" +
-        "<tr><td>MailSupplier</td><td><input class='MailSupplier' type='text'></td></tr>" +
-        "<tr><td>CountrySupplierAddress</td><td><input class='CountrySupplierAddress' type='text'></td></tr>" +
-        "<tr><td>CitySupplierAddress</td><td><input class='CitySupplierAddress' type='text'></td></tr>" +
-        "<tr><td>StreetSupplierAddress</td><td><input class='StreetSupplierAddress' type='text'></td></tr>" +
-        "<tr><td>BuildingSupplierAddress</td><td><input class='BuildingSupplierAddress' type='text'></td></tr>" +
-        "<tr><td><button class='sendToSpring'>Send</button></td><td></td></tr>" +
+    var inHtml = "<table class='table'><tbody>" +
+        "<tr><td>Наименование товара</td><td><input class='NameProduct' type='text'></td></tr>" +
+        "<tr><td>Тип товара</td><td><input class='TypeProduct' type='text'></td></tr>" +
+        "<tr><td>Стоимость, Р</td><td><input class='PriceProduct' type='text'></td></tr>" +
+        "<tr><td>Кол-во</td><td><input class='CountProduct' type='text'></td></tr>" +
+        "<tr><td>Описание</td><td><input class='InfoProduct' type='text'></td></tr>" +
+        "<tr><td>Наименование поставщика</td><td><input class='NameSupplier' type='text'></td></tr>" +
+        "<tr><td>Почта поставщика</td><td><input class='MailSupplier' type='text'></td></tr>" +
+        "<tr><td>Страна поставщика</td><td><input class='CountrySupplierAddress' type='text'></td></tr>" +
+        "<tr><td>Город поставщика</td><td><input class='CitySupplierAddress' type='text'></td></tr>" +
+        "<tr><td>Улица поставщика</td><td><input class='StreetSupplierAddress' type='text'></td></tr>" +
+        "<tr><td>Здание/корпус/офис</td><td><input class='BuildingSupplierAddress' type='text'></td></tr>" +
+        "<tr><td><button class='input-selector-one'>Send</button></td><td></td></tr>" +
         "</tbody></table>";
     document.getElementById('inputProduct').innerHTML = inHtml;
 }
@@ -19,6 +19,12 @@ function inputHtml() {
 document.onclick = function (event) {
     if (event.target.classList.contains('sendToSpring')) {
         send();
+    }
+    if(event.target.classList.contains('logout')){
+        window.location.replace('http://'+document.location.host+"/logout");
+    }
+    if(event.target.classList.contains('mainMenu')){
+        window.location.replace("http://"+document.location.host+"/mainMenu.html");
     }
 }
 

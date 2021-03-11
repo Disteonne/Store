@@ -14,13 +14,13 @@ function getAddresses(url, callback) {
 };
 
 var page = 0;
-selector();
+//selector();
 var inputIn = document.querySelector('.input-in');
 var button = document.querySelector('button');
 var queryUrl = "http://" + document.location.host + "/addresses?page=";
 
 function selector() {
-    var search = "<table><tbody>" +
+    var search = "<br><table><tbody>" +
         "<tr><td>Страна</td><td><input class='country' type='text'></td></tr>" +
         "<tr><td>Город</td><td><input class='city' type='text'></td></tr>" +
         "<tr><td>Улица</td><td><input class='street' type='text'></td></tr>" +
@@ -61,12 +61,12 @@ function checkPage() {
 }
 
 function drawButtons(numberPage) {
-    var inputButton = '<table>' + '<tr><th>';
+    var inputButton = '<table align="center">' + '<tr><th>';
     if (numberPage === 0) {
-        inputButton += '<button id="next" class="next">Next</button></th>';
+        inputButton += '<button id="next" class="pagination_next">Next</button></th>';
     } else {
-        inputButton += '<th><button id="prev" class="prev">Prev</button></th><th>' +
-            '<button id="next" class="next">Next</button></th>';
+        inputButton += '<th><button id="prev" class="pagination_prev">Prev</button></th><th>' +
+            '<button id="next" class="pagination_next">Next</button></th>';
     }
     inputButton += '</tr>' +
         '</table>';
@@ -79,18 +79,21 @@ class AddressPutDto {
         this.country = country;
         this.city = city;
         this.street = street;
-        this.building=building;
+        this.building = building;
     }
 }
 
 var changeId;
 document.onclick = function (event) {
-    if (event.target.classList.contains('next')) {
+    if (event.target.classList.contains('headers')) {
+        selector();
+    }
+    if (event.target.classList.contains('pagination_next')) {
         checkPage();
         page++;
         start(queryUrl);
     }
-    if (event.target.classList.contains('prev')) {
+    if (event.target.classList.contains('pagination_prev')) {
         page--;
         start(queryUrl);
     }
@@ -108,42 +111,46 @@ document.onclick = function (event) {
     }
     if (event.target.classList.contains('changeAddress')) {
         new AddressPutDto(changeId, document.querySelector('.changeCountry').value, document.querySelector('.changeCity').value,
-            document.querySelector('.changeStreet').value, document.querySelector('.changeBuilding').value,"");
+            document.querySelector('.changeStreet').value, document.querySelector('.changeBuilding').value, "");
         sendToSpring(JSON.stringify(new AddressPutDto(changeId, document.querySelector('.changeCountry').value, document.querySelector('.changeCity').value,
-            document.querySelector('.changeStreet').value, document.querySelector('.changeBuilding').value)),"/address/"+changeId);
+            document.querySelector('.changeStreet').value, document.querySelector('.changeBuilding').value)), "/address/" + changeId);
         alert("Адрес изменен");
         window.location.reload();
     }
-}
-
-button.onclick = function () {
-    var country = document.querySelector('.country').value;
-    var city = document.querySelector('.city').value;
-    var street = document.querySelector('.street').value;
-    console.log(country);
-    console.log(city);
-    console.log(street);
-    if (country === "" && city === "" && street === "") {
-        //street(queryUrl);
-        queryUrl = "http://" + document.location.host + "/addresses?page=";
-    } else if (country !== "" && city === "" && street === "") {
-        queryUrl = "http://" + document.location.host + "/addresses?country=" + country + "&page=";
-    } else if (country === "" && city !== "" && street === "") {
-        queryUrl = "http://" + document.location.host + "/addresses?city=" + city + "&page=";
-    } else if (country === "" && city === "" && street !== "") {
-        queryUrl = "http://" + document.location.host + "/addresses?street=" + street + "&page=";
-    } else if (country !== "" && city !== "" && street === "") {
-        queryUrl = "http://" + document.location.host + "/addresses?country=" + country + "&city=" + city + "&page=";
-    } else if (country === "" && city !== "" && street !== "") {
-        queryUrl = "http://" + document.location.host + "/addresses?city=" + city + "&street=" + street + "&page=";
-    } else if (country !== "" && city === "" && street !== "") {
-        queryUrl = "http://" + document.location.host + "/addresses?country=" + country + "&street=" + street + "&page=";
-    } else if (country !== "" && city !== "" && street !== "") {
-        queryUrl = "http://" + document.location.host + "/addresses?country=" + country + "&city=" + city + "&street=" + street + "&page=";
+    if (event.target.classList.contains('search')){
+        var country = document.querySelector('.country').value;
+        var city = document.querySelector('.city').value;
+        var street = document.querySelector('.street').value;
+        console.log(country);
+        console.log(city);
+        console.log(street);
+        if (country === "" && city === "" && street === "") {
+            //street(queryUrl);
+            queryUrl = "http://" + document.location.host + "/addresses?page=";
+        } else if (country !== "" && city === "" && street === "") {
+            queryUrl = "http://" + document.location.host + "/addresses?country=" + country + "&page=";
+        } else if (country === "" && city !== "" && street === "") {
+            queryUrl = "http://" + document.location.host + "/addresses?city=" + city + "&page=";
+        } else if (country === "" && city === "" && street !== "") {
+            queryUrl = "http://" + document.location.host + "/addresses?street=" + street + "&page=";
+        } else if (country !== "" && city !== "" && street === "") {
+            queryUrl = "http://" + document.location.host + "/addresses?country=" + country + "&city=" + city + "&page=";
+        } else if (country === "" && city !== "" && street !== "") {
+            queryUrl = "http://" + document.location.host + "/addresses?city=" + city + "&street=" + street + "&page=";
+        } else if (country !== "" && city === "" && street !== "") {
+            queryUrl = "http://" + document.location.host + "/addresses?country=" + country + "&street=" + street + "&page=";
+        } else if (country !== "" && city !== "" && street !== "") {
+            queryUrl = "http://" + document.location.host + "/addresses?country=" + country + "&city=" + city + "&street=" + street + "&page=";
+        }
+        start(queryUrl);
     }
-    start(queryUrl);
+    if (event.target.classList.contains('logout')){
+        window.location.replace('http://'+document.location.host+"/logout");
+    }
+    if (event.target.classList.contains('mainMenu')){
+        window.location.replace("http://"+document.location.host+"/mainMenu.html");
+    }
 }
-
 function first() {
     start("http://" + document.location.host + "/addresses?page=");//стартуем с изначальным url
 }

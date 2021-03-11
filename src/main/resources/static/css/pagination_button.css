@@ -1,113 +1,4 @@
-.main {
-    position: relative;
-    display: block;
-    text-decoration: none;
-    text-align: center;
-    font-family: verdana;
-    font-size: 11px;
-    letter-spacing: 2px;
-    border-bottom: 1px ;
-
-    background-image: url("../img/button.jpg");
-    box-sizing: border-box;
-    align-content: center;
-    bottom: 10px;
-    margin: 1% 0;
-
-    width: 120px;
-    max-width: 120px;
-    height: 50px;
-    border: 1px solid #000;
-    justify-content: center;
-    align-items: center;
-    text-transform: uppercase;
-    padding: 10px 7px;
-
-    border-radius: 8px;
-    color: black;
-    text-align: center;
-    text-decoration: none;
-    letter-spacing: 1px;
-    transition: all 0.3s ease-out;
-}
-
-.main:hover, .main:focus {
-    outline: none;
-    border-bottom: 2px solid #eee;
-}
-
-.main::before, .main:after {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 70px;
-    height: 70px;
-    border: 12px double rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
-    content: '';
-    opacity: 0;
-    -webkit-transform: translateX(-50%) translateY(-50%) scale(0.2);
-    -moz-transform: translateX(-50%) translateY(-50%) scale(0.2);
-    transform: translateX(-50%) translateY(-50%) scale(0.2);
-}
-
-.main:after {
-    width: 60px;
-    height: 60px;
-    border-width: 6px;
-    -webkit-transform: translateX(-50%) translateY(-50%) scale(0.8);
-    -moz-transform: translateX(-50%) translateY(-50%) scale(0.8);
-    transform: translateX(-50%) translateY(-50%) scale(0.8);
-}
-
-.main:hover:before, .main:hover:after {
-    -webkit-animation: pulsate 1.2s infinite;
-    -moz-animation: pulsate 1.2s infinite;
-    -ms-animation: pulsate 1.2s infinite;
-    animation: pulsate 1.2s infinite;
-}
-
-@-webkit-keyframes pulsate {
-
-    30% {
-        opacity: 1;
-        -webkit-transform: translateX(-50%) translateY(-50%) scale(1);
-    }
-
-    100% {
-        opacity: 0.3;
-        -webkit-transform: translateX(-50%) translateY(-50%) scale(0.5);
-    }
-
-}
-
-@-moz-keyframes pulsate {
-
-    30% {
-        opacity: 1;
-        -moz-transform: translateX(-50%) translateY(-50%) scale(1);
-    }
-
-    100% {
-        opacity: 0.3;
-        -moz-transform: translateX(-50%) translateY(-50%) scale(0.5);
-    }
-
-}
-
-@-ms-keyframes pulsate {
-    30% {
-        opacity: 1;
-        -ms-transform: translateX(-50%) translateY(-50%) scale(1);
-    }
-    100% {
-        opacity: 0.3;
-        -ms-transform: translateX(-50%) translateY(-50%) scale(0.5);
-    }
-}
-
-
-.password {
+.pagination_next {
     position: relative;
     display: block;
     text-decoration: none;
@@ -140,12 +31,12 @@
     transition: all 0.3s ease-out;
 }
 
-.password:hover, .password:focus {
+.pagination_next:hover, .pagination_next:focus {
     outline: none;
     border-bottom: 2px solid #eee;
 }
 
-.password::before, .password:after {
+.pagination_next::before, .pagination_next:after {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -160,7 +51,7 @@
     transform: translateX(-50%) translateY(-50%) scale(0.2);
 }
 
-.password:after {
+.pagination_next:after {
     width: 60px;
     height: 60px;
     border-width: 6px;
@@ -169,14 +60,15 @@
     transform: translateX(-50%) translateY(-50%) scale(0.8);
 }
 
-.password:hover:before, .password:hover:after {
+.pagination_next:hover:before, .pagination_next:hover:after {
     -webkit-animation: pulsate 1.2s infinite;
     -moz-animation: pulsate 1.2s infinite;
     -ms-animation: pulsate 1.2s infinite;
     animation: pulsate 1.2s infinite;
 }
 
-.delete {
+
+.pagination_prev {
     position: relative;
     display: block;
     text-decoration: none;
@@ -209,12 +101,12 @@
     transition: all 0.3s ease-out;
 }
 
-.delete:hover, .delete:focus {
+.pagination_prev:hover, .pagination_prev:focus {
     outline: none;
     border-bottom: 2px solid #eee;
 }
 
-.delete::before, .delete:after {
+.pagination_prev::before, .pagination_prev:after {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -229,7 +121,7 @@
     transform: translateX(-50%) translateY(-50%) scale(0.2);
 }
 
-.delete:after {
+.pagination_prev:after {
     width: 60px;
     height: 60px;
     border-width: 6px;
@@ -238,15 +130,9 @@
     transform: translateX(-50%) translateY(-50%) scale(0.8);
 }
 
-.delete:hover:before, .delete:hover:after {
+.pagination_prev:hover:before, .pagination_prev:hover:after {
     -webkit-animation: pulsate 1.2s infinite;
     -moz-animation: pulsate 1.2s infinite;
     -ms-animation: pulsate 1.2s infinite;
     animation: pulsate 1.2s infinite;
-}
-
-.tableProfile{
-    left: 0; bottom: 0;
-    right: 50%;
-    width: 100%;
 }

@@ -14,21 +14,23 @@ var getInfoAboutProduct = function (url, type, callback) {
     xhr.send();
 };
 
-var inp = "<table>" +
-    "<tr>" +
-    "<td>" +
-    "<input id='input' class='input-in' type=\"text\" style='background-color: #fafafa;" +
-    "  border:0;" +
-    "  box-shadow:0 0 4px rgba(0,0,0,0.3);" +
-    "  transition: .3s box-shadow;" +
-    "  width: 600px ; height: 35px '" + "></td>" +
-    "<td><button class='input-selector-one'>Поиск</button></td></tr></table>";
+function getSelector() {
+    var inp = "<table>" +
+        "<tr>" +
+        "<td>" +
+        "<input id='input' class='input-in' type=\"text\" style='background-color: #fafafa;" +
+        "  border:0;" +
+        "  box-shadow:0 0 4px rgba(0,0,0,0.3);" +
+        "  transition: .3s box-shadow;" +
+        "  width: 600px ; height: 35px '" + "></td>" +
+        "<td><button class='input-selector-one'>Поиск</button></td></tr></table>";
 
-document.getElementById('inputText').innerHTML = inp;
+    document.getElementById('inputText').innerHTML = inp;
+
+}
 var inputIn = document.querySelector('.input-in');
 var button = document.querySelector('button');
 
-var urlHost = document.location.host
 
 button.onclick = function () {
     countPage = 0;
@@ -38,20 +40,28 @@ button.onclick = function () {
     getMax('http://' + urlHost + '/count?name=' + searchName, 'json', newUrl);
     //functionByUrl(newUrl, 'json',);
 }
+var urlHost = document.location.host
 
 var urlHost = document.location.host
-if (inputIn.value === "") {
-    getMax('http://' + urlHost + '/count', 'text', 'http://' + urlHost + '/products?page=');
-} else {
-    countPage = 0;
-    getMax('http://' + urlHost + '/count?name=' + inputIn.value);
+function start(inputIn) {
+    if (inputIn === null) {
+        getMax('http://' + urlHost + '/count', 'text', 'http://' + urlHost + '/products?page=');
+    } else if (inputIn === "") {
+        getMax('http://' + urlHost + '/count', 'text', 'http://' + urlHost + '/products?page=');
+        //var inputIn = document.querySelector('.input-in');
+    } else {
+        countPage = 0;
+        getMax('http://' + urlHost + '/count?name=' + inputIn.value);
+    }
 }
+start(inputIn);
 
 
 var functionByUrl = function (url, type) {
     getInfoAboutProduct(url, type,
         function (data) {
-            var table = "<table border='2' class='table'>" + "<thead>" +
+            var table = "<br>" +
+                "<table border='2' class='table'>" + "<thead>" +
                 "<tr><th>ID</th><th>Наименование</th><th>Раздел</th><th>Стоимость</th><th>Кол-во</th>" +
                 "<th>ID поставщика</th><th>Описание товара</th><th>Корзина</th></tr></thead>"
                 + "<tbody>";
@@ -110,14 +120,14 @@ function getMax(url, type, urlForProduct) {
 }
 
 var pagination = function nextPrev(counter, maxPage) {
-    var forButton = '<table>' + '<tr><th>';
+    var forButton = '<table align="center">' + '<tr><th>';
     if (counter === 0) {
-        forButton += '<button id="next">Next</button></th>';
+        forButton += '<button id="next" class="pagination_next">Next</button></th>';
     } else if (counter + 1 === maxPage) {
-        forButton += '<th><button id="prev">Prev</button></th><th>';
+        forButton += '<th><button id="prev" class="pagination_prev">Prev</button></th><th>';
     } else {
-        forButton += '<th><button id="prev">Prev</button></th><th>' +
-            '<button id="next">Next</button></th>';
+        forButton += '<th><button id="prev" class="pagination_prev">Prev</button></th><th>' +
+            '<button id="next" class="pagination_next">Next</button></th>';
     }
     forButton += '</tr>' +
         '</table>';
@@ -135,6 +145,20 @@ document.onclick = function (event) {
         }
         if (event.target.classList.contains('delete')) {
             deleteProduct(event.target.dataset.id);
+        }if(event.target.classList.contains("headers")){
+            getSelector();
+        }if (event.target.classList.contains("input-selector-one")){
+            countPage = 0;
+            var searchName = document.querySelector('.input-in').value;
+            console.log(searchName);
+            var newUrl = 'http://' + urlHost + '/products?nameLike=' + searchName + '&page=';//&size=6
+            getMax('http://' + urlHost + '/count?name=' + searchName, 'json', newUrl);
+        }
+        if(event.target.classList.contains("logout")){
+            window.location.replace('http://'+document.location.host+"/logout");
+        }
+        if(event.target.classList.contains("mainMenu")){
+            window.location.replace("http://"+document.location.host+"/mainMenu.html");
         }
     } else {
         console.log('basket is full')
@@ -217,6 +241,7 @@ var addBasket = function productById(tableBasket, map) {
             document.getElementById('basketTable').remove();
             alert('Куплено');
             mapBasket.clear();
+            location.reload();//обновляем
         }
     });
 };
@@ -258,4 +283,5 @@ function map_to_object(map) {
     })
     return out
 }
+
 

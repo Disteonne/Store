@@ -13,7 +13,6 @@ import java.util.List;
 @Component
 public class AddressMapper {
 
-
     public AddressDto toAddressDto(Address address) {
         if (address == null) {
             return null;

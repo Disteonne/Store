@@ -4,17 +4,33 @@
     <meta charset="UTF-8">
     <title>Address</title>
     <style>
+        @import "css/style.css";
+        @import "css/index.css";
         @import "css/address.css";
+        @import "css/pagination_button.css";
     </style>
     <script type="text/javascript" src=" https://code.jquery.com/jquery-1.11.2.js "></script>
 </head>
 <body>
-<h1>I'm from address</h1>
-
+<header>
+    <button class="headers" type="button">Поиск</button>
+</header>
 <div id="search"></div>
 <div id="address"></div>
 <div id="pagination"></div>
 <div id="changeAdd"></div>
+<div align="center">
+    <table>
+        <tr>
+            <td>
+                <button class="logout" type="button">Logout</button>
+            </td>
+            <td>
+                <button class="mainMenu" type="button">Главное меню</button>
+            </td>
+        </tr>
+    </table>
+</div>
 <script src="/js/address.js"></script>
 </body>
 </html>

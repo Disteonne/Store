@@ -1,12 +1,9 @@
 package com.netcracker.store.controller;
 
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-//@RequestMapping("/auth")
 public class AuthorizationController {
 
     @GetMapping("/auth/login")
@@ -19,5 +16,10 @@ public class AuthorizationController {
         return "index";
     }
 
+    @PostMapping("/logout")
+    public RedirectView logout(){
+        return new RedirectView("../login.html");
+    }
      */
+
 }

@@ -5,15 +5,31 @@
     <title>Supplier</title>
     <style>
         @import "css/supplier.css";
+        @import "css/style.css";
+        @import "css/pagination_button.css";
     </style>
     <script type="text/javascript" src=" https://code.jquery.com/jquery-1.11.2.js "></script>
 </head>
 <body>
-<h1>I'm from supplier</h1>
-
+<header>
+    <button class="headers" type="button">Поиск</button>
+</header>
+<br>
 <div id="inputText"></div>
 <div id="supplier"></div>
 <div id="pagination"></div>
+<div align="center">
+    <table>
+        <tr>
+            <td>
+                <button class="logout" type="button">Logout</button>
+            </td>
+            <td>
+                <button class="mainMenu" type="button">Главное меню</button>
+            </td>
+        </tr>
+    </table>
+</div>
 <script src="/js/supplier.js"></script>
 </body>
 </html>

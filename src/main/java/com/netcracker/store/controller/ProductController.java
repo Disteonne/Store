@@ -13,6 +13,7 @@ import com.netcracker.store.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.json.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,14 +27,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
 @RestController
-@RequiredArgsConstructor
 public class ProductController {
 
-    private final ProductService productService;
-    private final ProductMapper productMapper;
-    private final BasketService basketService;
+    @Autowired
+    private ProductService productService;
+    @Autowired
+    private ProductMapper productMapper;
+    @Autowired
+    private BasketService basketService;
 
     @GetMapping("/products")
     public List<ProductDto> getAll(@RequestParam(required = false) String type,

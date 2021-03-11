@@ -3,7 +3,7 @@ package com.netcracker.store.service;
 import com.netcracker.store.entity.Address;
 import com.netcracker.store.entity.Supplier;
 import com.netcracker.store.repository.SupplierRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -12,10 +12,10 @@ import java.util.List;
 
 
 @Service
-@RequiredArgsConstructor
 public class SupplierService {
 
-    private final SupplierRepository supplierRepository;
+    @Autowired
+    private SupplierRepository supplierRepository;
 
     public List<Supplier> getAll() {
         return supplierRepository.findAll();

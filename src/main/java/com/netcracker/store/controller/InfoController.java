@@ -9,8 +9,7 @@ import com.netcracker.store.mapper.InfoMapper;
 import com.netcracker.store.mapper.UserMapper;
 import com.netcracker.store.service.AddressService;
 import com.netcracker.store.service.UserService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,16 +18,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@Slf4j
 @RestController
-@RequiredArgsConstructor
 public class InfoController {
 
-    private final UserService userService;
-    private final AddressService addressService;
-    private final UserMapper userMapper;
-    private final InfoMapper infoMapper;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private AddressService addressService;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private InfoMapper infoMapper;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/info")
     public InfoDto getInfo() {
@@ -49,7 +51,6 @@ public class InfoController {
 
     @PostMapping("/password")
     public String changePassword(@RequestBody PasswordDto password) {
-        log.info(password.getPassword());
         User user = userService.findByLogin(getCurrentUserLogin());
         if (!bCryptPasswordEncoder.matches(password.getPassword(), user.getPassword())) {
             user.setPassword(password.getPassword());

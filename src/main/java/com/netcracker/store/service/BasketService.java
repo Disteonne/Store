@@ -22,17 +22,21 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
+
 @Service
-@RequiredArgsConstructor
 public class BasketService {
 
-    private final HistoryService historyService;
-    private final HistoryMapper historyMapper;
+    @Autowired
+    private HistoryService historyService;
+    @Autowired
+    private HistoryMapper historyMapper;
 
-    private final ProductService productService;
-    private final ProductMapper productMapper;
-    private final UserService userService;
+    @Autowired
+    private ProductService productService;
+    @Autowired
+    private ProductMapper productMapper;
+    @Autowired
+    private UserService userService;
 
 
     public boolean addHistory(List<BasketDto> basket) {

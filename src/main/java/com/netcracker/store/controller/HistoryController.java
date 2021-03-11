@@ -3,27 +3,23 @@ package com.netcracker.store.controller;
 import com.netcracker.store.dto.HistoryDto;
 import com.netcracker.store.mapper.HistoryMapper;
 import com.netcracker.store.service.HistoryService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@Slf4j
 @RestController
-@RequiredArgsConstructor
 public class HistoryController {
 
-    private final HistoryService historyService;
-    private final HistoryMapper historyMapper;
+    @Autowired
+    private HistoryService historyService;
+    @Autowired
+    private HistoryMapper historyMapper;
 
 
     @GetMapping("/user/{id}/histories")

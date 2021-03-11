@@ -15,7 +15,7 @@ var userInfo = function (url, callback) {
 
 function profile() {
     userInfo("http://" + document.location.host + "/info", function (data) {
-        var table = "<table border='2' class='table'>" +
+        var table = "<table align='center' border='2'  class='table'>" +
             "<thead>" +
             "<tr><th>Поля</th><th>Информация</th></tr><tbody>" +
             "<tr><td>id</td><td>" + data.userId + "</td></tr>" +
@@ -32,9 +32,11 @@ function profile() {
         table += "</tbody></table>";
 
 
-        var actions = "<table><tr><td><button class='main'>Редактировать профиль</button></td>" +
+        var actions = "<table align='center'><tr><td><button class='main'>Редактировать профиль</button></td>" +
             "<td><button class='password'>Изменить пароль</button></td>" +
-            "<td><button class='delete'>Удалить профиль</button></td></tr>";
+            "<td><button class='delete'>Удалить профиль</button></td>"+
+            "<td><button class='logout' type='button' onclick='logout'>Logout</button></td>" +
+            "<td><button class='mainMenu' type='button'>Главное меню</button></td></tr></table>";
         document.getElementById('info').innerHTML = table;
         document.getElementById('actions').innerHTML = actions;
     });
@@ -56,6 +58,12 @@ document.onclick = function (event) {
     }
     if(event.target.classList.contains('delete')){
         deleteUser();
+    }
+    if(event.target.classList.contains("logout")){
+        sendLogout();
+    }
+    if(event.target.classList.contains("mainMenu")){
+        window.location.replace("http://"+document.location.host+"/mainMenu.html");
     }
 }
 
@@ -153,4 +161,7 @@ function sendToSpring(jsonText,url,type) {
     });
 }
 
+function sendLogout() {
+    window.location.replace('http://'+document.location.host+"/logout");
+}
 profile();

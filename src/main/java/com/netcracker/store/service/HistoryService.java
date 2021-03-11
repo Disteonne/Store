@@ -2,22 +2,22 @@ package com.netcracker.store.service;
 
 import com.netcracker.store.entity.History;
 import com.netcracker.store.repository.HistoryRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class HistoryService {
 
-    private final HistoryRepository historyRepository;
-    private final UserService userService;
+    @Autowired
+    private HistoryRepository historyRepository;
+    @Autowired
+    private UserService userService;
 
     public List<History> getAll() {
         return historyRepository.findAll();

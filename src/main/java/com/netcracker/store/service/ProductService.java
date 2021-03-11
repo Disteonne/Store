@@ -3,7 +3,7 @@ package com.netcracker.store.service;
 import com.netcracker.store.entity.Product;
 import com.netcracker.store.entity.Supplier;
 import com.netcracker.store.repository.ProductRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -12,10 +12,10 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class ProductService {
 
-    private final ProductRepository productRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     public List<Product> getAll() {
         return productRepository.findAll();
