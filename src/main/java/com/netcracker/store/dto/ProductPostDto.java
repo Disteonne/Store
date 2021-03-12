@@ -13,6 +13,7 @@ public class ProductPostDto {
 
     @NotNull
     private String name;
+    @NotNull
     private String type;
     @NotNull
     private BigDecimal price=new BigDecimal(0);

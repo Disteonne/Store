@@ -1,4 +1,4 @@
-var userInfo = function (url, callback) {
+var userProfile = function (url, callback) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
     xhr.responseType = 'json';
@@ -13,32 +13,37 @@ var userInfo = function (url, callback) {
     xhr.send();
 };
 
-function profile() {
-    userInfo("http://" + document.location.host + "/info", function (data) {
-        var table = "<table align='center' border='2'  class='table'>" +
-            "<thead>" +
-            "<tr><th>Поля</th><th>Информация</th></tr><tbody>" +
-            "<tr><td>id</td><td>" + data.userId + "</td></tr>" +
-            "<tr><td>Name</td><td>" + data.name + "</td></tr>" +
-            "<tr><td>Surname</td><td>" + data.surname + "</td></tr>" +
-            "<tr><td>Age</td><td>" + data.age + "</td></tr>" +
-            "<tr><td>Login</td><td>" + data.login + "</td><td></tr>" +
-            "<tr><td>Country</td><td>" + data.country + "</td></tr>" +
-            "<tr><td>City</td><td>" + data.city + "</td></tr>" +
-            "<tr><td>Street</td><td>" + data.street + "</td></tr>";
-        if (data.building != null) {
-            table += "<tr><td>Country</td><td>" + data.building + "</td></tr>";
+function profile(flag) {
+    userProfile("http://" + document.location.host + "/profile", function (data) {
+        if(flag===false) {
+            var table = "<table align='center' border='2'  class='table'>" +
+                "<thead>" +
+                "<tr><th>Поля</th><th>Информация</th></tr><tbody>" +
+                "<tr><td>id</td><td>" + data.userId + "</td></tr>" +
+                "<tr><td>Name</td><td>" + data.name + "</td></tr>" +
+                "<tr><td>Surname</td><td>" + data.surname + "</td></tr>" +
+                "<tr><td>Age</td><td>" + data.age + "</td></tr>" +
+                "<tr><td>Login</td><td>" + data.login + "</td><td></tr>" +
+                "<tr><td>Country</td><td>" + data.country + "</td></tr>" +
+                "<tr><td>City</td><td>" + data.city + "</td></tr>" +
+                "<tr><td>Street</td><td>" + data.street + "</td></tr>";
+            if (data.building != null) {
+                table += "<tr><td>Country</td><td>" + data.building + "</td></tr>";
+            }
+            table += "</tbody></table>";
+
+
+            var actions = "<table align='center'><tr><td><button class='main'>Редактировать профиль</button></td>" +
+                "<td><button class='password'>Изменить пароль</button></td>" +
+                "<td><button class='delete'>Удалить профиль</button></td>" +
+                "<td><button class='logout' type='button'>Logout</button></td>" +
+                "<td><button class='mainMenu' type='button'>Главное меню</button></td></tr></table>";
+            document.getElementById('info').innerHTML = table;
+            document.getElementById('actions').innerHTML = actions;
         }
-        table += "</tbody></table>";
-
-
-        var actions = "<table align='center'><tr><td><button class='main'>Редактировать профиль</button></td>" +
-            "<td><button class='password'>Изменить пароль</button></td>" +
-            "<td><button class='delete'>Удалить профиль</button></td>"+
-            "<td><button class='logout' type='button' onclick='logout'>Logout</button></td>" +
-            "<td><button class='mainMenu' type='button'>Главное меню</button></td></tr></table>";
-        document.getElementById('info').innerHTML = table;
-        document.getElementById('actions').innerHTML = actions;
+        else {
+            sendMain(data.userId);
+        }
     });
 }
 
@@ -48,7 +53,7 @@ document.onclick = function (event) {
         //patch(event.target.dataset.id);
     }
     if (event.target.classList.contains('sendMain')) {
-        sendMain();
+        profile(true);
     }
     if(event.target.classList.contains('password')){
         password();
@@ -85,14 +90,14 @@ function password() {
     //document.getElementById('actionsPassword').innerHTML=send;
 }
 function deleteUser() {
-    userInfo("http://" + document.location.host + "/info",function (data){
+    userProfile("http://" + document.location.host + "/profile",function (data){
         sendToSpring(JSON.stringify(""),"http://" + document.location.host + "/user/delete/"+parseInt(data.userId),"delete");
         if(confirm("Вы уверены?")) {
             window.location.replace('http://' + document.location.host + '/login');
         }
     })
 }
-function sendMain() {
+function sendMain(userId) {
     var nameValue = document.querySelector('.name');
     var surnameValue = document.querySelector('.surname');
     var ageValue = document.querySelector('.age');
@@ -101,8 +106,8 @@ function sendMain() {
     var cityValue = document.querySelector('.city');
     var streetValue = document.querySelector('.street');
     var buildingValue = document.querySelector('.building');
-    sendToSpring(JSON.stringify(new InfoDto(nameValue.value,surnameValue.value,ageValue.value,loginValue.value,countryValue.value,cityValue.value,
-        streetValue.value,buildingValue.value)),"/info","POST");
+    sendToSpring(JSON.stringify(new UserProfilePatchDto(nameValue.value,surnameValue.value,ageValue.value,loginValue.value,countryValue.value,cityValue.value,
+        streetValue.value,buildingValue.value)),"/profile/"+userId,"PATCH");
     alert("Изменено!");
     window.location.replace('http://'+document.location.host+'/profile.html');//редирект
 }
@@ -112,11 +117,11 @@ function sendPassword() {
         alert("Пароль не был изменен!")
     }else {
         alert("Пароль изменен!")
-        sendToSpring(JSON.stringify(new PasswordDto(passwordValue.value)), "/password","POST");
+        sendToSpring(JSON.stringify(new PasswordDto(passwordValue.value)), "/profile/password","PATCH");
         window.location.replace('http://' + document.location.host + '/login');
     }
 }
-class InfoDto {
+class UserProfilePatchDto {
     constructor(name, surname, age, login, country, city, street, building) {
         this.name = name;
         this.surname = surname;
@@ -164,4 +169,4 @@ function sendToSpring(jsonText,url,type) {
 function sendLogout() {
     window.location.replace('http://'+document.location.host+"/logout");
 }
-profile();
+profile(false);

@@ -2,7 +2,7 @@ package com.netcracker.store.mapper;
 
 import com.netcracker.store.dto.AddressDto;
 import com.netcracker.store.dto.InfoDto;
-import com.netcracker.store.dto.InfoPostDto;
+import com.netcracker.store.dto.UserProfilePatchDto;
 import com.netcracker.store.entity.Address;
 import com.netcracker.store.entity.User;
 import com.netcracker.store.service.AddressService;
@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class InfoMapper {
+public class UserProfileMapper {
 
     @Autowired
     private UserService userService;
@@ -36,34 +36,34 @@ public class InfoMapper {
         return infoDto;
     }
 
-    public User toUser(InfoPostDto infoPostDto, String currentUserLogin) {
+    public User toUser(UserProfilePatchDto userProfilePatchDto, String currentUserLogin) {
         User user = userService.findByLogin(currentUserLogin);
-        if (!infoPostDto.getName().equals("")) {
-            user.setName(infoPostDto.getName());
+        if (!userProfilePatchDto.getName().equals("")) {
+            user.setName(userProfilePatchDto.getName());
         }
-        if (!infoPostDto.getSurname().equals("")) {
-            user.setSurname(infoPostDto.getSurname());
+        if (!userProfilePatchDto.getSurname().equals("")) {
+            user.setSurname(userProfilePatchDto.getSurname());
         }
-        if (infoPostDto.getAge() != null) {
-            user.setAge(infoPostDto.getAge());
+        if (userProfilePatchDto.getAge() != null) {
+            user.setAge(userProfilePatchDto.getAge());
         }
         return user;
     }
 
-    public Address toAddress(InfoPostDto infoPostDto, String currentUserLogin) {
+    public Address toAddress(UserProfilePatchDto userProfilePatchDto, String currentUserLogin) {
         //получили текущий адрес
-        AddressDto address = addressMapper.toAddressDto(addressService.getById(userMapper.toUserDto(toUser(infoPostDto, currentUserLogin)).getAddressId()));
-        if (!infoPostDto.getCountry().equals("")) {
-            address.setCountry(infoPostDto.getCountry());
+        AddressDto address = addressMapper.toAddressDto(addressService.getById(userMapper.toUserDto(toUser(userProfilePatchDto, currentUserLogin)).getAddressId()));
+        if (!userProfilePatchDto.getCountry().equals("")) {
+            address.setCountry(userProfilePatchDto.getCountry());
         }
-        if (!infoPostDto.getCity().equals("")) {
-            address.setCity(infoPostDto.getCity());
+        if (!userProfilePatchDto.getCity().equals("")) {
+            address.setCity(userProfilePatchDto.getCity());
         }
-        if (!infoPostDto.getStreet().equals("")) {
-            address.setStreet(infoPostDto.getStreet());
+        if (!userProfilePatchDto.getStreet().equals("")) {
+            address.setStreet(userProfilePatchDto.getStreet());
         }
-        if (!infoPostDto.getBuilding().equals("")) {
-            address.setBuilding(infoPostDto.getBuilding());
+        if (!userProfilePatchDto.getBuilding().equals("")) {
+            address.setBuilding(userProfilePatchDto.getBuilding());
         }
         //находим.есть ли адрес с такими данными
         Address updatedAddress = addressService.find(address.getCountry(), address.getCity(), address.getStreet(), address.getBuilding());

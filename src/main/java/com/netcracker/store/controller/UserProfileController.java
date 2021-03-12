@@ -1,11 +1,12 @@
 package com.netcracker.store.controller;
 
 import com.netcracker.store.dto.InfoDto;
-import com.netcracker.store.dto.InfoPostDto;
+import com.netcracker.store.dto.UserProfilePatchDto;
 import com.netcracker.store.dto.PasswordDto;
 import com.netcracker.store.entity.Address;
 import com.netcracker.store.entity.User;
-import com.netcracker.store.mapper.InfoMapper;
+import com.netcracker.store.mapper.UserProfileMapper;
+import com.netcracker.store.mapper.UserProfileMapstructMapper;
 import com.netcracker.store.mapper.UserMapper;
 import com.netcracker.store.service.AddressService;
 import com.netcracker.store.service.UserService;
@@ -13,13 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class InfoController {
+public class UserProfileController {
 
     @Autowired
     private UserService userService;
@@ -28,28 +26,32 @@ public class InfoController {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    private InfoMapper infoMapper;
+    private UserProfileMapper userProfileMapper;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @GetMapping("/info")
+
+
+    @GetMapping("/profile")
     public InfoDto getInfo() {
         User user = userService.findByLogin(getCurrentUserLogin());
         Address address = addressService.getById(userMapper.toUserDto(user).getAddressId());
-        return infoMapper.toInfoDto(user, address);
+        return userProfileMapper.toInfoDto(user, address);
     }
 
-    @PostMapping("/info")
-    public InfoPostDto saveInfo(@RequestBody InfoPostDto infoPostDto) {
-        User user = infoMapper.toUser(infoPostDto, getCurrentUserLogin());
-        Address newAddress = addressService.save(infoMapper.toAddress(infoPostDto, getCurrentUserLogin()));
+    @PatchMapping("/profile/{id}")
+    public UserProfilePatchDto saveInfo(@PathVariable(value = "id") Long id, @RequestBody UserProfilePatchDto userProfilePatchDto) {
+        User user = userProfileMapper.toUser(userProfilePatchDto, getCurrentUserLogin());
+        User user1=userService.getById(id);
+        User user2= UserProfileMapstructMapper.INFO_MAPSTRUCT_MAPPER.mapToUser(userProfilePatchDto,getCurrentUserLogin(),userService);
+        Address newAddress = addressService.save(userProfileMapper.toAddress(userProfilePatchDto, getCurrentUserLogin()));
         user.setAddress(newAddress);
         //userService.save(infoMapper.toUser(infoPostDto, getCurrentUserLogin()));
         userService.save(user);
-        return infoPostDto;
+        return userProfilePatchDto;
     }
 
-    @PostMapping("/password")
+    @PatchMapping("/profile/password")
     public String changePassword(@RequestBody PasswordDto password) {
         User user = userService.findByLogin(getCurrentUserLogin());
         if (!bCryptPasswordEncoder.matches(password.getPassword(), user.getPassword())) {

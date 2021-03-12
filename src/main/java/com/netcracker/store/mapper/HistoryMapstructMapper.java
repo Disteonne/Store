@@ -5,15 +5,18 @@ import com.netcracker.store.dto.HistoryPostDto;
 import com.netcracker.store.entity.History;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface HistoryMapstructMapper {
 
-    HistoryDto mapToHistoryDto(History history);
+    HistoryMapstructMapper HISTORY_MAPSTRUCT_MAPPER= Mappers.getMapper(HistoryMapstructMapper.class);
 
-    @Mapping(source = "id",target = "")
+    HistoryDto mapToHistoryDto(History history);
+    //source-откуда target-куда
+    @Mapping(source = "userId",target = "user.id")
     History mapToHistory(HistoryPostDto historyPostDto);
 
     List<HistoryDto> toHistoryDtoList(List<History> historyList);

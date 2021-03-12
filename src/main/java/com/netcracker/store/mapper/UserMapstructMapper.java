@@ -2,48 +2,39 @@ package com.netcracker.store.mapper;
 
 import com.netcracker.store.dto.UserDto;
 import com.netcracker.store.dto.UserPostDto;
-import com.netcracker.store.dto.UserPutDto;
 import com.netcracker.store.entity.Address;
-import com.netcracker.store.entity.UsersRole;
 import com.netcracker.store.entity.User;
-import org.springframework.stereotype.Component;
+import com.netcracker.store.entity.UsersRole;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Component
-public class UserMapper {
+@Mapper
+public interface UserMapstructMapper {
 
-    public UserDto toUserDto(User user) {
-        if (user == null) {
-            return null;
-        }
-        UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setName(user.getName());
-        userDto.setSurname(user.getSurname());
-        userDto.setLogin(user.getLogin());
-        userDto.setPassword(user.getPassword());
-        userDto.setAge(user.getAge());
-        userDto.setUsersRoles(user.getUsersRoles());
-        if (user.getAddress() != null) {
-            userDto.setAddressId(user.getAddress().getId());
-        }
-        return userDto;
-    }
+    UserMapstructMapper USER_MAPSTRUCT_MAPPER= Mappers.getMapper(UserMapstructMapper.class);
 
-    public List<UserDto> toUserDtoList(List<User> all) {
+    @Mapping(source = "user.address.id",target = "addressId")
+    UserDto mapToUserDto(User user);
+
+
+
+
+    default List<UserDto> toUserDtoList(List<User> all) {
         List<UserDto> result = new ArrayList<>();
         if (all == null) {
             return result;
         }
-        all.forEach(user -> result.add(toUserDto(user)));
+        all.forEach(user -> result.add(mapToUserDto(user)));
         return result;
     }
 
-    public User toUser(UserPostDto userPostDto) {
+    default User toUser(UserPostDto userPostDto) {
 
         if (userPostDto == null) {
             return null;
@@ -69,34 +60,7 @@ public class UserMapper {
         return user;
     }
 
-    public User toUser(UserPutDto userPutDto) {
-        if (userPutDto == null) {
-            return null;
-        }
-        User user = new User();
-        user.setId(userPutDto.getId());
-        user.setName(userPutDto.getName());
-        user.setSurname(userPutDto.getSurname());
-        user.setAge(userPutDto.getAge());
-
-
-        Set<UsersRole> usersRoles = new HashSet<>();
-        if (userPutDto.getCredentials() == null) {
-            usersRoles.add(UsersRole.ROLE_USER);
-            user.setUsersRoles(usersRoles);
-        } else {
-            usersRoles.add(UsersRole.ROLE_ADMIN);
-            user.setUsersRoles(usersRoles);
-        }
-        user.setLogin(userPutDto.getLogin());
-        user.setPassword(userPutDto.getPassword());
-        Address address = new Address();
-        address.setId(userPutDto.getAddressId());
-        user.setAddress(address);
-        return user;
-    }
-
-    public User patch(User user, UserDto userDto) {
+    default User patch(User user, UserDto userDto) {
         if (userDto == null) {
             return user;
         }

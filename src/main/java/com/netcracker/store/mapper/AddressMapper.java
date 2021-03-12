@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//выполнен полностью mapstruct кроме одного метода patch
 @Component
 public class AddressMapper {
 

@@ -15,7 +15,7 @@ import java.util.List;
 
 @Component
 public class ProductMapper {
-
+    //+
     public ProductDto toProductDto(Product product) {
         if (product == null) {
             return null;
@@ -32,7 +32,7 @@ public class ProductMapper {
         }
         return productDto;
     }
-
+    //+
     public ProductBasketDto toProductBasketDto(Product product,int count){
         if(product==null){
             return null;
@@ -47,7 +47,7 @@ public class ProductMapper {
         productBasketDto.setSupplierId(toProductDto(product).getSupplierId());
         return productBasketDto;
     }
-
+    //+
     public Product toProduct(ProductPostDto productPostDto) throws TypeNotFoundException {
         if (productPostDto == null) {
             return null;
@@ -67,7 +67,7 @@ public class ProductMapper {
         product.setSupplier(supplier);
         return product;
     }
-
+    //+
     public List<ProductDto> toProductDtoList(List<Product> productList) {
         List<ProductDto> result = new ArrayList<>();
         if (productList == null) {
@@ -76,18 +76,7 @@ public class ProductMapper {
         productList.forEach(product -> result.add(toProductDto(product)));
         return result;
     }
-    /*
-    public List<Product> toProductList(List<ProductDto> productDtoList){
-        List<Product> result=new ArrayList<>();
-        if(productDtoList==null){
-            return result;
-        }
-        productDtoList.forEach(productDto -> result.add(toProduct(productDto)));
-    }
-
-     */
-
-
+    //+
     public Product toProduct(ProductPutDto productPutDto) {
         if (productPutDto == null) {
             return null;
