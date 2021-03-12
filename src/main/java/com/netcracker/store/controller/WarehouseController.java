@@ -31,8 +31,8 @@ public class WarehouseController {
         return warehouseService.editEditSupplier(warehouse);
     }
 
-    @DeleteMapping("/warehouse/delete")
-    public ResponseEntity<Void> delete(@RequestBody WarehouseDeleteDto warehouse) {
-        return warehouseService.delete(warehouse) ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    @DeleteMapping("/warehouse/delete/{id}")
+    public ResponseEntity<Void> delete(@PathVariable(value = "id") Long id) {
+        return warehouseService.delete(id) ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 }

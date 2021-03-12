@@ -17,7 +17,7 @@ function inputHtml() {
 }
 
 document.onclick = function (event) {
-    if (event.target.classList.contains('sendToSpring')) {
+    if (event.target.classList.contains('input-selector-one')) {
         send();
     }
     if(event.target.classList.contains('logout')){

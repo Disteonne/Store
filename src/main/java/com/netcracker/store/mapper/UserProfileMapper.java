@@ -1,7 +1,7 @@
 package com.netcracker.store.mapper;
 
 import com.netcracker.store.dto.AddressDto;
-import com.netcracker.store.dto.InfoDto;
+import com.netcracker.store.dto.ProfileDto;
 import com.netcracker.store.dto.UserProfilePatchDto;
 import com.netcracker.store.entity.Address;
 import com.netcracker.store.entity.User;
@@ -22,18 +22,18 @@ public class UserProfileMapper {
     @Autowired
     private UserMapper userMapper;
 
-    public InfoDto toInfoDto(User user, Address address) {
-        InfoDto infoDto = new InfoDto();
-        infoDto.setUserId(user.getId());
-        infoDto.setName(user.getName());
-        infoDto.setSurname(user.getSurname());
-        infoDto.setAge(user.getAge());
-        infoDto.setLogin(user.getLogin());
-        infoDto.setCountry(address.getCountry());
-        infoDto.setCity(address.getCity());
-        infoDto.setStreet(address.getStreet());
-        infoDto.setBuilding(address.getBuilding());
-        return infoDto;
+    public ProfileDto toInfoDto(User user, Address address) {
+        ProfileDto profileDto = new ProfileDto();
+        profileDto.setUserId(user.getId());
+        profileDto.setName(user.getName());
+        profileDto.setSurname(user.getSurname());
+        profileDto.setAge(user.getAge());
+        profileDto.setLogin(user.getLogin());
+        profileDto.setCountry(address.getCountry());
+        profileDto.setCity(address.getCity());
+        profileDto.setStreet(address.getStreet());
+        profileDto.setBuilding(address.getBuilding());
+        return profileDto;
     }
 
     public User toUser(UserProfilePatchDto userProfilePatchDto, String currentUserLogin) {

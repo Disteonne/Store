@@ -23,28 +23,14 @@ public class HistoryService {
         return historyRepository.findAll();
     }
 
-    public History findById(Long id) {
-        return historyRepository.getOne(id);
-    }
-
     public History save(History history) {
         return historyRepository.save(history);
-    }
-
-    public boolean deleteById(Long id) {
-        try {
-            historyRepository.deleteById(id);
-        } catch (Exception ex) {
-            return false;
-        }
-        return true;
     }
 
     public List<History> getAll(int page, int size, Sort sort) {
         Page<History> result = historyRepository.findAll(PageRequest.of(page, size, sort));
         return result.getContent();
     }
-
 
     public List<History> findByUserId(LocalDate date,int page,int size,Sort sort) {
         if(date==null){

@@ -19,7 +19,7 @@ function inputHtml() {
 }
 
 document.onclick = function (event) {
-    if (event.target.classList.contains('sendToSpring')) {
+    if (event.target.classList.contains('input-selector-one')) {
         send();
     }
     if(event.target.classList.contains('logout')){
@@ -77,7 +77,7 @@ function send() {
         document.querySelector('.BuildingSupplierAddress').value);
     console.log(JSON.stringify(obj));
     sendToSpring(JSON.stringify(obj),"http://"+document.location.host+"/warehouse/edit/newSupplier",'PATCH');
-    window.location.replace('http://' + document.location.host + '//withNewSupplier.html');
+    window.location.replace('http://' + document.location.host + '/withNewSupplier.html');
 }
 function sendToSpring(jsonText,url,type) {
 

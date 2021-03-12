@@ -3,22 +3,15 @@ package com.netcracker.store.service;
 import com.netcracker.store.dto.BasketDto;
 import com.netcracker.store.dto.HistoryPostDto;
 import com.netcracker.store.dto.ProductBasketDto;
-import com.netcracker.store.dto.ProductDto;
-import com.netcracker.store.entity.History;
 import com.netcracker.store.entity.Product;
-import com.netcracker.store.entity.User;
 import com.netcracker.store.mapper.HistoryMapper;
 import com.netcracker.store.mapper.ProductMapper;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 

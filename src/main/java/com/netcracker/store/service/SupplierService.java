@@ -21,25 +21,12 @@ public class SupplierService {
         return supplierRepository.findAll();
     }
 
-    public Supplier getById(Long id) {
-        return supplierRepository.getOne(id);
-    }
-
     public Supplier getByAll(String name, String mail, Address address){
         return supplierRepository.findByNameAndMailAndAddress(name,mail,address);
     }
 
     public Supplier save(Supplier supplier){
         return supplierRepository.save(supplier);
-    }
-
-    public boolean deleteById(Long id){
-       try {
-           supplierRepository.deleteById(id);
-       }catch (Exception ex){
-           return  false;
-       }
-       return true;
     }
 
     public List<Supplier> getAll(String name,int page, int size, Sort sort){

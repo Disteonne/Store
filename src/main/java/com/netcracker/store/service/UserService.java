@@ -3,9 +3,6 @@ package com.netcracker.store.service;
 import com.netcracker.store.entity.User;
 import com.netcracker.store.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -56,18 +53,6 @@ public class UserService {
             return false;
         }
         return true;
-    }
-
-    public List<User> getAll(String street, int page, int size, Sort sort) {
-        if (street == null) {
-            Page<User> result = userRepository.findAll(PageRequest.of(page, size, sort));
-            return result.getContent();
-        }
-        return userRepository.getUser(street, PageRequest.of(page, size, sort));
-    }
-
-    public User getByName(String name) {
-        return userRepository.findByName(name);
     }
 
     public User getCurrent() {

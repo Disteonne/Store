@@ -91,7 +91,7 @@ function password() {
 }
 function deleteUser() {
     userProfile("http://" + document.location.host + "/profile",function (data){
-        sendToSpring(JSON.stringify(""),"http://" + document.location.host + "/user/delete/"+parseInt(data.userId),"delete");
+        sendToSpring(JSON.stringify(""),"http://" + document.location.host + "/profile/delete/"+parseInt(data.userId),"delete");
         if(confirm("Вы уверены?")) {
             window.location.replace('http://' + document.location.host + '/login');
         }

@@ -10,16 +10,5 @@ public class AuthorizationController {
     public String getLoginPage(){
         return "login";
     }
-    /*
-    @GetMapping("/")
-    public String getStore(){
-        return "index";
-    }
-
-    @PostMapping("/logout")
-    public RedirectView logout(){
-        return new RedirectView("../login.html");
-    }
-     */
 
 }

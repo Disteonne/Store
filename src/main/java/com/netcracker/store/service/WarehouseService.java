@@ -26,10 +26,6 @@ public class WarehouseService {
 
     public Product saveWarehouse(WarehousePatchDto warehousePostDto) {
         try {
-
-            //Address address = warehouseMapper.toAddress(warehousePostDto);
-            //Supplier supplier = warehouseMapper.toSupplier(warehousePostDto);
-            //part with product
             Product product = warehouseMapper.toProduct(warehousePostDto);
             productService.save(product);
             return product;
@@ -38,7 +34,6 @@ public class WarehouseService {
             return new Product();
         }
     }
-
 
     public Product editNewSupplier(WarehousePatchDto warehouse){
         try {
@@ -53,7 +48,7 @@ public class WarehouseService {
         return warehouseMapper.toProductEditSupplier(warehouse);
     }
 
-    public boolean delete(WarehouseDeleteDto warehouse){
-        return productService.deleteById(productService.getByName(warehouse.getName()).getId());
+    public boolean delete(Long id){
+        return productService.deleteById(id);
     }
 }

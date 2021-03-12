@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
@@ -20,13 +19,6 @@ public class HistoryController {
     private HistoryService historyService;
     @Autowired
     private HistoryMapper historyMapper;
-
-
-    @GetMapping("/user/{id}/histories")
-    public List<HistoryDto> getAll(@PathVariable(name = "id") Long id) {
-        //return historyMapper.toHistoryDtoList(historyService.findByUserId(id));
-        return null;
-    }
 
     //можно выводить с поставщиком
     @GetMapping("/history")
