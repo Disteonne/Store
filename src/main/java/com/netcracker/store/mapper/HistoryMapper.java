@@ -33,7 +33,7 @@ public class HistoryMapper {
         history.setDate(historyPostDto.getDate());
         history.setHistory(historyPostDto.getHistory());
         User user=new User();
-        user.setId(historyPostDto.getUser_id());
+        user.setId(historyPostDto.getUserId());
         history.setUser(user);
         return history;
     }

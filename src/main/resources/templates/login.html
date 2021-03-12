@@ -1,31 +1,31 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Login</title>
     <style>
-        .form-control-user{
-            padding:10px;
-            border:0;
-            box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
-        }
         .form-control-user {
-            padding:10px;
-            border-radius:10px;
+            padding: 10px;
+            border: 0;
+            box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
         }
-        .form-control-pass{
-            padding:10px;
-            border:0;
-            box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+
+        .form-control-user {
+            padding: 10px;
+            border-radius: 10px;
         }
+
         .form-control-pass {
-            padding:10px;
-            border-radius:10px;
+            padding: 10px;
+            border: 0;
+            box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
         }
-        .container{
-            background-image: url("../static/img/background.jpg");
-            align-items: center;
+
+        .form-control-pass {
+            padding: 10px;
+            border-radius: 10px;
         }
+
         .sing_in {
             position: relative;
             display: block;
@@ -34,7 +34,7 @@
             font-family: verdana;
             font-size: 11px;
             letter-spacing: 2px;
-            border-bottom: 1px ;
+            border-bottom: 1px;
 
             background-image: url("../static/img/button.jpg");
             box-sizing: border-box;
@@ -137,7 +137,8 @@
             }
 
         }
-        .form-signin{
+
+        .form-signin {
             width: 100%;
             height: 700px;
             top: 500px;
@@ -146,17 +147,20 @@
 
 
 </head>
-<body>
-<div class="container" align="center" th:style="'background: url(../static/img/background.png) no-repeat center center fixed;'">
+<body style="background-image: url(background_login.jpg)">
+<div align="center" >
     <form style="align-items: center" class="form-signin" method="post" action="/auth/login">
         <h2 class="form-signin-heading" style="">Please sign in</h2>
         <p>
             <label for="username" class="sr-only">Username</label>
-            <input type="text" id="username" name="username" class="form-control-user" placeholder="Username" required="" autofocus="">
+            <input type="text" id="username" name="username" class="form-control-user" placeholder="Username"
+                   required=""
+                   autofocus="">
         </p>
         <p>
             <label for="password" class="sr-only">Password</label>
-            <input type="password" id="password" name="password" class="form-control-pass" placeholder="Password" required="">
+            <input type="password" id="password" name="password" class="form-control-pass" placeholder="Password"
+                   required="">
         </p>
         <button class="sing_in" type="submit">Sign in</button>
     </form>
