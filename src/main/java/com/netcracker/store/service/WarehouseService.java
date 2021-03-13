@@ -1,6 +1,7 @@
 package com.netcracker.store.service;
 
 import com.netcracker.store.dto.WarehouseDeleteDto;
+import com.netcracker.store.dto.WarehouseNewSuppDto;
 import com.netcracker.store.dto.WarehousePatchDto;
 import com.netcracker.store.dto.WarehousePostDto;
 import com.netcracker.store.entity.Address;
@@ -23,32 +24,47 @@ public class WarehouseService {
     private WarehouseMapper warehouseMapper;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private SupplierService supplierService;
+    @Autowired
+    private AddressService addressService;
 
-    public Product saveWarehouse(WarehousePatchDto warehousePostDto) {
-        try {
-            Product product = warehouseMapper.toProduct(warehousePostDto);
-            productService.save(product);
-            return product;
-        } catch (InputException | AddressException | ProductException |SupplierException exception ) {
-            exception.printStackTrace();
-            return new Product();
+    public Product newProduct(WarehousePostDto warehousePostDto) throws ProductException {
+        Product product = warehouseMapper.toProduct(warehousePostDto);
+        inputData(product);
+        if (productService.getByName(product.getName()) != null) {
+            throw new ProductException("Product in db already");
         }
+        return productService.save(product);
     }
 
-    public Product editNewSupplier(WarehousePatchDto warehouse){
-        try {
-            return warehouseMapper.toProductNewSupplier(warehouse);
-        }catch (SupplierException | AddressException |InputException exception){
-            exception.printStackTrace();
-            return new Product();
-        }
+    public Product editNewSupplier(WarehouseNewSuppDto warehouse) throws ProductException {
+        Product product = warehouseMapper.toProductNewSupplier(warehouse);
+        inputData(product);
+        return productService.save(product);
     }
 
-    public Product editEditSupplier(WarehousePatchDto warehouse){
+    public Product editEditSupplier(WarehousePatchDto warehouse) {
         return warehouseMapper.toProductEditSupplier(warehouse);
     }
 
-    public boolean delete(Long id){
+    public boolean delete(Long id) {
         return productService.deleteById(id);
+    }
+    //boolean
+    protected Address isExists(Address address) {
+        Address search = addressService.find(address.getCountry(), address.getCity(), address.getStreet(), address.getBuilding());
+        return search == null ? addressService.save(address) : search;
+    }
+
+    protected Supplier isExists(Supplier supplier) {
+        Supplier search = supplierService.getByAll(supplier.getName(), supplier.getMail(), supplier.getAddress());
+        return search == null ? supplierService.save(supplier) : search;
+    }
+
+    protected void inputData(Product product) {
+        Supplier supplier = product.getSupplier();
+        supplier.setAddress(isExists(supplier.getAddress()));
+        product.setSupplier(isExists(supplier));
     }
 }

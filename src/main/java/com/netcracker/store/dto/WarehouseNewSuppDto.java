@@ -3,29 +3,19 @@ package com.netcracker.store.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class WarehousePostDto {
-
+public class WarehouseNewSuppDto {
     //info about product
-    @NotNull
-    @NotEmpty
-    private String productName;
-    @NotNull
-    @NotEmpty
+    private String productOldName;
+    private String productNewName;
     private String type;
-    @NotNull
-    @NotEmpty
     private BigDecimal price=BigDecimal.ZERO;
-    @Min(1)
     private int count;
-    @NotNull
-    @NotEmpty
     private String info;
 
     //info about supplier
@@ -47,5 +37,4 @@ public class WarehousePostDto {
     @NotEmpty
     private String street;
     private String building;
-
 }

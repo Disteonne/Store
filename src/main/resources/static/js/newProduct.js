@@ -28,9 +28,9 @@ document.onclick = function (event) {
     }
 }
 
-class NewProduct {
-    productOldName;
-    productNewName;
+class WarehousePostDto {
+    //productOldName;
+    productName;
     type;
     price;
     count;
@@ -43,9 +43,8 @@ class NewProduct {
     street;
     building;
 
-    constructor(nameP, nameN, typeP, priceP, countP, infoP, nameS, mailS, countrySA, citySA, streetSA, buildingSA) {
-        this.productOldName = nameP;
-        this.productNewName = nameN;
+    constructor(nameP, typeP, priceP, countP, infoP, nameS, mailS, countrySA, citySA, streetSA, buildingSA) {
+        this.productName = nameP;
         this.type = typeP;
         this.price = priceP;
         this.count = countP;
@@ -61,7 +60,7 @@ class NewProduct {
 }
 
 function send() {
-    var obj = new NewProduct(document.querySelector('.NameProduct').value, "",
+    var obj = new WarehousePostDto(document.querySelector('.NameProduct').value,
         document.querySelector('.TypeProduct').value,
         document.querySelector('.PriceProduct').value,
         document.querySelector('.CountProduct').value,
@@ -73,7 +72,7 @@ function send() {
         document.querySelector('.StreetSupplierAddress').value,
         document.querySelector('.BuildingSupplierAddress').value);
     console.log(JSON.stringify(obj));
-    sendToSpring(JSON.stringify(obj), "http://" + document.location.host + "/warehouse/new", 'PATCH');
+    sendToSpring(JSON.stringify(obj), "http://" + document.location.host + "/warehouse/new", 'POST');
     window.location.replace('http://' + document.location.host + '/newProduct.html');
 }
 
