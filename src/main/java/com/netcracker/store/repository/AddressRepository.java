@@ -13,7 +13,7 @@ public interface AddressRepository extends JpaRepository<Address,Long> {
     List<Address> getAddressesByCountry(String country,Pageable pageable);
 
     List<Address> getAddressesByCity(String city,Pageable pageable);
-
+    //зацикливается на адресах
     List<Address> getAddressesByStreet(String street,Pageable pageable);
 
     List<Address> getAddressesByCountryAndCity(String country,String city,Pageable pageable);

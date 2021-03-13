@@ -87,7 +87,7 @@ public class SupplierMapper {
             return null;
         }
         SupplierGetDto supplierGetDto=new SupplierGetDto();
-        supplierGetDto.setId(supplierGetDto.getId());
+        supplierGetDto.setId(supplier.getId());
         supplierGetDto.setName(supplier.getName());
         supplierGetDto.setMail(supplier.getMail());
         supplierGetDto.setCountry(supplier.getAddress().getCountry());

@@ -3,8 +3,10 @@ package com.netcracker.store.mapper;
 import com.netcracker.store.dto.AddressDto;
 import com.netcracker.store.dto.AddressPostDto;
 import com.netcracker.store.dto.AddressPutDto;
+import com.netcracker.store.dto.UserProfilePatchDto;
 import com.netcracker.store.entity.Address;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -23,6 +25,8 @@ public interface AddressMapstructMapper {
     Address mapToAddress(AddressPostDto addressPostDto);
 
     Address mapToAddress(AddressPutDto addressPutDto);
+
+    Address mapToAddress(UserProfilePatchDto userProfilePatchDto);
 
     default Address mapToAddress(Address address, AddressDto addressDto) {
         if(addressDto==null){

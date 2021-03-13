@@ -13,7 +13,7 @@ public class SupplierPutDto {
     @NotNull
     private Long id;
     @NotNull
-    @Pattern(regexp = "^[А-ЯA-Z][a-zа-я-]+",message = "Surname is not valid.")
+    @Pattern(regexp = "^[А-ЯA-Z][A-ZА-Яa-zа-я-\\s]+",message = "Surname is not valid.")
     private String name;
     @NotNull
     @Pattern(regexp = "[A-Za-z0-9.]+@[a-z0-9]+\\.[a-z]{2,3}" ,message = "Mail is not valid")

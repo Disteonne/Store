@@ -25,6 +25,9 @@ public class SupplierService {
         return supplierRepository.findByNameAndMailAndAddress(name,mail,address);
     }
 
+    public Supplier getById(Long id){
+        return supplierRepository.getOne(id);
+    }
     public Supplier save(Supplier supplier){
         return supplierRepository.save(supplier);
     }

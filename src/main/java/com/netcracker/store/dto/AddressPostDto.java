@@ -10,13 +10,13 @@ import javax.validation.constraints.Pattern;
 @Setter
 public class AddressPostDto {
     @NotNull
-    @Pattern(regexp = "^[A-ZА-Я][a-zа-я-]+")
+    @Pattern(regexp = "^[a-zа-яA-ZА-Я]+(?:[\\s-][a-zа-яA-ZА-Я]+)*$")
     private String country;
     @NotNull
-    @Pattern(regexp = "^[A-ZА-Я][a-zа-я-]+")
+    @Pattern(regexp = "^[a-zа-яA-ZА-Я]+(?:[\\s-][a-zа-яA-ZА-Я]+)*$")
     private String city;
     @NotNull
-    @Pattern(regexp = "^[A-ZА-Я][a-zа-я-]+")
+    @Pattern(regexp = "(^[a-zа-яA-ZА-Я0-9]+(?:[\\s-.][a-zа-яA-ZА-Я]+)*$)*([-]*)")
     private String street;
     private String building;
 }

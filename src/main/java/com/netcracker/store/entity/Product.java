@@ -31,7 +31,7 @@ public class Product {
     @Column(name = "count")
     private Integer count;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
 

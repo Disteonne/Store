@@ -12,10 +12,10 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface UserProfileMapstructMapper {
 
-    UserProfileMapstructMapper INFO_MAPSTRUCT_MAPPER= Mappers.getMapper(UserProfileMapstructMapper.class);
+    UserProfileMapstructMapper USER_PROFILE_MAPSTRUCT_MAPPER= Mappers.getMapper(UserProfileMapstructMapper.class);
 
     @Mapping(source = "user.id" ,target = "userId")
-    ProfileDto toInfoDto(User user, Address address);
+    ProfileDto toProfileDto(User user, Address address);
 
     default  User mapToUser(UserProfilePatchDto userProfilePatchDto, String currentUserLogin,UserService userService) {
         User user = userService.findByLogin(currentUserLogin);

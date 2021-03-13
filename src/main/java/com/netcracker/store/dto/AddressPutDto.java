@@ -10,16 +10,16 @@ import javax.validation.constraints.Pattern;
 @Setter
 public class AddressPutDto {
 
-    //@NotNull
+    @NotNull
     private Long id;
-    //@NotNull
-    @Pattern(regexp = "^[A-ZА-Я][a-zа-я-]+")
+    @NotNull
+    @Pattern(regexp = "^[a-zа-яA-ZА-Я]+(?:[\\s-][a-zа-яA-ZА-Я]+)*$")
     private String country;
-    //@NotNull
-    @Pattern(regexp = "^[A-ZА-Я][a-zа-я-]+")
+    @NotNull
+    //@Pattern(regexp = "^[A-ZА-Я][a-zа-я-\\s]+")
+    @Pattern(regexp = "^[a-zа-яA-ZА-Я]+(?:[\\s-][a-zа-яA-ZА-Я]+)*$")
     private String city;
-    //@NotNull
-    @Pattern(regexp = "^[A-ZА-Я][a-zа-я-]+")
+    @NotNull
     private String street;
     private String building;
 }

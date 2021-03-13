@@ -24,6 +24,9 @@ function selector() {
         "<tr><td>Страна</td><td><input class='country' type='text'></td></tr>" +
         "<tr><td>Город</td><td><input class='city' type='text'></td></tr>" +
         "<tr><td>Улица</td><td><input class='street' type='text'></td></tr>" +
+        "<tr><td></td><td></td></tr>" +
+        "<tr><td></td><td></td></tr>" +
+        "<tr><td></td><td></td></tr>" +
         "<tr><td><button class='search'>Search</button></td><td></td></tr>" +
         "</tbody></table>";
 
@@ -99,31 +102,34 @@ document.onclick = function (event) {
     }
     if (event.target.classList.contains('change')) {
         changeId = event.target.dataset.id;
-        console.log(changeId);
-        var changes = "<table><tbody>" +
-            "<tr><td>Country</td><td><input class='changeCountry' type='text'></td></tr>" +
-            "<tr><td>City</td><td><input class='changeCity' type='text'></td></tr>" +
-            "<tr><td>Street</td><td><input class='changeStreet' type='text'></td></tr>" +
-            "<tr><td>Building</td><td><input class='changeBuilding' type='text'></td></tr>" +
-            "<tr><td><button class='changeAddress'>Change</button></td><td></td></tr>" +
-            "</tbody>";
-        document.getElementById("changeAdd").innerHTML = changes;
+        getAddresses("http://" + document.location.host + "/address/" + changeId, function (data) {
+            console.log(changeId);
+            var changes = "<table align='center'><tbody>" +
+                "<tr><td>Страна</td><td><input class='changeCountry' type='text' value='" + data.country + "'></td></tr>" +
+                "<tr><td>Город</td><td><input class='changeCity' type='text' value='" + data.city + "'></td></tr>" +
+                "<tr><td>Улица</td><td><input class='changeStreet' type='text' value='" + data.street + "'></td></tr>" +
+                "<tr><td>Здание/офис/кв</td><td><input class='changeBuilding' type='text' value='" + data.building + "'></td></tr>" +
+                "<tr><td><button class='changeAddress'>Change</button></td><td></td></tr>" +
+                "</tbody><br>";
+            document.getElementById("changeAdd").innerHTML = changes;
+        });
     }
     if (event.target.classList.contains('changeAddress')) {
-        new AddressPutDto(changeId, document.querySelector('.changeCountry').value, document.querySelector('.changeCity').value,
-            document.querySelector('.changeStreet').value, document.querySelector('.changeBuilding').value, "");
-        sendToSpring(JSON.stringify(new AddressPutDto(changeId, document.querySelector('.changeCountry').value, document.querySelector('.changeCity').value,
-            document.querySelector('.changeStreet').value, document.querySelector('.changeBuilding').value)), "/address/" + changeId);
+        sendToSpring(
+            JSON.stringify(
+                new AddressPutDto(changeId,
+                    document.querySelector('.changeCountry').value,
+                    document.querySelector('.changeCity').value,
+                    document.querySelector('.changeStreet').value,
+                    document.querySelector('.changeBuilding').value)),
+            "http://" + document.location.host + "/address");
         alert("Адрес изменен");
-        window.location.reload();
+        window.location.replace("http://" + document.location.host + "/address.html");
     }
-    if (event.target.classList.contains('search')){
+    if (event.target.classList.contains('search')) {
         var country = document.querySelector('.country').value;
         var city = document.querySelector('.city').value;
         var street = document.querySelector('.street').value;
-        console.log(country);
-        console.log(city);
-        console.log(street);
         if (country === "" && city === "" && street === "") {
             //street(queryUrl);
             queryUrl = "http://" + document.location.host + "/addresses?page=";
@@ -144,21 +150,51 @@ document.onclick = function (event) {
         }
         start(queryUrl);
     }
-    if (event.target.classList.contains('logout')){
-        window.location.replace('http://'+document.location.host+"/logout");
+    if (event.target.classList.contains('logout')) {
+        window.location.replace('http://' + document.location.host + "/logout");
     }
-    if (event.target.classList.contains('mainMenu')){
-        window.location.replace("http://"+document.location.host+"/mainMenu.html");
+    if (event.target.classList.contains('mainMenu')) {
+        window.location.replace("http://" + document.location.host + "/mainMenu.html");
+    }
+    if (event.target.classList.contains('newAddress')) {
+        var newAddress = "<table align='center'><tbody>" +
+            "<tr><td>Страна</td><td><input class='newCountry' type='text'></td></tr>" +
+            "<tr><td>Город</td><td><input class='newCity' type='text'></td></tr>" +
+            "<tr><td>Улица</td><td><input class='newStreet' type='text'></td></tr>" +
+            "<tr><td>Здание/офис/кв</td><td><input class='newBuilding' type='text'></td></tr>" +
+            "<tr><td><button class='add'>Add</button></td><td></td></tr>" +
+            "</tbody>";
+        document.getElementById("newAddress").innerHTML = newAddress;
+    }
+    if (event.target.classList.contains('add')) {
+        sendNewAddress(JSON.stringify(new Address(document.querySelector('.newCountry').value,
+            document.querySelector('.newCity').value,
+            document.querySelector('.newStreet').value,
+            document.querySelector('.newBuilding').value)), "http://" + document.location.host + "/address")
+        alert("Адрес добавлен");
+        window.location.replace("http://" + document.location.host + "/address.html");
     }
 }
+
 function first() {
     start("http://" + document.location.host + "/addresses?page=");//стартуем с изначальным url
 }
 
 function sendToSpring(jsonText, url) {
-
     $.ajax({
-        type: "PATCH",
+        type: "PUT",
+        contentType: 'application/json; charset=utf-8',
+        url: url,
+        data: jsonText,
+        success: function (result) {
+            // do what ever you want with data
+        }
+    });
+}
+
+function sendNewAddress(jsonText, url) {
+    $.ajax({
+        type: "POST",
         contentType: 'application/json; charset=utf-8',
         url: url,
         data: jsonText, // Note it is important
@@ -166,6 +202,16 @@ function sendToSpring(jsonText, url) {
             // do what ever you want with data
         }
     });
+}
+
+
+class Address {
+    constructor(country, city, street, building) {
+        this.country = country;
+        this.city = city;
+        this.street = street;
+        this.building = building;
+    }
 }
 
 first();
