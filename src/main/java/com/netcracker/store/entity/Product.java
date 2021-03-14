@@ -1,6 +1,5 @@
 package com.netcracker.store.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,7 +30,7 @@ public class Product {
     @Column(name = "count")
     private Integer count;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()//cascade = CascadeType.ALL
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
 

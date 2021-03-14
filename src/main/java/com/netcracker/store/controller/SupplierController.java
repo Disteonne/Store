@@ -33,6 +33,11 @@ public class SupplierController {
                 .getAll(nameLike, page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)));
     }
 
+    @GetMapping("/allSuppliers")
+    public List<SupplierDto> getAllWithoutPaginationAndSort() {
+        return SupplierMapstructMapper.SUPPLIER_MAPSTRUCT_MAPPER.mapToSupplierDtoList(supplierService.getAll());
+    }
+
     @GetMapping("/supplier/{id}")
     public SupplierDto getById(@PathVariable(value = "id") Long id) {
         return SupplierMapstructMapper.SUPPLIER_MAPSTRUCT_MAPPER.mapToSupplierDto(supplierService.getById(id));

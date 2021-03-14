@@ -45,7 +45,7 @@ function send() {
     if(confirm("Товар с наименованием: "+ document.querySelector('.NameProduct').value +" будет удален из базы.Вы уверены?")) {
         console.log(JSON.stringify(obj));
         ///product/{name}
-        getProductByName('http://'+document.location.host+"/product/"+obj.name,function (data) {
+        getProductByName('http://'+document.location.host+"/product?name="+obj.name,function (data) {
             sendToSpring("http://"+document.location.host+"/warehouse/delete/"+parseInt(data.id))
         });
         //sendToSpring(JSON.stringify(obj),"http://"+document.location.host+"/warehouse/delete",'DELETE');

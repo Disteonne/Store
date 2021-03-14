@@ -83,15 +83,16 @@ public class ProductMapper {
         }
         Product product = new Product();
         product.setId(productPutDto.getId());
+        product.setName(productPutDto.getName());
         product.setPrice(productPutDto.getPrice());
         product.setCount(productPutDto.getCount());
         product.setInfo(productPutDto.getInfo());
-        product.setName(productPutDto.getName());
         product.setType(productPutDto.getType());
 
         Supplier supplier = new Supplier();
         supplier.setId(productPutDto.getSupplierId());
         product.setSupplier(supplier);
+        String s="";
         return product;
     }
 
