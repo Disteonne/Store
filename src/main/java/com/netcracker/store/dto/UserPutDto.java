@@ -9,6 +9,7 @@ import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
+//нигде не используется (кроме маппера)
 public class UserPutDto {
 
     @NotNull

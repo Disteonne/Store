@@ -2,17 +2,43 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Warehouse</title>
+    <script type="text/javascript" src=" https://code.jquery.com/jquery-1.11.2.js "></script>
     <style>
-        @import "css/warehouse.css";
+        @import "css/style.css";
+        @import "css/pagination_button.css";
+        @import "css/editProduct.css";
     </style>
-<body style="background-image: url(background.jpg)">
-<a id='editProduct' href="/edit.html" class="edit">Edit product</a>
-<a id='newProduct' href="/newProduct.html" class="new">New product</a>
-<a id='deleteProduct' href="/deleteProduct.html" class="delete">Delete product</a>
-</body>
 </head>
 <body>
+<header>
+    <button class="headers" type="button">Поиск</button>
+</header>
+<div id="inputText"></div>
+<br>
+<div id="asc" class="asc"><button class="ASC">По возрастанию</button></div>
+<div id="desc" class="desc"><button class="DESC">По убыванию</button></div>
+<br>
 
+<div id="all_product"></div>
+<div id="pagination"></div>
+
+<div id="editProduct"></div>
+<br>
+<div id="newProduct"></div>
+<table align="center">
+    <tr>
+        <td>
+            <button class="logout" type="button">Logout</button>
+        </td>
+        <td>
+            <button class="mainMenu" type="button">Главное меню</button>
+        </td>
+        <td>
+            <button class="newProduct" type="button">+</button>
+        </td>
+    </tr>
+</table>
+<script src="/js/warehouse.js"></script>
 </body>
 </html>

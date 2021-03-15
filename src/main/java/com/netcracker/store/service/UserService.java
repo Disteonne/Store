@@ -58,6 +58,7 @@ public class UserService {
     public User getCurrent() {
         return findByLogin(getCurrentUserLogin());
     }
+
     private String getCurrentUserLogin() {//login
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getName();

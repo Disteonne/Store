@@ -28,32 +28,29 @@ function getSelector() {
     document.getElementById('inputText').innerHTML = inp;
 
 }
+
 var inputIn = document.querySelector('.input-in');
 var button = document.querySelector('button');
 
-
-button.onclick = function () {
-    countPage = 0;
-    var searchName = inputIn.value;
-    console.log(searchName);
-    var newUrl = 'http://' + urlHost + '/products?nameLike=' + searchName + '&page=';//&size=6
-    getMax('http://' + urlHost + '/count?name=' + searchName, 'json', newUrl);
-    //functionByUrl(newUrl, 'json',);
-}
 var urlHost = document.location.host
 
 var urlHost = document.location.host
+
+var orderBy="asc";
+
 function start(inputIn) {
     if (inputIn === null) {
-        getMax('http://' + urlHost + '/count', 'text', 'http://' + urlHost + '/products?page=');
+        getMax('http://' + urlHost + '/count', 'text', 'http://' + urlHost + '/products?page=',orderBy);
     } else if (inputIn === "") {
-        getMax('http://' + urlHost + '/count', 'text', 'http://' + urlHost + '/products?page=');
+        getMax('http://' + urlHost + '/count', 'text', 'http://' + urlHost + '/products?page=',orderBy);
         //var inputIn = document.querySelector('.input-in');
     } else {
         countPage = 0;
-        getMax('http://' + urlHost + '/count?name=' + inputIn.value);
+        //getMax('http://' + urlHost + '/count?name=' + inputIn.value);
+        getMax('http://' + urlHost + '/count?name=' + inputIn.value,'text','http://' + urlHost + '/products?nameLike='+inputIn.value+'&page=',orderBy);
     }
 }
+
 start(inputIn);
 
 
@@ -90,7 +87,7 @@ var result = 0;
 function getMax(url, type, urlForProduct) {
     getInfoAboutProduct(url, type, function (data) {
         maxPage = Math.round(data / 5);//максимальное кол-во страниц
-        functionByUrl(urlForProduct + countPage, 'json')
+        functionByUrl(urlForProduct + countPage+"&orderBy="+orderBy, 'json')
         pagination(countPage, maxPage);
         var next;
         var prev;
@@ -100,7 +97,7 @@ function getMax(url, type, urlForProduct) {
                 if (countPage <= maxPage) {
                     countPage++;
                     getMax(url, type, urlForProduct);
-                    functionByUrl(urlForProduct + countPage, 'json');
+                    functionByUrl(urlForProduct + countPage+"&orderBy="+orderBy, 'json');
                 } else {
                     pagination(countPage, maxPage);
                 }
@@ -112,7 +109,7 @@ function getMax(url, type, urlForProduct) {
                 if (countPage >= 0) {
                     countPage--;
                     getMax(url, type, urlForProduct);
-                    functionByUrl(urlForProduct + countPage, 'json');
+                    functionByUrl(urlForProduct + countPage+"&orderBy="+orderBy, 'json');
                 }
             }
         }
@@ -133,42 +130,76 @@ var pagination = function nextPrev(counter, maxPage) {
         '</table>';
     document.getElementById('pagination').innerHTML = forButton;
 }
+/*
+
+button.onclick = function () {
+    countPage = 0;
+    var searchName = inputIn.value;
+    console.log(searchName);
+    var newUrl = 'http://' + urlHost + '/products?nameLike=' + searchName + '&page=';//&size=6
+    getMax('http://' + urlHost + '/count?name=' + searchName, 'json', newUrl);
+    //functionByUrl(newUrl, 'json',);
+}
+ */
+
 //КОРЗИНА
 var countBasket = 0;
 document.onclick = function (event) {
-    if (countBasket <= 10) {
-        if (event.target.classList.contains('buttons_plus')) {
-            plusFunction(event.target.dataset.id);
-        }
-        if (event.target.classList.contains('buttons_minus')) {
-            minusFunction(event.target.dataset.id);
-        }
-        if (event.target.classList.contains('delete')) {
-            deleteProduct(event.target.dataset.id);
-        }if(event.target.classList.contains("headers")){
-            getSelector();
-        }if (event.target.classList.contains("input-selector-one")){
-            countPage = 0;
+    if (event.target.classList.contains('buttons_plus')) {
+        plusFunction(event.target.dataset.id);
+    }
+    if (event.target.classList.contains('buttons_minus')) {
+        minusFunction(event.target.dataset.id);
+    }
+    if (event.target.classList.contains('delete')) {
+        deleteProduct(event.target.dataset.id);
+    }
+    if (event.target.classList.contains("headers")) {
+        getSelector();
+    }
+    if (event.target.classList.contains("input-selector-one")) {
+        countPage = 0;
+        var searchName = document.querySelector('.input-in').value;
+        console.log(searchName);
+        var newUrl = 'http://' + urlHost + '/products?nameLike=' + searchName + '&page=';//&size=6
+        getMax('http://' + urlHost + '/count?name=' + searchName, 'json', newUrl);
+    }
+    if (event.target.classList.contains("logout")) {
+        window.location.replace('http://' + document.location.host + "/logout");
+    }
+    if (event.target.classList.contains("mainMenu")) {
+        window.location.replace("http://" + document.location.host + "/mainMenu.html");
+    }
+    if (event.target.classList.contains("ASC")) {
+        orderBy = "asc";
+        if (document.querySelector('.input-in') == null) {
+            start(inputIn);
+        } else {
             var searchName = document.querySelector('.input-in').value;
             console.log(searchName);
             var newUrl = 'http://' + urlHost + '/products?nameLike=' + searchName + '&page=';//&size=6
             getMax('http://' + urlHost + '/count?name=' + searchName, 'json', newUrl);
         }
-        if(event.target.classList.contains("logout")){
-            window.location.replace('http://'+document.location.host+"/logout");
+    }
+    if (event.target.classList.contains("DESC")) {
+        orderBy = "desc";
+        if (document.querySelector('.input-in') == null) {
+            start(inputIn);
+        } else {
+            var searchName = document.querySelector('.input-in').value;
+            console.log(searchName);
+            var newUrl = 'http://' + urlHost + '/products?nameLike=' + searchName + '&page=';//&size=6
+            getMax('http://' + urlHost + '/count?name=' + searchName, 'json', newUrl);
         }
-        if(event.target.classList.contains("mainMenu")){
-            window.location.replace("http://"+document.location.host+"/mainMenu.html");
-        }
-    } else {
-        console.log('basket is full')
     }
 }
+
 function deleteProduct(id) {
-    var productId=id.substr(1,2);
+    var productId = id.substr(1, 2);
     mapBasket.delete(productId);
     basket(mapBasket);
 }
+
 var mapBasket = new Map();
 
 function plusFunction(id) {
@@ -222,7 +253,7 @@ var addBasket = function productById(tableBasket, map) {
                     tableBasket += "<tr><td>" + item.name + "</td>"
                         + "<td>" + values + "</td>"
                         + "<td>" + (item.price * values) + "</td>"
-                        + "<td><button class='delete' data-id=\"d"+ key + "\">Удалить</button></td>";
+                        + "<td><button class='delete' data-id=\"d" + key + "\">Удалить</button></td>";
                     sumOfPurchase += item.price * values;
                     basket.push(new Basket(item.id, values));
                 }

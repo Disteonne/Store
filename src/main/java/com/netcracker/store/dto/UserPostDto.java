@@ -1,5 +1,6 @@
 package com.netcracker.store.dto;
 
+import com.netcracker.store.entity.UsersRole;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,7 @@ import javax.validation.constraints.Pattern;
 @Setter
 public class UserPostDto {
 
-    private String credentials;
+    private String credentials= UsersRole.ROLE_USER.toString();//default
     @NotNull
     @Pattern(regexp = "^[А-Я][а-я-]+",message = "Surname is not valid.")
     private String surname;
@@ -26,6 +27,7 @@ public class UserPostDto {
     private String login;
     @NotNull
     private String password;
+    //private String mail;
     @NotNull
     private Long addressId;
 

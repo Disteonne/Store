@@ -170,11 +170,11 @@ function inputsAndList(id) {
                     "</body>" +
                     "</table>";
 
-                document.getElementById('edit').innerHTML = inputs;
+                document.getElementById('warehouse').innerHTML = inputs;
             })
 
         })
-        //document.getElementById('edit').innerHTML=inputs;
+        //document.getElementById('warehouse').innerHTML=inputs;
     })
 }
 

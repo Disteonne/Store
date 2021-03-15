@@ -25,8 +25,8 @@ public interface ProductMapstructMapper {
 
 
     @Mapping(source = "newCount",target = "count")
-    @Mapping(source = "productDto.supplierId",target = "supplierId")
-    ProductBasketDto toProductBasketDto(ProductDto productDto, int newCount);
+    @Mapping(source = "product.supplier.id",target = "supplierId")
+    ProductBasketDto toProductBasketDto(Product product, int newCount);
 
     @Mapping(source = "productPostDto.supplierId",target = "supplier.id")
     Product mapToProduct(ProductPostDto productPostDto);

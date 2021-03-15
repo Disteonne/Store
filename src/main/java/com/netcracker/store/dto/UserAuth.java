@@ -5,7 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserAutho {
+//зачем я это делала?
+public class UserAuth {
     private String username;
     private String password;
 }
