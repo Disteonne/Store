@@ -3,6 +3,7 @@ package com.netcracker.store.controller;
 import com.netcracker.store.dto.*;
 import com.netcracker.store.entity.Address;
 import com.netcracker.store.entity.User;
+import com.netcracker.store.entity.UsersRole;
 import com.netcracker.store.mapper.*;
 import com.netcracker.store.service.AddressService;
 import com.netcracker.store.service.UserService;
@@ -28,9 +29,11 @@ public class UserController {
 
     @PostMapping("/registration")
     public ResponseEntity<UserDto> save(@Valid @RequestBody UserPostDto userPostDto) {
+        userPostDto.getRole().add(UsersRole.ROLE_USER);
+        User user=UserMapstructMapper.USER_MAPSTRUCT_MAPPER.toUser(userPostDto);
+        user.setAddress(addressService.save(addressService.getAddress(user.getAddress())));
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                UserMapstructMapper.USER_MAPSTRUCT_MAPPER.mapToUserDto(
-                        userService.save(UserMapstructMapper.USER_MAPSTRUCT_MAPPER.toUser(userPostDto))));
+                UserMapstructMapper.USER_MAPSTRUCT_MAPPER.mapToUserDto(userService.save(userService.savePassword(user))));
     }
 
     @GetMapping("/profile")

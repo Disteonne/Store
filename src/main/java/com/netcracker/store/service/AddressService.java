@@ -47,29 +47,8 @@ public class AddressService {
     }
 
 
-    public List<Address> getAll(String country, String city, String street, int page, int size, Sort sort) {
-        if (country != null && city == null && street == null) {
-            return addressRepository.getAddressesByCountry(country, PageRequest.of(page, size, sort));
-        }
-        if (country == null && city != null && street == null) {
-            return addressRepository.getAddressesByCity(city, PageRequest.of(page, size, sort));
-        }
-        if (country == null && city == null && street != null) {
-            return addressRepository.getAddressesByStreet(street, PageRequest.of(page, size, sort));
-        }
-        if (country != null && city != null && street == null) {
-            return addressRepository.getAddressesByCountryAndCity(country, city, PageRequest.of(page, size, sort));
-        }
-        if (country != null && city == null && street != null) {
-            return addressRepository.getAddressesByCountryAndStreet(country, street, PageRequest.of(page, size, sort));
-        }
-        if (country == null && city != null && street != null) {
-            return addressRepository.getAddressesByCityAndStreet(city, street, PageRequest.of(page, size, sort));
-        }
-        if (country != null && city != null && street != null) {
-            return addressRepository.getAddressesByCountryAndCityAndStreet(country, city, street, PageRequest.of(page, size, sort));
-        }
-        return addressRepository.findAll(PageRequest.of(page, size, sort)).getContent();
+    public List<Address> getAll(String country, String city, String street, int page, int size, Sort sort){
+       return addressRepository.findByQuery(country,city,street,PageRequest.of(page, size, sort));
     }
 
     public Address find(String country, String city, String street, String building) {

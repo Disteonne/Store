@@ -1671,3 +1671,35 @@ ____________________________________________________CSS______________________
     -ms-animation: pulsate 1.2s infinite;
     animation: pulsate 1.2s infinite;
 }
+
+
+_____________________________USERCONTROLLER_______________
+ @PostMapping("/registration")
+    public ResponseEntity<UserDto> save(@Valid @RequestBody UserPostDto userPostDto) {
+        userPostDto.getRole().add(UsersRole.ROLE_USER);
+        User user=UserMapstructMapper.USER_MAPSTRUCT_MAPPER.toUser(userPostDto);
+        user.setAddress(addressService.save(addressService.getAddress(user.getAddress())));
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                UserMapstructMapper.USER_MAPSTRUCT_MAPPER.mapToUserDto(userService.save(userService.savePassword(user)));
+        /*
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                UserMapstructMapper.USER_MAPSTRUCT_MAPPER.mapToUserDto(
+                        userService.save(UserMapstructMapper.USER_MAPSTRUCT_MAPPER.toUser(userPostDto))));
+         */
+    }
+
+----------------------------------ADDRES.JS-------------------------
+/*
+function sendNewAddress(jsonText, url) {
+    $.ajax({
+        type: "POST",
+        contentType: 'application/json; charset=utf-8',
+        url: url,
+        data: jsonText, // Note it is important
+        success: function (result) {
+            // do what ever you want with data
+        }
+    });
+}
+
+ */

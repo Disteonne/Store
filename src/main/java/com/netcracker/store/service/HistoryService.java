@@ -1,6 +1,7 @@
 package com.netcracker.store.service;
 
 import com.netcracker.store.entity.History;
+import com.netcracker.store.entity.User;
 import com.netcracker.store.repository.HistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,7 +29,8 @@ public class HistoryService {
     }
 
     public List<History> getAll(int page, int size, Sort sort) {
-        Page<History> result = historyRepository.findAll(PageRequest.of(page, size, sort));
+        //Page<History> result = historyRepository.findAll(PageRequest.of(page, size, sort));
+        Page<History> result = historyRepository.findByUser( userService.getCurrent(),PageRequest.of(page, size, sort));
         return result.getContent();
     }
 
@@ -36,6 +38,8 @@ public class HistoryService {
         if(date==null){
           return getAll(page,size,sort);
         }
+        User user=userService.getCurrent();
         return historyRepository.findAllByDate(date,userService.getCurrent().getId(),PageRequest.of(page,size,sort));
+        //return  historyRepository.findByDateContainingAndUser(date,userService.getCurrent(),PageRequest.of(page,size,sort));
     }
 }

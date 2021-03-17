@@ -167,7 +167,7 @@ document.onclick = function (event) {
         document.getElementById("newAddress").innerHTML = newAddress;
     }
     if (event.target.classList.contains('add')) {
-        sendNewAddress(JSON.stringify(new Address(document.querySelector('.newCountry').value,
+        sendToSpring(JSON.stringify(new Address(document.querySelector('.newCountry').value,
             document.querySelector('.newCity').value,
             document.querySelector('.newStreet').value,
             document.querySelector('.newBuilding').value)), "http://" + document.location.host + "/address")
@@ -191,19 +191,6 @@ function sendToSpring(jsonText, url) {
         }
     });
 }
-
-function sendNewAddress(jsonText, url) {
-    $.ajax({
-        type: "POST",
-        contentType: 'application/json; charset=utf-8',
-        url: url,
-        data: jsonText, // Note it is important
-        success: function (result) {
-            // do what ever you want with data
-        }
-    });
-}
-
 
 class Address {
     constructor(country, city, street, building) {

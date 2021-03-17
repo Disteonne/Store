@@ -1,6 +1,8 @@
 package com.netcracker.store.repository;
 
 import com.netcracker.store.entity.History;
+import com.netcracker.store.entity.User;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,5 +18,7 @@ public interface HistoryRepository extends JpaRepository<History, Long> {
 
     @Query(value = "SELECT h FROM History h WHERE h.date=:date AND h.user.id=:id")
     List<History> findAllByDate(@Param("date") LocalDate date,@Param("id") Long id,Pageable pageable);
+
+    Page<History> findByUser(User user , Pageable pageable);
 
 }

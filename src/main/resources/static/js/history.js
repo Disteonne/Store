@@ -39,6 +39,9 @@ function outputHistory(page, url) {
         "</thead>" +
         "<tbody>";
     getHistories(url + page, function (data) {
+        if(data===null){
+            alert('History is empty');
+        }
         if (data.length === 0) {
             page = 0
             var divFor = document.createElement("div");

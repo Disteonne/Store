@@ -3,6 +3,8 @@ package com.netcracker.store.repository;
 import com.netcracker.store.entity.Address;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -10,19 +12,8 @@ import java.util.List;
 @Repository
 public interface AddressRepository extends JpaRepository<Address,Long> {
 
-    List<Address> getAddressesByCountry(String country,Pageable pageable);
-
-    List<Address> getAddressesByCity(String city,Pageable pageable);
-    //зацикливается на адресах
-    List<Address> getAddressesByStreet(String street,Pageable pageable);
-
-    List<Address> getAddressesByCountryAndCity(String country,String city,Pageable pageable);
-
-    List<Address> getAddressesByCountryAndStreet(String country,String street,Pageable pageable);
-
-    List<Address> getAddressesByCityAndStreet(String city,String street,Pageable pageable);
-
-    List<Address> getAddressesByCountryAndCityAndStreet(String country, String  city, String street, Pageable pageable);
+    @Query(value = "SELECT * FROM Address a where a.country LIKE  CONCAT(:country,'%') AND a.city LIKE CONCAT(:city,'%') AND a.street LIKE CONCAT(:street,'%')",nativeQuery = true)
+    List<Address> findByQuery(@Param("country") String country,@Param("city") String city,@Param("street") String street,Pageable pageable);
 
     //for search db
     Address getAddressByCountryAndCityAndStreetAndBuilding(String country,String city,String street,String building);

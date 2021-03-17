@@ -42,7 +42,7 @@ public class UserMapper {
         all.forEach(user -> result.add(toUserDto(user)));
         return result;
     }
-
+    /*
     public User toUser(UserPostDto userPostDto) {
 
         if (userPostDto == null) {
@@ -68,6 +68,8 @@ public class UserMapper {
         user.setAddress(address);
         return user;
     }
+
+     */
 
     public User toUser(UserPutDto userPutDto) {
         if (userPutDto == null) {

@@ -25,7 +25,9 @@ public class HistoryController {
                                 @RequestParam(required = false, defaultValue = "14") Integer size,
                                 @RequestParam(required = false, defaultValue = "date") String sortName,
                                 @RequestParam(required = false, defaultValue = "desc") String orderBy) {
-
+        if(historyService.findByUserId(date, page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)).isEmpty()){
+            return null;
+        }
        // return historyMapper.toHistoryDtoList(historyService.findByUserId(date,page,size,Sort.by(Sort.Direction.fromString(orderBy),sortName)));
         return HistoryMapstructMapper.HISTORY_MAPSTRUCT_MAPPER.toHistoryDtoList(historyService.findByUserId(date, page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)));
     }
