@@ -6,5 +6,6 @@ CREATE TABLE product
     price       real        not null,
     count       integer     NOT NULL,
     info        VARCHAR     NOT NULL,
-    supplier_id integer REFERENCES supplier (id)
+    supplier_id integer REFERENCES supplier (id),
+    CONSTRAINT constraint_name UNIQUE (name)
 );
