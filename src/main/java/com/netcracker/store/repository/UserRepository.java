@@ -14,7 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.address.street=:street")
     List<User> getUser(String street, Pageable pageable);
 
-    User findByLogin(String name);
+    User findByLogin(String login);
 
     User findByName(String name);
 }

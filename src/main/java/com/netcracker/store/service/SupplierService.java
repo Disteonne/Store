@@ -25,6 +25,14 @@ public class SupplierService {
         return supplierRepository.findByNameAndMailAndAddress(name,mail,address);
     }
 
+    public Supplier getSupplier(Supplier supplier){
+        Supplier searchSupplier=supplierRepository.findByName(supplier.getName());
+        if(searchSupplier==null){
+            searchSupplier=supplier;
+        }
+        return searchSupplier;
+    }
+
     public Supplier getById(Long id){
         return supplierRepository.getOne(id);
     }

@@ -43,12 +43,19 @@ public class SupplierController {
         return SupplierMapstructMapper.SUPPLIER_MAPSTRUCT_MAPPER.mapToSupplierDto(supplierService.getById(id));
     }
 
+    /*
+        getSupplier() проверяет есть ли в бд такой поставщик ( по наименованию), т.к  1 поставщик-1 адрес
+        1 адрес-много поставщиков
+        (в бд указывается поставщик с уникальным названием компании.поэтому ищем по имени)
+     */
     @PostMapping("/supplier")
     public ResponseEntity<SupplierDto> save(@Valid @RequestBody SupplierPostDto supplierPostDto) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(SupplierMapstructMapper.SUPPLIER_MAPSTRUCT_MAPPER.mapToSupplierDto
-                        (supplierService.save(SupplierMapstructMapper.SUPPLIER_MAPSTRUCT_MAPPER.mapToSupplier(supplierPostDto))));
+                        (supplierService.save(supplierService.
+                                getSupplier(SupplierMapstructMapper.
+                                        SUPPLIER_MAPSTRUCT_MAPPER.mapToSupplier(supplierPostDto)))));
     }
 
     @PutMapping("/supplier")

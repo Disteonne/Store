@@ -42,6 +42,13 @@ public class UserService {
         return user;
     }
 
+    public  User getUser(User user){
+        User searchUser=userRepository.findByLogin(user.getLogin());
+        if(searchUser==null){
+            searchUser=user;
+        }
+        return searchUser;
+    }
     public User findByLogin(String login) {
         return userRepository.findByLogin(login);
     }

@@ -14,4 +14,6 @@ public interface SupplierRepository extends JpaRepository<Supplier,Long> {
     List<Supplier> findSupplierByNameStartingWith(String nameLike, Pageable pageable);
 
     Supplier findByNameAndMailAndAddress(String name, String mail, Address address);
+
+    Supplier findByName(String name);
 }

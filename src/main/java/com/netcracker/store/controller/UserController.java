@@ -27,27 +27,32 @@ public class UserController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    /*
+    getUser()-проверяет наличие такого-же пользователя по логину.т.к.логин-уникален
+     */
     @PostMapping("/registration")
     public ResponseEntity<UserDto> save(@Valid @RequestBody UserPostDto userPostDto) {
         userPostDto.getRole().add(UsersRole.ROLE_USER);
-        User user=UserMapstructMapper.USER_MAPSTRUCT_MAPPER.toUser(userPostDto);
+        User user = UserMapstructMapper.USER_MAPSTRUCT_MAPPER.toUser(userPostDto);
         user.setAddress(addressService.save(addressService.getAddress(user.getAddress())));
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                UserMapstructMapper.USER_MAPSTRUCT_MAPPER.mapToUserDto(userService.save(userService.savePassword(user))));
+                UserMapstructMapper.USER_MAPSTRUCT_MAPPER.
+                        mapToUserDto(userService.save(userService.getUser(
+                                userService.savePassword(user)))));
     }
 
     @GetMapping("/profile")
     public ProfileDto getInfo() {
         User user = userService.findByLogin(getCurrentUserLogin());
         Address address = addressService.getById(UserMapstructMapper.USER_MAPSTRUCT_MAPPER.mapToUserDto(user).getAddressId());
-       // return userProfileMapper.toInfoDto(user, address);
-        return UserProfileMapstructMapper.USER_PROFILE_MAPSTRUCT_MAPPER.toProfileDto(user,address);
+        // return userProfileMapper.toInfoDto(user, address);
+        return UserProfileMapstructMapper.USER_PROFILE_MAPSTRUCT_MAPPER.toProfileDto(user, address);
     }
 
     @PutMapping("/profile")
     public UserProfilePatchDto saveInfo(@Valid @RequestBody UserProfilePatchDto userProfilePatchDto) {
-        User user= UserProfileMapstructMapper.USER_PROFILE_MAPSTRUCT_MAPPER.mapToUser(userProfilePatchDto,getCurrentUserLogin(),userService);
-        Address newAddress= AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddress(userProfilePatchDto);
+        User user = UserProfileMapstructMapper.USER_PROFILE_MAPSTRUCT_MAPPER.mapToUser(userProfilePatchDto, getCurrentUserLogin(), userService);
+        Address newAddress = AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddress(userProfilePatchDto);
         user.setAddress(addressService.save(addressService.getAddress(newAddress)));
         userService.save(user);
         return userProfilePatchDto;
@@ -65,7 +70,7 @@ public class UserController {
     }
 
     @DeleteMapping("/profile/delete/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable(value = "id") Long id,@RequestBody String empty) {
+    public ResponseEntity<Void> deleteById(@PathVariable(value = "id") Long id, @RequestBody String empty) {
         return userService.deleteById(id) ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
