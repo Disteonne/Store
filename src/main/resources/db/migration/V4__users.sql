@@ -8,5 +8,5 @@ CREATE TABLE users
     password  VARCHAR     NOT NULL,
     mail      VARCHAR     NOT NULL,
     address_id integer REFERENCES address (id),
-    CONSTRAINT constraint_name UNIQUE (login,mail)
+    UNIQUE (login,mail)
 );

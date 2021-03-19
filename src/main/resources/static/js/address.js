@@ -167,7 +167,7 @@ document.onclick = function (event) {
         document.getElementById("newAddress").innerHTML = newAddress;
     }
     if (event.target.classList.contains('add')) {
-        sendToSpring(JSON.stringify(new Address(document.querySelector('.newCountry').value,
+        sendToSpringPOST(JSON.stringify(new Address(document.querySelector('.newCountry').value,
             document.querySelector('.newCity').value,
             document.querySelector('.newStreet').value,
             document.querySelector('.newBuilding').value)), "http://" + document.location.host + "/address")
@@ -183,6 +183,18 @@ function first() {
 function sendToSpring(jsonText, url) {
     $.ajax({
         type: "PUT",
+        contentType: 'application/json; charset=utf-8',
+        url: url,
+        data: jsonText,
+        success: function (result) {
+            // do what ever you want with data
+        }
+    });
+}
+
+function sendToSpringPOST(jsonText, url) {
+    $.ajax({
+        type: "POST",
         contentType: 'application/json; charset=utf-8',
         url: url,
         data: jsonText,

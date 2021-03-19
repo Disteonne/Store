@@ -12,13 +12,6 @@ SIM-карты: 2 (nano SIM+eSIM)
 степень защиты: IP68
 вес: 194 г');
 
-INSERT INTO product (name, type, price, count, supplier_id, info)
-values ('Samsung Galaxy S21','Техника и электроника',67900.0,37,2,'Производитель:Samsung
-Тип:смартфон
-Платформа:Android
-Диагональ экрана (точно):6.2 "
-Диагональ экрана:6.0"-6.4"
-Количество основных камер:3');
 
 INSERT INTO product (name, type, price, count, supplier_id, info)
 values ('Samsung Galaxy A11','Техника и электроника',9290.0,17,2,'экран: 6.4" (1560x720)

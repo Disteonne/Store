@@ -38,6 +38,8 @@ var urlHost = document.location.host
 
 var orderBy="asc";
 
+var countPage = 0;
+
 function start(inputIn) {
     if (inputIn === null) {
         getMax('http://' + urlHost + '/count', 'text', 'http://' + urlHost + '/products?page=',orderBy);
@@ -45,7 +47,7 @@ function start(inputIn) {
         getMax('http://' + urlHost + '/count', 'text', 'http://' + urlHost + '/products?page=',orderBy);
         //var inputIn = document.querySelector('.input-in');
     } else {
-        countPage = 0;
+        //countPage = 0;
         //getMax('http://' + urlHost + '/count?name=' + inputIn.value);
         getMax('http://' + urlHost + '/count?name=' + inputIn.value,'text','http://' + urlHost + '/products?nameLike='+inputIn.value+'&page=',orderBy);
     }
@@ -81,38 +83,14 @@ var functionByUrl = function (url, type) {
 
 var page = 0;
 var maxPage = 0;
-var countPage = 0;
 var result = 0;
 
 function getMax(url, type, urlForProduct) {
     getInfoAboutProduct(url, type, function (data) {
         maxPage = Math.round(data / 5);//максимальное кол-во страниц
+        console.log(maxPage);
         functionByUrl(urlForProduct + countPage+"&orderBy="+orderBy, 'json')
         pagination(countPage, maxPage);
-        var next;
-        var prev;
-        if ((countPage + 1) !== maxPage) {
-            next = document.getElementById('next');
-            next.onclick = function () {
-                if (countPage <= maxPage) {
-                    countPage++;
-                    getMax(url, type, urlForProduct);
-                    functionByUrl(urlForProduct + countPage+"&orderBy="+orderBy, 'json');
-                } else {
-                    pagination(countPage, maxPage);
-                }
-            }
-        }
-        if (countPage !== 0) {
-            prev = document.getElementById('prev');
-            prev.onclick = function () {
-                if (countPage >= 0) {
-                    countPage--;
-                    getMax(url, type, urlForProduct);
-                    functionByUrl(urlForProduct + countPage+"&orderBy="+orderBy, 'json');
-                }
-            }
-        }
     })
 }
 
@@ -120,7 +98,7 @@ var pagination = function nextPrev(counter, maxPage) {
     var forButton = '<table align="center">' + '<tr><th>';
     if (counter === 0) {
         forButton += '<button id="next" class="pagination_next">Next</button></th>';
-    } else if (counter + 1 === maxPage) {
+    } else if (counter  === maxPage) {
         forButton += '<th><button id="prev" class="pagination_prev">Prev</button></th><th>';
     } else {
         forButton += '<th><button id="prev" class="pagination_prev">Prev</button></th><th>' +
@@ -130,17 +108,6 @@ var pagination = function nextPrev(counter, maxPage) {
         '</table>';
     document.getElementById('pagination').innerHTML = forButton;
 }
-/*
-
-button.onclick = function () {
-    countPage = 0;
-    var searchName = inputIn.value;
-    console.log(searchName);
-    var newUrl = 'http://' + urlHost + '/products?nameLike=' + searchName + '&page=';//&size=6
-    getMax('http://' + urlHost + '/count?name=' + searchName, 'json', newUrl);
-    //functionByUrl(newUrl, 'json',);
-}
- */
 
 //КОРЗИНА
 var countBasket = 0;
@@ -191,6 +158,14 @@ document.onclick = function (event) {
             var newUrl = 'http://' + urlHost + '/products?nameLike=' + searchName + '&page=';//&size=6
             getMax('http://' + urlHost + '/count?name=' + searchName, 'json', newUrl);
         }
+    }
+    if(event.target.classList.contains("pagination_next")){
+        countPage++;
+        start(document.querySelector('.input-in'));
+    }
+    if(event.target.classList.contains("pagination_prev")){
+        countPage--;
+        start(document.querySelector('.input-in'));
     }
 }
 

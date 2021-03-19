@@ -7,5 +7,5 @@ CREATE TABLE product
     count       integer     NOT NULL,
     info        VARCHAR     NOT NULL,
     supplier_id integer REFERENCES supplier (id),
-    CONSTRAINT constraint_name UNIQUE (name)
+    UNIQUE (name)
 );

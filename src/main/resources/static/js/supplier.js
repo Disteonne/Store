@@ -103,6 +103,10 @@ document.onclick = function (event) {
         inputsAndList(event.target.dataset.id);
     }
     if (event.target.classList.contains('save')) {
+        console.log(JSON.stringify(new SupplierPutDto(event.target.dataset.id,
+            document.querySelector('.name').value,
+            document.querySelector('.mail').value,
+            document.getElementById('select').value)));
         send(JSON.stringify(new SupplierPutDto(event.target.dataset.id,
             document.querySelector('.name').value,
             document.querySelector('.mail').value,
@@ -170,7 +174,7 @@ function inputsAndList(id) {
                     "</body>" +
                     "</table>";
 
-                document.getElementById('warehouse').innerHTML = inputs;
+                document.getElementById('edit').innerHTML = inputs;
             })
 
         })

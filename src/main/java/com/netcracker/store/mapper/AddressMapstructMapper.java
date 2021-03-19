@@ -5,9 +5,11 @@ import com.netcracker.store.dto.AddressPostDto;
 import com.netcracker.store.dto.AddressPutDto;
 import com.netcracker.store.dto.UserProfilePatchDto;
 import com.netcracker.store.entity.Address;
+import com.netcracker.store.repository.AddressRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -28,22 +30,4 @@ public interface AddressMapstructMapper {
 
     Address mapToAddress(UserProfilePatchDto userProfilePatchDto);
 
-    default Address mapToAddress(Address address, AddressDto addressDto) {
-        if(addressDto==null){
-            return address;
-        }
-        if(!addressDto.getCountry().equals("")){
-            address.setCountry(addressDto.getCountry());
-        }
-        if(!addressDto.getCity().equals("")){
-            address.setCity(addressDto.getCity());
-        }
-        if(!addressDto.getStreet().equals("")){
-            address.setStreet(addressDto.getStreet());
-        }
-        if(!addressDto.getBuilding().equals("")){
-            address.setBuilding(addressDto.getBuilding());
-        }
-        return address;
-    }
 }
