@@ -2,11 +2,7 @@ package com.netcracker.store.controller;
 
 import com.netcracker.store.API.SupplierService;
 import com.netcracker.store.dto.SupplierDto;
-import com.netcracker.store.dto.SupplierGetDto;
-import com.netcracker.store.dto.SupplierPostDto;
-import com.netcracker.store.dto.SupplierPutDto;
 import com.netcracker.store.mapper.SupplierMapstructMapper;
-import com.netcracker.store.service.SupplierServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -23,7 +19,7 @@ public class SupplierController {
     private SupplierService supplierServiceImpl;
 
     @GetMapping("/suppliers") //
-    public List<SupplierGetDto> getAll(@RequestParam(required = false) String nameLike,
+    public List<SupplierDto> getAll(@RequestParam(required = false) String nameLike,
                                        @RequestParam(required = false, defaultValue = "0") Integer page,
                                        @RequestParam(required = false, defaultValue = "10") Integer size,
                                        @RequestParam(required = false, defaultValue = "name") String sortName,
@@ -49,18 +45,18 @@ public class SupplierController {
         (в бд указывается поставщик с уникальным названием компании.поэтому ищем по имени)
      */
     @PostMapping("/supplier")
-    public ResponseEntity<SupplierDto> save(@Valid @RequestBody SupplierPostDto supplierPostDto) {
+    public ResponseEntity<SupplierDto> save(@Valid @RequestBody SupplierDto supplierPostDto) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(SupplierMapstructMapper.SUPPLIER_MAPSTRUCT_MAPPER.mapToSupplierDto
                         (supplierServiceImpl.save(supplierServiceImpl.
                                 getSupplier(SupplierMapstructMapper.
-                                        SUPPLIER_MAPSTRUCT_MAPPER.mapToSupplier(supplierPostDto)))));
+                                        SUPPLIER_MAPSTRUCT_MAPPER.mapToSupplierPost(supplierPostDto)))));
     }
 
     @PutMapping("/supplier")
-    public ResponseEntity<SupplierDto> put(@Valid @RequestBody SupplierPutDto supplierPutDto) {
+    public ResponseEntity<SupplierDto> put(@Valid @RequestBody SupplierDto supplierPutDto) {
         return ResponseEntity.ok(SupplierMapstructMapper.SUPPLIER_MAPSTRUCT_MAPPER.mapToSupplierDto(
-                supplierServiceImpl.save(SupplierMapstructMapper.SUPPLIER_MAPSTRUCT_MAPPER.mapToSupplier(supplierPutDto))));
+                supplierServiceImpl.save(SupplierMapstructMapper.SUPPLIER_MAPSTRUCT_MAPPER.mapToSupplierPut(supplierPutDto))));
     }
 }

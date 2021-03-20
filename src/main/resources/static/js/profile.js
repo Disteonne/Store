@@ -24,6 +24,7 @@ function profile(flag) {
                 "<tr><td>Surname</td><td>" + data.surname + "</td></tr>" +
                 "<tr><td>Age</td><td>" + data.age + "</td></tr>" +
                 "<tr><td>Login</td><td>" + data.login + "</td><td></tr>" +
+                "<tr><td>Login</td><td>" + data.mail + "</td><td></tr>" +
                 "<tr><td>Country</td><td>" + data.country + "</td></tr>" +
                 "<tr><td>City</td><td>" + data.city + "</td></tr>" +
                 "<tr><td>Street</td><td>" + data.street + "</td></tr>";
@@ -94,11 +95,14 @@ function sendMain(userId) {
     var surnameValue = document.querySelector('.surname');
     var ageValue = document.querySelector('.age');
     var loginValue = document.querySelector('.login');
+    var mailValue = document.querySelector('.mail');
     var countryValue = document.querySelector('.country');
     var cityValue = document.querySelector('.city');
     var streetValue = document.querySelector('.street');
     var buildingValue = document.querySelector('.building');
-    sendToSpring(JSON.stringify(new UserProfilePutDto(userId, nameValue.value, surnameValue.value, ageValue.value, loginValue.value, countryValue.value, cityValue.value,
+    console.log(JSON.stringify(new UserDto(userId, nameValue.value, surnameValue.value, ageValue.value, loginValue.value,mailValue.value,null, countryValue.value, cityValue.value,
+        streetValue.value, buildingValue.value)));
+    sendToSpring(JSON.stringify(new UserDto(userId, nameValue.value, surnameValue.value, ageValue.value, loginValue.value,mailValue.value,null, countryValue.value, cityValue.value,
         streetValue.value, buildingValue.value)), "http://" + document.location.host + "/profile", "PUT");
     alert("Изменено!");
     window.location.replace('http://' + document.location.host + '/profile.html');//редирект
@@ -115,13 +119,16 @@ function sendPassword() {
     }
 }
 
-class UserProfilePutDto {
-    constructor(id, name, surname, age, login, country, city, street, building) {
+class UserDto {
+    constructor(id, name, surname, age, login,mail,addressId, country, city, street, building) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.age = age;
         this.login = login;
+        this.mail=mail;
+        this.password="";
+        this.addressId=addressId;
         this.country = country;
         this.city = city;
         this.street = street;
@@ -132,14 +139,15 @@ class UserProfilePutDto {
 function main() {
     userProfile("http://" + document.location.host + "/profile", function (data) {
         var inputs = "<table align='center'><tbody>" +
-            "<tr><td>Имя</td><td><input class='name' type='text' value='"+data.name+"'></td></tr>" +
-            "<tr><td>Фамилия</td><td><input class='surname' type='text' value='"+data.surname+"'></td></tr>" +
-            "<tr><td>Возраст</td><td><input class='age' type='text' value='"+data.age+"'></td></tr>" +
-            "<tr><td>Логин</td><td><input class='login' type='text' value='"+data.login+"'></td></tr>" +
-            "<tr><td>Страна</td><td><input class='country' type='text' value='"+data.country+"'></td></tr>" +
-            "<tr><td>Город</td><td><input class='city' type='text' value='"+data.city+"'></td></tr>" +
-            "<tr><td>Улица</td><td><input class='street' type='text' value='"+data.street+"'></td></tr>" +
-            "<tr><td>Здание/офис/кв</td><td><input class='building' type='text' value='"+data.building+"'></td></tr>" +
+            "<tr><td>Имя</td><td><input class='name' type='text' value='" + data.name + "'></td></tr>" +
+            "<tr><td>Фамилия</td><td><input class='surname' type='text' value='" + data.surname + "'></td></tr>" +
+            "<tr><td>Возраст</td><td><input class='age' type='text' value='" + data.age + "'></td></tr>" +
+            "<tr><td>Логин</td><td><input class='login' type='text' value='" + data.login + "'></td></tr>" +
+            "<tr><td>Доп.почта</td><td><input class='mail' type='text' value='" + data.mail + "'></td></tr>" +
+            "<tr><td>Страна</td><td><input class='country' type='text' value='" + data.country + "'></td></tr>" +
+            "<tr><td>Город</td><td><input class='city' type='text' value='" + data.city + "'></td></tr>" +
+            "<tr><td>Улица</td><td><input class='street' type='text' value='" + data.street + "'></td></tr>" +
+            "<tr><td>Здание/офис/кв</td><td><input class='building' type='text' value='" + data.building + "'></td></tr>" +
             "<tr><td><button class='sendMain'>Send</button></td></tr>"
         "</tbody>";
         document.getElementById('actionsMain').innerHTML = inputs;
@@ -165,4 +173,5 @@ function sendToSpring(jsonText, url, type) {
         }
     });
 }
+
 profile(false);

@@ -1,6 +1,5 @@
 package com.netcracker.store.entity;
 
-import com.netcracker.store.dto.ProductBasketDto;
 import com.netcracker.store.dto.ProductDto;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.AllArgsConstructor;
@@ -11,12 +10,9 @@ import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
-import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @Data
@@ -38,7 +34,7 @@ public class History {
 
     @Column(name = "info")
     @Type(type = "jsonb")
-    private List<ProductBasketDto> history = new ArrayList<>();
+    private List<ProductDto> history = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id")

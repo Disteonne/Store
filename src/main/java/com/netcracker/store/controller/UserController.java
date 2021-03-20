@@ -8,8 +8,6 @@ import com.netcracker.store.entity.User;
 import com.netcracker.store.entity.UsersRole;
 import com.netcracker.store.exception.UserException;
 import com.netcracker.store.mapper.*;
-import com.netcracker.store.service.AddressServiceImpl;
-import com.netcracker.store.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,9 +32,10 @@ public class UserController {
     getUser()-проверяет наличие такого-же пользователя по логину.т.к.логин-уникален
      */
     @PostMapping("/registration")
-    public ResponseEntity<UserDto> save(@Valid @RequestBody UserPostDto userPostDto) {
-        userPostDto.getRole().add(UsersRole.ROLE_USER);
+    public ResponseEntity<UserDto> save(@Valid @RequestBody UserDto userPostDto) {
+        //userPostDto.getRole().add(UsersRole.ROLE_USER);
         User user = UserMapstructMapper.USER_MAPSTRUCT_MAPPER.toUser(userPostDto);
+        user.getUsersRoles().add(UsersRole.ROLE_USER);
         user.setAddress(addressServiceImpl.save(addressServiceImpl.getAddress(user.getAddress())));
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 UserMapstructMapper.USER_MAPSTRUCT_MAPPER.
@@ -51,13 +50,17 @@ public class UserController {
         // return userProfileMapper.toInfoDto(user, address);
         return UserProfileMapstructMapper.USER_PROFILE_MAPSTRUCT_MAPPER.toProfileDto(user, address);
     }
-
+    //рефакторни
+    //не нужны в паммере ифы т.к данные полностью поднимаются PUT
     @PutMapping("/profile")
-    public UserProfilePatchDto saveInfo(@Valid @RequestBody UserProfilePatchDto userProfilePatchDto) {
+    public UserDto saveInfo(@Valid @RequestBody UserDto userProfilePatchDto) {
+        String password = userServiceImpl.findByLogin(userProfilePatchDto.getLogin()).getPassword();
         User user = UserProfileMapstructMapper.USER_PROFILE_MAPSTRUCT_MAPPER.mapToUser(userProfilePatchDto, getCurrentUserLogin(), userServiceImpl);
+        user.setPassword(password);
         Address newAddress = AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddress(userProfilePatchDto);
         user.setAddress(addressServiceImpl.save(addressServiceImpl.getAddress(newAddress)));
         userServiceImpl.save(user);
+
         return userProfilePatchDto;
     }
 
@@ -71,12 +74,13 @@ public class UserController {
         }
         return password.getPassword();
     }
+
     //можно рефакторнуть
     @DeleteMapping("/profile/delete/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable(value = "id") Long id, @RequestBody String empty) {
         try {
             return userServiceImpl.deleteById(id) ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }catch (UserException userException){
+        } catch (UserException userException) {
             userException.printStackTrace();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

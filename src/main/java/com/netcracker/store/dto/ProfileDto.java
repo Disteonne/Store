@@ -12,6 +12,7 @@ public class ProfileDto {
     private Integer age;
     private String login;
     private String password;
+    private String mail;
     private String country;
     private String city;
     private String street;

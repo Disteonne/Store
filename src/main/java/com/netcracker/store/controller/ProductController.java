@@ -5,10 +5,7 @@ import com.netcracker.store.API.ProductService;
 import com.netcracker.store.dto.*;
 import com.netcracker.store.exception.ProductException;
 import com.netcracker.store.exception.TypeNotFoundException;
-import com.netcracker.store.mapper.ProductMapper;
 import com.netcracker.store.mapper.ProductMapstructMapper;
-import com.netcracker.store.service.BasketServiceImpl;
-import com.netcracker.store.service.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -73,11 +70,11 @@ public class ProductController {
     }
 
     @PostMapping("/product")
-    public ResponseEntity<ProductDto> save(@Valid @RequestBody ProductPostDto productPostDto) throws TypeNotFoundException {
+    public ResponseEntity<ProductDto> save(@Valid @RequestBody ProductDto productPostDto) throws TypeNotFoundException {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(ProductMapstructMapper.PRODUCT_MAPSTRUCT_MAPPER.mapToProductDto(
-                        productServiceImpl.save(ProductMapstructMapper.PRODUCT_MAPSTRUCT_MAPPER.mapToProduct(productPostDto))));
+                        productServiceImpl.save(ProductMapstructMapper.PRODUCT_MAPSTRUCT_MAPPER.mapToProductPost(productPostDto))));
         /*
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -93,10 +90,10 @@ public class ProductController {
     }
 
     @PutMapping("/product")
-    public ResponseEntity<ProductDto> put(@Valid @RequestBody ProductPutDto productPutDto) {
+    public ResponseEntity<ProductDto> put(@Valid @RequestBody ProductDto productPutDto) {
         return ResponseEntity
                 .ok(ProductMapstructMapper.PRODUCT_MAPSTRUCT_MAPPER.mapToProductDto(
-                        productServiceImpl.save(ProductMapstructMapper.PRODUCT_MAPSTRUCT_MAPPER.mapToProduct((productPutDto)))));
+                        productServiceImpl.save(ProductMapstructMapper.PRODUCT_MAPSTRUCT_MAPPER.mapToProductPut((productPutDto)))));
         /*
         return ResponseEntity
                 .ok(productMapper.toProductDto(productService.save(productMapper.toProduct(productPutDto))));

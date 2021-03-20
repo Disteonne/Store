@@ -167,7 +167,7 @@ document.onclick = function (event) {
         document.getElementById("newAddress").innerHTML = newAddress;
     }
     if (event.target.classList.contains('add')) {
-        sendToSpringPOST(JSON.stringify(new Address(document.querySelector('.newCountry').value,
+        sendToSpringPOST(JSON.stringify(new AddressPost(null,document.querySelector('.newCountry').value,
             document.querySelector('.newCity').value,
             document.querySelector('.newStreet').value,
             document.querySelector('.newBuilding').value)), "http://" + document.location.host + "/address")
@@ -204,8 +204,9 @@ function sendToSpringPOST(jsonText, url) {
     });
 }
 
-class Address {
-    constructor(country, city, street, building) {
+class AddressPost {
+    constructor(id, country, city, street, building) {
+        this.id=id;
         this.country = country;
         this.city = city;
         this.street = street;

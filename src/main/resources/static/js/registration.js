@@ -24,7 +24,7 @@ inputs();
 document.onclick = function (event) {
     if (event.target.classList.contains('green')) {
         console.log(JSON.stringify(
-            new UserPostDto(
+            new UserDto(
                 document.querySelector('.surname').value,
                 document.querySelector('.name').value,
                 document.getElementById('age').value,
@@ -39,7 +39,7 @@ document.onclick = function (event) {
         ));
         postUser(
             JSON.stringify(
-                new UserPostDto(
+                new UserDto(
                     document.querySelector('.surname').value,
                     document.querySelector('.name').value,
                     document.getElementById('age').value,
@@ -53,19 +53,21 @@ document.onclick = function (event) {
                 )
             )
         );
-        window.location.replace("http://" + document.location.host + "/auth/login");
+        //window.location.replace("http://" + document.location.host + "/auth/login");
     }
 }
 
 //registration
-class UserPostDto {
-    constructor(surname, name, age, login, password, mail, country, city, street, building) {
+class UserDto {
+    constructor(surname,name, age, login,password,mail, country, city, street, building) {
+        this.id = null;
         this.surname = surname;
         this.name = name;
         this.age = age;
         this.login = login;
-        this.password = password;
-        this.mail = mail;
+        this.password=password;
+        this.mail=mail;
+        this.addressId=null;
         this.country = country;
         this.city = city;
         this.street = street;

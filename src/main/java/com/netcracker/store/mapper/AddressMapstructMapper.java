@@ -1,15 +1,11 @@
 package com.netcracker.store.mapper;
 
 import com.netcracker.store.dto.AddressDto;
-import com.netcracker.store.dto.AddressPostDto;
-import com.netcracker.store.dto.AddressPutDto;
-import com.netcracker.store.dto.UserProfilePatchDto;
+import com.netcracker.store.dto.UserDto;
 import com.netcracker.store.entity.Address;
-import com.netcracker.store.repository.AddressRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -20,14 +16,17 @@ public interface AddressMapstructMapper {
 
     AddressDto mapToAddressDto(Address address);
 
-    AddressPostDto mapToAddressPostDto(Address address);
-
     List<AddressDto> mapToAddressDtoList(List<Address> addressList);
 
-    Address mapToAddress(AddressPostDto addressPostDto);
+    @Mapping(source = "addressPostDto.country",target = "country")
+    @Mapping(source = "addressPostDto.city",target = "city")
+    @Mapping(source = "addressPostDto.street",target = "street")
+    @Mapping(source = "addressPostDto.building",target = "building")
+    Address mapToAddressPost(AddressDto addressPostDto);
 
-    Address mapToAddress(AddressPutDto addressPutDto);
+    Address mapToAddressPut(AddressDto addressPutDto);
 
-    Address mapToAddress(UserProfilePatchDto userProfilePatchDto);
+    //займись этим когда будет с USER
+    Address mapToAddress(UserDto userProfilePatchDto);
 
 }

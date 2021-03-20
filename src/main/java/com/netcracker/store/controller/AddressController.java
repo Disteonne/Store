@@ -2,10 +2,7 @@ package com.netcracker.store.controller;
 
 import com.netcracker.store.API.AddressService;
 import com.netcracker.store.dto.AddressDto;
-import com.netcracker.store.dto.AddressPostDto;
-import com.netcracker.store.dto.AddressPutDto;
 import com.netcracker.store.mapper.AddressMapstructMapper;
-import com.netcracker.store.service.AddressServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -47,17 +44,17 @@ public class AddressController {
     getAddress(...)-проверяет наличие адреса в бд,если адрес существует,то возвращает его
      */
     @PostMapping("/address")
-    public ResponseEntity<AddressDto> save(@Valid @RequestBody AddressPostDto addressPostDto) {
+    public ResponseEntity<AddressDto> save(@Valid @RequestBody AddressDto addressPostDto) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddressDto(addressServiceImpl.save(addressServiceImpl.
-                        getAddress(AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddress(addressPostDto)))));
+                        getAddress(AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddressPost(addressPostDto)))));
     }
 
     @PutMapping("/address")
-    public ResponseEntity<AddressDto> put(@Valid @RequestBody AddressPutDto addressPutDto) {
+    public ResponseEntity<AddressDto> put(@Valid @RequestBody AddressDto addressPutDto) {
         return ResponseEntity
                 .ok(AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddressDto
-                        (addressServiceImpl.save(AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddress(addressPutDto))));
+                        (addressServiceImpl.save(AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddressPut(addressPutDto))));
     }
 }

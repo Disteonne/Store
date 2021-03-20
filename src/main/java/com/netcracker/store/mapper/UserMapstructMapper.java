@@ -1,7 +1,6 @@
 package com.netcracker.store.mapper;
 
 import com.netcracker.store.dto.UserDto;
-import com.netcracker.store.dto.UserPostDto;
 import com.netcracker.store.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -31,6 +30,8 @@ public interface UserMapstructMapper {
     @Mapping(source = "userPostDto.city",target = "address.city")
     @Mapping(source = "userPostDto.street",target = "address.street")
     @Mapping(source = "userPostDto.building",target = "address.building")
-    @Mapping(source = "userPostDto.role",target = "usersRoles")
-    User toUser(UserPostDto userPostDto);
+    @Mapping(source = "userPostDto.password",target = "password")
+    @Mapping(source = "userPostDto.mail",target = "mail")
+    //@Mapping(source = "userPostDto.role",target = "usersRoles")
+    User toUser(UserDto userPostDto);
 }

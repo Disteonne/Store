@@ -1,7 +1,6 @@
 package com.netcracker.store.mapper;
 
 import com.netcracker.store.dto.HistoryDto;
-import com.netcracker.store.dto.HistoryPostDto;
 import com.netcracker.store.entity.History;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,8 +15,10 @@ public interface HistoryMapstructMapper {
 
     HistoryDto mapToHistoryDto(History history);
     //source-откуда target-куда
-    @Mapping(source = "userId",target = "user.id")
-    History mapToHistory(HistoryPostDto historyPostDto);
+    @Mapping(source = "historyPostDto.date",target = "date")
+    @Mapping(source = "historyPostDto.history",target ="history" )
+    @Mapping(source = "historyPostDto.userId",target = "user.id")
+    History mapToHistoryPost(HistoryDto historyPostDto);
 
     List<HistoryDto> toHistoryDtoList(List<History> historyList);
 }

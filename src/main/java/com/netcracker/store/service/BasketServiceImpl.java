@@ -2,8 +2,8 @@ package com.netcracker.store.service;
 
 import com.netcracker.store.API.BasketService;
 import com.netcracker.store.dto.BasketDto;
-import com.netcracker.store.dto.HistoryPostDto;
-import com.netcracker.store.dto.ProductBasketDto;
+import com.netcracker.store.dto.HistoryDto;
+import com.netcracker.store.dto.ProductDto;
 import com.netcracker.store.entity.Product;
 import com.netcracker.store.mapper.HistoryMapstructMapper;
 import com.netcracker.store.mapper.ProductMapstructMapper;
@@ -30,7 +30,7 @@ public class BasketServiceImpl implements BasketService {
 
     public boolean addHistory(List<BasketDto> basket) {
         if (basket != null) {
-            List<ProductBasketDto> history = new ArrayList<>();
+            List<ProductDto> history = new ArrayList<>();
             for (BasketDto basketObj : basket
             ) {
                 Product product = productServiceImpl.getById(basketObj.getId());
@@ -44,12 +44,12 @@ public class BasketServiceImpl implements BasketService {
                 history.add(ProductMapstructMapper.PRODUCT_MAPSTRUCT_MAPPER.toProductBasketDto(product, basketObj.getCount()));
                 productServiceImpl.save(product);
             }
-            HistoryPostDto historyPostDto = new HistoryPostDto();
+            HistoryDto historyPostDto = new HistoryDto();
             historyPostDto.setHistory(history);
             historyPostDto.setDate(LocalDate.now());
             historyPostDto.setUserId(userServiceImpl.findByLogin(getCurrentUserLogin()).getId());
             //historyService.save(historyMapper.toHistory(historyPostDto));
-            historyServiceImpl.save(HistoryMapstructMapper.HISTORY_MAPSTRUCT_MAPPER.mapToHistory(historyPostDto));
+            historyServiceImpl.save(HistoryMapstructMapper.HISTORY_MAPSTRUCT_MAPPER.mapToHistoryPost(historyPostDto));
             return true;
         }
         return false;

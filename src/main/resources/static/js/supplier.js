@@ -103,11 +103,11 @@ document.onclick = function (event) {
         inputsAndList(event.target.dataset.id);
     }
     if (event.target.classList.contains('save')) {
-        console.log(JSON.stringify(new SupplierPutDto(event.target.dataset.id,
+        console.log(JSON.stringify(new SupplierDto(event.target.dataset.id,
             document.querySelector('.name').value,
             document.querySelector('.mail').value,
             document.getElementById('select').value)));
-        send(JSON.stringify(new SupplierPutDto(event.target.dataset.id,
+        send(JSON.stringify(new SupplierDto(event.target.dataset.id,
             document.querySelector('.name').value,
             document.querySelector('.mail').value,
             document.getElementById('select').value)), "http://" + document.location.host + "/supplier", "PUT");
@@ -119,10 +119,10 @@ document.onclick = function (event) {
         newSupplier();
     }
     if (event.target.classList.contains('savePost')) {
-        console.log(JSON.stringify(new SupplierPostDto(document.querySelector('.nameOfNewSupp').value,
+        console.log(JSON.stringify(new SupplierDto(null,document.querySelector('.nameOfNewSupp').value,
             document.querySelector('.mailOfNewSupp').value,
             document.getElementById('selectNewSupp').value)));
-        send(JSON.stringify(new SupplierPostDto(document.querySelector('.nameOfNewSupp').value,
+        send(JSON.stringify(new SupplierDto(null,document.querySelector('.nameOfNewSupp').value,
             document.querySelector('.mailOfNewSupp').value,
             document.getElementById('selectNewSupp').value)), "http://" + document.location.host + "/supplier", "POST");
         alert('Добавлено.');
@@ -130,17 +130,9 @@ document.onclick = function (event) {
     }
 }
 
-class SupplierPutDto {
+class SupplierDto {
     constructor(id, name, mail, addressId) {
         this.id = id;
-        this.name = name;
-        this.mail = mail;
-        this.addressId = addressId;
-    }
-}
-
-class SupplierPostDto {
-    constructor(name, mail, addressId) {
         this.name = name;
         this.mail = mail;
         this.addressId = addressId;

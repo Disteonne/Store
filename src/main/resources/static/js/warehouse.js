@@ -26,20 +26,9 @@ function send(jsonText, url, query) {
     });
 }
 
-class ProductPutDto {
-    constructor(id, name, type, price, count, supplierId, info) {
-        this.id = id;
-        this.name = name;
-        this.type = type;
-        this.price = price;
-        this.count = count;
-        this.supplierId = supplierId;
-        this.info = info;
-    }
-}
-
-class ProductPostDto {
-    constructor(name, type, price, count, supplierId, info) {
+class ProductDto {
+    constructor(id,name, type, price, count, supplierId, info) {
+        this.id=id;
         this.name = name;
         this.type = type;
         this.price = price;
@@ -170,7 +159,7 @@ document.onclick = function (event) {
         window.location.replace("http://" + document.location.host + "/mainMenu.html");
     }
     if (event.target.classList.contains("save")) {
-        send(JSON.stringify(new ProductPutDto(event.target.dataset.id, document.querySelector('.editName').value,
+        send(JSON.stringify(new ProductDto(event.target.dataset.id, document.querySelector('.editName').value,
             document.querySelector('.editType').value,
             document.querySelector('.editPrice').value,
             document.querySelector('.editCount').value,
@@ -190,7 +179,7 @@ document.onclick = function (event) {
         newProduct();
     }
     if (event.target.classList.contains('create')) {
-        send(JSON.stringify(new ProductPostDto(document.querySelector('.newName').value,
+        send(JSON.stringify(new ProductDto(null,document.querySelector('.newName').value,
             document.querySelector('.newType').value,
             document.querySelector('.newPrice').value,
             document.querySelector('.newCount').value,

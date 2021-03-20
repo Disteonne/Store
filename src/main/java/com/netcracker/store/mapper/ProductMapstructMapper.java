@@ -1,11 +1,7 @@
 package com.netcracker.store.mapper;
 
-import com.netcracker.store.dto.ProductBasketDto;
 import com.netcracker.store.dto.ProductDto;
-import com.netcracker.store.dto.ProductPostDto;
-import com.netcracker.store.dto.ProductPutDto;
 import com.netcracker.store.entity.Product;
-import com.netcracker.store.entity.Supplier;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -26,13 +22,15 @@ public interface ProductMapstructMapper {
 
     @Mapping(source = "newCount",target = "count")
     @Mapping(source = "product.supplier.id",target = "supplierId")
-    ProductBasketDto toProductBasketDto(Product product, int newCount);
+    ProductDto toProductBasketDto(Product product, int newCount);
+
 
     @Mapping(source = "productPostDto.supplierId",target = "supplier.id")
-    Product mapToProduct(ProductPostDto productPostDto);
+    Product mapToProductPost(ProductDto productPostDto);
 
-    @Mapping(source = "productPutDto.supplierId" , target = "supplier.id")
-    Product mapToProduct(ProductPutDto productPutDto);
+
+    @Mapping(source = "productPutDto.supplierId",target = "supplier.id")
+    Product mapToProductPut(ProductDto productPutDto);
 
     default List<ProductDto> toProductDtoList(List<Product> productList) {
         List<ProductDto> result = new ArrayList<>();
