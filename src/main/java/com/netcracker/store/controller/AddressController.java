@@ -1,10 +1,11 @@
 package com.netcracker.store.controller;
 
+import com.netcracker.store.API.AddressService;
 import com.netcracker.store.dto.AddressDto;
 import com.netcracker.store.dto.AddressPostDto;
 import com.netcracker.store.dto.AddressPutDto;
 import com.netcracker.store.mapper.AddressMapstructMapper;
-import com.netcracker.store.service.AddressService;
+import com.netcracker.store.service.AddressServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ import java.util.List;
 @RestController
 public class AddressController {
     @Autowired
-    private AddressService addressService;
+    private AddressService addressServiceImpl;
 
     //пагинация дял селектора
     @GetMapping("/addresses")
@@ -28,18 +29,18 @@ public class AddressController {
                                    @RequestParam(required = false, defaultValue = "10") Integer size,
                                    @RequestParam(required = false, defaultValue = "street") String sortName,
                                    @RequestParam(required = false, defaultValue = "asc") String orderBy) {
-        return AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddressDtoList(addressService
+        return AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddressDtoList(addressServiceImpl
                         .getAll(country, city, street, page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)));
     }
 
     @GetMapping("/address")
     public List<AddressDto> getAll(){
-        return AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddressDtoList(addressService.getAll());
+        return AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddressDtoList(addressServiceImpl.getAll());
     }
 
     @GetMapping("/address/{id}")
     public AddressDto getById(@PathVariable(value = "id") Long id) {
-        return AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddressDto(addressService.getById(id));
+        return AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddressDto(addressServiceImpl.getById(id));
     }
 
     /*
@@ -49,7 +50,7 @@ public class AddressController {
     public ResponseEntity<AddressDto> save(@Valid @RequestBody AddressPostDto addressPostDto) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddressDto(addressService.save(addressService.
+                .body(AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddressDto(addressServiceImpl.save(addressServiceImpl.
                         getAddress(AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddress(addressPostDto)))));
     }
 
@@ -57,6 +58,6 @@ public class AddressController {
     public ResponseEntity<AddressDto> put(@Valid @RequestBody AddressPutDto addressPutDto) {
         return ResponseEntity
                 .ok(AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddressDto
-                        (addressService.save(AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddress(addressPutDto))));
+                        (addressServiceImpl.save(AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddress(addressPutDto))));
     }
 }

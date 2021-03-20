@@ -5,8 +5,8 @@ import com.netcracker.store.dto.ProfileDto;
 import com.netcracker.store.dto.UserProfilePatchDto;
 import com.netcracker.store.entity.Address;
 import com.netcracker.store.entity.User;
-import com.netcracker.store.service.AddressService;
-import com.netcracker.store.service.UserService;
+import com.netcracker.store.service.AddressServiceImpl;
+import com.netcracker.store.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +14,9 @@ import org.springframework.stereotype.Component;
 public class UserProfileMapper {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
     @Autowired
-    private AddressService addressService;
+    private AddressServiceImpl addressServiceImpl;
     @Autowired
     private AddressMapper addressMapper;
     @Autowired
@@ -37,7 +37,7 @@ public class UserProfileMapper {
     }
 
     public User toUser(UserProfilePatchDto userProfilePatchDto, String currentUserLogin) {
-        User user = userService.findByLogin(currentUserLogin);
+        User user = userServiceImpl.findByLogin(currentUserLogin);
         if (!userProfilePatchDto.getName().equals("")) {
             user.setName(userProfilePatchDto.getName());
         }
@@ -52,7 +52,7 @@ public class UserProfileMapper {
 
     public Address toAddress(UserProfilePatchDto userProfilePatchDto, String currentUserLogin) {
         //получили текущий адрес
-        AddressDto address = addressMapper.toAddressDto(addressService.getById(userMapper.toUserDto(toUser(userProfilePatchDto, currentUserLogin)).getAddressId()));
+        AddressDto address = addressMapper.toAddressDto(addressServiceImpl.getById(userMapper.toUserDto(toUser(userProfilePatchDto, currentUserLogin)).getAddressId()));
         if (!userProfilePatchDto.getCountry().equals("")) {
             address.setCountry(userProfilePatchDto.getCountry());
         }
@@ -66,7 +66,7 @@ public class UserProfileMapper {
             address.setBuilding(userProfilePatchDto.getBuilding());
         }
         //находим.есть ли адрес с такими данными
-        Address updatedAddress = addressService.find(address.getCountry(), address.getCity(), address.getStreet(), address.getBuilding());
+        Address updatedAddress = addressServiceImpl.find(address.getCountry(), address.getCity(), address.getStreet(), address.getBuilding());
         if (updatedAddress != null) {
             return updatedAddress;
         } else {

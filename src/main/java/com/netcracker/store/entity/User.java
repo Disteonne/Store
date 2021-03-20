@@ -48,7 +48,7 @@ public class User implements UserDetails {
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<History> history = new ArrayList<>();
 
 

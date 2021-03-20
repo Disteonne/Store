@@ -51,22 +51,4 @@ public interface SupplierMapstructMapper {
         return result;
     }
 
-    default Supplier patch(Supplier supplier, SupplierDto supplierDto) {
-        if(supplierDto==null){
-            return supplier;
-        }
-        if(supplierDto.getName()!=null){
-            supplier.setName(supplierDto.getName());
-        }
-        if(supplierDto.getMail()!=null){
-            supplier.setMail(supplierDto.getMail());
-        }
-        if(supplierDto.getAddressId()!=null){
-            Address address=new Address();
-            address.setId(supplierDto.getAddressId());
-            supplier.setAddress(address);
-        }
-        return supplier;
-    }
-
 }

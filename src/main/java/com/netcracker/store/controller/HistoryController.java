@@ -1,8 +1,8 @@
 package com.netcracker.store.controller;
 
+import com.netcracker.store.API.HistoryService;
 import com.netcracker.store.dto.HistoryDto;
 import com.netcracker.store.mapper.HistoryMapstructMapper;
-import com.netcracker.store.service.HistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,7 +16,7 @@ import java.util.List;
 public class HistoryController {
 
     @Autowired
-    private HistoryService historyService;
+    private HistoryService historyServiceImpl;
 
     //можно выводить с поставщиком
     @GetMapping("/history")
@@ -25,10 +25,11 @@ public class HistoryController {
                                 @RequestParam(required = false, defaultValue = "14") Integer size,
                                 @RequestParam(required = false, defaultValue = "date") String sortName,
                                 @RequestParam(required = false, defaultValue = "desc") String orderBy) {
-        if(historyService.findByUserId(date, page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)).isEmpty()){
+        if(historyServiceImpl.findByUserId(date, page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)).isEmpty()){
             return null;
         }
        // return historyMapper.toHistoryDtoList(historyService.findByUserId(date,page,size,Sort.by(Sort.Direction.fromString(orderBy),sortName)));
-        return HistoryMapstructMapper.HISTORY_MAPSTRUCT_MAPPER.toHistoryDtoList(historyService.findByUserId(date, page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)));
+        return HistoryMapstructMapper.HISTORY_MAPSTRUCT_MAPPER.toHistoryDtoList(historyServiceImpl
+                .findByUserId(date, page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)));
     }
 }

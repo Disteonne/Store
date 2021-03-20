@@ -1,7 +1,9 @@
 package com.netcracker.store.service;
 
+import com.netcracker.store.API.ProductService;
 import com.netcracker.store.entity.Product;
 import com.netcracker.store.entity.Supplier;
+import com.netcracker.store.exception.ProductException;
 import com.netcracker.store.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -12,7 +14,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Service
-public class ProductService {
+public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductRepository productRepository;
@@ -37,13 +39,13 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public boolean deleteById(Long id) {
+    public boolean deleteById(Long id) throws ProductException {
         try {
             productRepository.deleteById(id);
+            return true;
         } catch (Exception ex) {
-            return false;
+           throw new ProductException("Error with product. Action: DELETE");
         }
-        return true;
     }
 
     public List<Product> getAll(String type, String name, int page, int size, Sort sort) {

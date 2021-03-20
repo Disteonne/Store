@@ -42,32 +42,4 @@ public interface ProductMapstructMapper {
         productList.forEach(product -> result.add(mapToProductDto(product)));
         return result;
     }
-
-    default Product patch(Product product, ProductDto dto) {
-        if (dto == null) {
-            return product;
-        }
-        if (dto.getCount() != null) {
-            product.setCount(dto.getCount());
-        }
-        if (dto.getInfo() != null) {
-            product.setInfo(dto.getInfo());
-        }
-        if (dto.getPrice() != null) {
-            product.setPrice(dto.getPrice());
-        }
-        if (dto.getType() != null) {
-            product.setType(dto.getType());
-        }
-        if (dto.getName() != null) {
-            product.setName(dto.getName());
-        }
-        if (dto.getSupplierId() != null) {
-            Supplier supplier = new Supplier();
-            supplier.setId(dto.getSupplierId());
-            product.setSupplier(supplier);
-        }
-        return product;
-    }
-
 }

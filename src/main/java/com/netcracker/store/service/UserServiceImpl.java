@@ -1,6 +1,8 @@
 package com.netcracker.store.service;
 
+import com.netcracker.store.API.UserService;
 import com.netcracker.store.entity.User;
+import com.netcracker.store.exception.UserException;
 import com.netcracker.store.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -11,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -53,11 +55,11 @@ public class UserService {
         return userRepository.findByLogin(login);
     }
 
-    public boolean deleteById(Long id) {
+    public boolean deleteById(Long id) throws UserException {
         try {
             userRepository.deleteById(id);
         } catch (Exception ex) {
-            return false;
+            throw new UserException("Error with user.Action: DELETE");
         }
         return true;
     }

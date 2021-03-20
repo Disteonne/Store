@@ -1,6 +1,7 @@
 package com.netcracker.store.service;
 
 
+import com.netcracker.store.API.AddressService;
 import com.netcracker.store.entity.Address;
 import com.netcracker.store.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AddressService {
+public class AddressServiceImpl implements AddressService {
     @Autowired
     private AddressRepository addressRepository;
 
-    public AddressService(AddressRepository addressRepository) {
+    public AddressServiceImpl(AddressRepository addressRepository) {
         this.addressRepository = addressRepository;
     }
 
@@ -29,15 +30,6 @@ public class AddressService {
 
     public Address save(Address address) {
         return addressRepository.save(address);
-    }
-
-    public boolean deleteById(Long id) {
-        try {
-            addressRepository.deleteById(id);
-        } catch (Exception ex) {
-            return false;
-        }
-        return true;
     }
 
     public Address getAddress(Address address) {

@@ -1,5 +1,6 @@
 package com.netcracker.store.service;
 
+import com.netcracker.store.API.SupplierService;
 import com.netcracker.store.entity.Address;
 import com.netcracker.store.entity.Supplier;
 import com.netcracker.store.repository.SupplierRepository;
@@ -12,7 +13,7 @@ import java.util.List;
 
 
 @Service
-public class SupplierService {
+public class SupplierServiceImpl implements SupplierService {
 
     @Autowired
     private SupplierRepository supplierRepository;

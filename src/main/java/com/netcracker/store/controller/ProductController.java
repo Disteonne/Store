@@ -1,11 +1,14 @@
 package com.netcracker.store.controller;
 
+import com.netcracker.store.API.BasketService;
+import com.netcracker.store.API.ProductService;
 import com.netcracker.store.dto.*;
+import com.netcracker.store.exception.ProductException;
 import com.netcracker.store.exception.TypeNotFoundException;
 import com.netcracker.store.mapper.ProductMapper;
 import com.netcracker.store.mapper.ProductMapstructMapper;
-import com.netcracker.store.service.BasketService;
-import com.netcracker.store.service.ProductService;
+import com.netcracker.store.service.BasketServiceImpl;
+import com.netcracker.store.service.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -19,11 +22,9 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    private ProductService productService;
+    private ProductService productServiceImpl;
     @Autowired
-    private ProductMapper productMapper;
-    @Autowired
-    private BasketService basketService;
+    private BasketService basketServiceImpl;
 
     //+
     @GetMapping("/products")
@@ -33,7 +34,7 @@ public class ProductController {
                                    @RequestParam(required = false, defaultValue = "5") Integer size,
                                    @RequestParam(required = false, defaultValue = "name") String sortName,
                                    @RequestParam(required = false, defaultValue = "asc") String orderBy) {
-        return ProductMapstructMapper.PRODUCT_MAPSTRUCT_MAPPER.toProductDtoList(productService.
+        return ProductMapstructMapper.PRODUCT_MAPSTRUCT_MAPPER.toProductDtoList(productServiceImpl.
                 getAll(type, nameLike, page, size, Sort.by(Sort.Direction.fromString(orderBy), sortName)));
         /*
 
@@ -46,13 +47,13 @@ public class ProductController {
     //+
     @GetMapping("/all/products")
     public List<ProductDto> getAllProduct() {
-        return ProductMapstructMapper.PRODUCT_MAPSTRUCT_MAPPER.toProductDtoList(productService.getAll());
+        return ProductMapstructMapper.PRODUCT_MAPSTRUCT_MAPPER.toProductDtoList(productServiceImpl.getAll());
         //return productMapper.toProductDtoList(productService.getAll());
     }
 
     @GetMapping("/product/{id}")
     public ProductDto getById(@PathVariable(value = "id") Long id) {
-        return ProductMapstructMapper.PRODUCT_MAPSTRUCT_MAPPER.mapToProductDto(productService.getById(id));
+        return ProductMapstructMapper.PRODUCT_MAPSTRUCT_MAPPER.mapToProductDto(productServiceImpl.getById(id));
         //return productMapper.toProductDto(productService.getById(id));
     }
 
@@ -60,14 +61,14 @@ public class ProductController {
     @GetMapping("/count")
     public Integer getCount(@RequestParam(required = false, value = "name") String name) {
         if (name == null) {
-            return productService.getCountAll();
+            return productServiceImpl.getCountAll();
         } else
-            return productService.getCountByName(name);
+            return productServiceImpl.getCountByName(name);
     }
 
     @GetMapping("/product")
     public ProductDto getByName(@RequestParam(value = "name") String name) {
-        return ProductMapstructMapper.PRODUCT_MAPSTRUCT_MAPPER.mapToProductDto(productService.getByName(name));
+        return ProductMapstructMapper.PRODUCT_MAPSTRUCT_MAPPER.mapToProductDto(productServiceImpl.getByName(name));
         //return productMapper.toProductDto(productService.getByName(name));
     }
 
@@ -76,7 +77,7 @@ public class ProductController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(ProductMapstructMapper.PRODUCT_MAPSTRUCT_MAPPER.mapToProductDto(
-                        productService.save(ProductMapstructMapper.PRODUCT_MAPSTRUCT_MAPPER.mapToProduct(productPostDto))));
+                        productServiceImpl.save(ProductMapstructMapper.PRODUCT_MAPSTRUCT_MAPPER.mapToProduct(productPostDto))));
         /*
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -86,7 +87,7 @@ public class ProductController {
 
     @PostMapping("/basket")
     public ResponseEntity<Void> basket(@RequestBody List<BasketDto> basket) {
-        return basketService.addHistory(basket) ? ResponseEntity.status(HttpStatus.OK).build() :
+        return basketServiceImpl.addHistory(basket) ? ResponseEntity.status(HttpStatus.OK).build() :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
     }
@@ -95,17 +96,22 @@ public class ProductController {
     public ResponseEntity<ProductDto> put(@Valid @RequestBody ProductPutDto productPutDto) {
         return ResponseEntity
                 .ok(ProductMapstructMapper.PRODUCT_MAPSTRUCT_MAPPER.mapToProductDto(
-                        productService.save(ProductMapstructMapper.PRODUCT_MAPSTRUCT_MAPPER.mapToProduct((productPutDto)))));
+                        productServiceImpl.save(ProductMapstructMapper.PRODUCT_MAPSTRUCT_MAPPER.mapToProduct((productPutDto)))));
         /*
         return ResponseEntity
                 .ok(productMapper.toProductDto(productService.save(productMapper.toProduct(productPutDto))));
          */
     }
-
+    //можно рефакторнуть
     @DeleteMapping("/product/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable(value = "id") Long id) {
-        return productService.deleteById(id) ?
-                ResponseEntity.status(HttpStatus.OK).build() :
-                ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        try {
+            return productServiceImpl.deleteById(id) ?
+                    ResponseEntity.status(HttpStatus.OK).build() :
+                    ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }catch (ProductException productException){
+            productException.printStackTrace();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }
