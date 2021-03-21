@@ -53,7 +53,7 @@ document.onclick = function (event) {
                 )
             )
         );
-        //window.location.replace("http://" + document.location.host + "/auth/login");
+        window.location.replace("http://" + document.location.host + "/auth/login");
     }
 }
 

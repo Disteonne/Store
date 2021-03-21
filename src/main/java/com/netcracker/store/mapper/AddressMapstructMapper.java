@@ -27,6 +27,7 @@ public interface AddressMapstructMapper {
     Address mapToAddressPut(AddressDto addressPutDto);
 
     //займись этим когда будет с USER
+    @Mapping(source = "userProfilePatchDto.addressId",target = "id")
     Address mapToAddress(UserDto userProfilePatchDto);
 
 }

@@ -53,15 +53,14 @@ public class UserController {
     //рефакторни
     //не нужны в паммере ифы т.к данные полностью поднимаются PUT
     @PutMapping("/profile")
-    public UserDto saveInfo(@Valid @RequestBody UserDto userProfilePatchDto) {
+    public User saveInfo(@Valid @RequestBody UserDto userProfilePatchDto) {
         String password = userServiceImpl.findByLogin(userProfilePatchDto.getLogin()).getPassword();
-        User user = UserProfileMapstructMapper.USER_PROFILE_MAPSTRUCT_MAPPER.mapToUser(userProfilePatchDto, getCurrentUserLogin(), userServiceImpl);
+        User user = UserProfileMapstructMapper.USER_PROFILE_MAPSTRUCT_MAPPER.mapToUserTwo(userProfilePatchDto,
+                userServiceImpl.findByLogin(userProfilePatchDto.getLogin()).usersRoles);
         user.setPassword(password);
-        Address newAddress = AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddress(userProfilePatchDto);
-        user.setAddress(addressServiceImpl.save(addressServiceImpl.getAddress(newAddress)));
-        userServiceImpl.save(user);
-
-        return userProfilePatchDto;
+        user.setAddress(addressServiceImpl.save(addressServiceImpl.
+                getAddress(AddressMapstructMapper.ADDRESS_MAPSTRUCT_MAPPER.mapToAddress(userProfilePatchDto))));
+        return userServiceImpl.save(user);
     }
 
     @PatchMapping("/profile/password")

@@ -136,6 +136,10 @@ class SupplierDto {
         this.name = name;
         this.mail = mail;
         this.addressId = addressId;
+        this.country="";
+        this.city="";
+        this.street="";
+        this.building="";
     }
 }
 
@@ -155,11 +159,11 @@ function inputsAndList(id) {
 
             get("http://" + document.location.host + "/address", function (all) {
                 for (var i = 0; i < all.length; i++) {
-                    if (all[i].country !== currentAddress.country && all[i].city !== currentAddress.city &&
-                        all[i].street !== currentAddress.street && all[i].building !== currentAddress.building) {
+                        //if (all[i].country !== currentAddress.country && all[i].city !== currentAddress.city &&
+                        //    all[i].street !== currentAddress.street && all[i].building !== currentAddress.building) {
                         inputs += "<option value='" + all[i].id + "'>Страна: " + all[i].country + ", " +
                             "Город: " + all[i].city + ", Улица: " + all[i].street + ", Здание/офис/кв: " + all[i].building + "</option>";
-                    }
+                        //}
                 }
                 inputs += "</option></select></td></tr>" +
                     "<tr><td></td><td><button class='save' data-id='" + id + "'>Отправить</button></td></tr>" +
