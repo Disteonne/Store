@@ -36,20 +36,20 @@ var urlHost = document.location.host
 
 var urlHost = document.location.host
 
-var orderBy="asc";
+var orderBy = "asc";
 
 var countPage = 0;
 
 function start(inputIn) {
     if (inputIn === null) {
-        getMax('http://' + urlHost + '/count', 'text', 'http://' + urlHost + '/products?page=',orderBy);
+        getMax('http://' + urlHost + '/count', 'text', 'http://' + urlHost + '/products?page=', orderBy);
     } else if (inputIn === "") {
-        getMax('http://' + urlHost + '/count', 'text', 'http://' + urlHost + '/products?page=',orderBy);
+        getMax('http://' + urlHost + '/count', 'text', 'http://' + urlHost + '/products?page=', orderBy);
         //var inputIn = document.querySelector('.input-in');
     } else {
         //countPage = 0;
         //getMax('http://' + urlHost + '/count?name=' + inputIn.value);
-        getMax('http://' + urlHost + '/count?name=' + inputIn.value,'text','http://' + urlHost + '/products?nameLike='+inputIn.value+'&page=',orderBy);
+        getMax('http://' + urlHost + '/count?name=' + inputIn.value, 'text', 'http://' + urlHost + '/products?nameLike=' + inputIn.value + '&page=', orderBy);
     }
 }
 
@@ -73,7 +73,7 @@ var functionByUrl = function (url, type) {
                     + data[iter].count + "</td><td>"
                     + data[iter].supplierId + "</td><td>"
                     + data[iter].info + "</td><td>"
-                    + "<button  class=\"buttons_plus\" data-id=" + data[iter].id + ">+</button>" //button-primary plus
+                    + "<button  class=\"buttons_plus\" data-id=\"" + data[iter].id + " " + data[iter].count + "\">+</button>" //button-primary plus
                     + "<button  class=\"buttons_minus\" data-id=" + data[iter].id + ">-</button></tr>" //button-primary minus
             }
             table += "</tbody></table>";
@@ -89,7 +89,7 @@ function getMax(url, type, urlForProduct) {
     getInfoAboutProduct(url, type, function (data) {
         maxPage = Math.round(data / 5);//максимальное кол-во страниц
         console.log(maxPage);
-        functionByUrl(urlForProduct + countPage+"&orderBy="+orderBy, 'json')
+        functionByUrl(urlForProduct + countPage + "&orderBy=" + orderBy, 'json')
         pagination(countPage, maxPage);
     })
 }
@@ -98,7 +98,7 @@ var pagination = function nextPrev(counter, maxPage) {
     var forButton = '<table align="center">' + '<tr><th>';
     if (counter === 0) {
         forButton += '<button id="next" class="pagination_next">Next</button></th>';
-    } else if (counter  === maxPage) {
+    } else if (counter === maxPage) {
         forButton += '<th><button id="prev" class="pagination_prev">Prev</button></th><th>';
     } else {
         forButton += '<th><button id="prev" class="pagination_prev">Prev</button></th><th>' +
@@ -113,6 +113,7 @@ var pagination = function nextPrev(counter, maxPage) {
 var countBasket = 0;
 document.onclick = function (event) {
     if (event.target.classList.contains('buttons_plus')) {
+        console.log(event.target.dataset.id);
         plusFunction(event.target.dataset.id);
     }
     if (event.target.classList.contains('buttons_minus')) {
@@ -159,11 +160,11 @@ document.onclick = function (event) {
             getMax('http://' + urlHost + '/count?name=' + searchName, 'json', newUrl);
         }
     }
-    if(event.target.classList.contains("pagination_next")){
+    if (event.target.classList.contains("pagination_next")) {
         countPage++;
         start(document.querySelector('.input-in'));
     }
-    if(event.target.classList.contains("pagination_prev")){
+    if (event.target.classList.contains("pagination_prev")) {
         countPage--;
         start(document.querySelector('.input-in'));
     }
@@ -178,11 +179,20 @@ function deleteProduct(id) {
 var mapBasket = new Map();
 
 function plusFunction(id) {
-    if (mapBasket.has(id) === false) {
-        mapBasket.set(id, 1);
-    } else {
-        var valueById = mapBasket.get(id);
-        mapBasket.set(id, ++valueById);
+    var idAndCount = id.split(" ");
+    if(idAndCount[1]==="-1"){
+        alert("Товар отсутсвует.")
+    }else {
+        if (mapBasket.has(idAndCount[0]) === false) {
+            mapBasket.set(idAndCount[0], 1);
+        } else {
+            var valueById = mapBasket.get(idAndCount[0]);
+            if (idAndCount[1] < valueById + 1) {
+                alert("К сожалению, максимальное кол-во товара: " + idAndCount[1]);
+            } else {
+                mapBasket.set(idAndCount[0], ++valueById);
+            }
+        }
     }
     //вывод корзины
     basket(mapBasket);
