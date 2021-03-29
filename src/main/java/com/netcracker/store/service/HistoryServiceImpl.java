@@ -1,6 +1,7 @@
 package com.netcracker.store.service;
 
 import com.netcracker.store.API.HistoryService;
+import com.netcracker.store.API.UserService;
 import com.netcracker.store.entity.History;
 import com.netcracker.store.entity.User;
 import com.netcracker.store.repository.HistoryRepository;
@@ -19,7 +20,7 @@ public class HistoryServiceImpl implements HistoryService {
     @Autowired
     private HistoryRepository historyRepository;
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    private UserService userServiceImpl;
 
     public List<History> getAll() {
         return historyRepository.findAll();

@@ -50,8 +50,7 @@ public class UserController {
         // return userProfileMapper.toInfoDto(user, address);
         return UserProfileMapstructMapper.USER_PROFILE_MAPSTRUCT_MAPPER.toProfileDto(user, address);
     }
-    //рефакторни
-    //не нужны в паммере ифы т.к данные полностью поднимаются PUT
+
     @PutMapping("/profile")
     public User saveInfo(@Valid @RequestBody UserDto userProfilePatchDto) {
         String password = userServiceImpl.findByLogin(userProfilePatchDto.getLogin()).getPassword();

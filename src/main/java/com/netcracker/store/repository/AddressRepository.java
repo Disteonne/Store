@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface AddressRepository extends JpaRepository<Address,Long> {
 
-    @Query(value = "SELECT * FROM Address a where a.country LIKE  CONCAT(:country,'%') AND a.city LIKE CONCAT(:city,'%') AND a.street LIKE CONCAT(:street,'%')",nativeQuery = true)
+    @Query(value = "SELECT * FROM Address a where a.country LIKE  CONCAT('%',:country,'%') AND a.city LIKE CONCAT('%',:city,'%') AND a.street LIKE CONCAT('%',:street,'%')",nativeQuery = true)
     List<Address> findByQuery(@Param("country") String country,@Param("city") String city,@Param("street") String street,Pageable pageable);
 
     //for search db

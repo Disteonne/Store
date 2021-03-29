@@ -1,10 +1,12 @@
 package com.netcracker.store.service;
 
 import com.netcracker.store.API.BasketService;
+import com.netcracker.store.API.UserService;
 import com.netcracker.store.dto.BasketDto;
 import com.netcracker.store.dto.HistoryDto;
 import com.netcracker.store.dto.ProductDto;
 import com.netcracker.store.entity.Product;
+import com.netcracker.store.exception.ProductException;
 import com.netcracker.store.mapper.HistoryMapstructMapper;
 import com.netcracker.store.mapper.ProductMapstructMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +27,19 @@ public class BasketServiceImpl implements BasketService {
     @Autowired
     private ProductServiceImpl productServiceImpl;
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    private UserService userServiceImpl;
 
 
-    public boolean addHistory(List<BasketDto> basket) {
+
+    public boolean addHistory(List<BasketDto> basket) throws ProductException {
         if (basket != null) {
             List<ProductDto> history = new ArrayList<>();
             for (BasketDto basketObj : basket
             ) {
                 Product product = productServiceImpl.getById(basketObj.getId());
+                if(product.getCount()==-1){
+                    throw new ProductException("Product is missing");
+                }
                 int remains = product.getCount() - basketObj.getCount();
                 if (remains == 0) {
                     product.setCount(-1);

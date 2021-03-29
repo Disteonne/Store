@@ -1,24 +1,20 @@
 package com.netcracker.store.dto;
 
-import com.netcracker.store.entity.UsersRole;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.util.Set;
 
-@Getter
-@Setter
+@Data
 public class UserDto {
 
     private Long id;
     @NotNull
-    @Pattern(regexp = "^[А-Я][а-я-]+",message = "Name is not valid.")
+    @Pattern(regexp = "^[А-ЯA-Z][а-яa-z-]+",message = "Name is not valid.")
     private String name;
     @NotNull
-    @Pattern(regexp = "^[А-Я][а-я-]+",message = "Surname is not valid.")
+    @Pattern(regexp = "^[А-ЯA-Z][а-яa-z-]+",message = "Surname is not valid.")
     private String surname;
     @NotNull
     @Min(18)

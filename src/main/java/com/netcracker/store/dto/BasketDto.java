@@ -1,12 +1,8 @@
 package com.netcracker.store.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-import java.math.BigDecimal;
-
-@Getter
-@Setter
+@Data
 public class BasketDto {
     private Long id;
     private int count;

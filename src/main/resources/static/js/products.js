@@ -257,7 +257,8 @@ var addBasket = function productById(tableBasket, map) {
             document.getElementById('basketTable').remove();
             alert('Куплено');
             mapBasket.clear();
-            location.reload();//обновляем
+            start(inputIn);
+            //location.reload();//обновляем
         }
     });
 };

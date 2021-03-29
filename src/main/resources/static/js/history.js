@@ -40,9 +40,13 @@ function outputHistory(page, url) {
         "<tbody>";
     getHistories(url + page, function (data) {
         if(data===null){
-            alert('History is empty');
+            //alert('History is empty');
+            if(page!=0) {
+                page=0;
+                outputHistory(page, url);
+            }
         }
-        if (data.length === 0) {
+        if (data=== null) { //data.length === 0
             page = 0
             var divFor = document.createElement("div");
             //для изменения глоб переменной
@@ -113,6 +117,7 @@ document.onclick = function (event) {
     }
     if(event.target.classList.contains('input-selector-one')){
         urlQuery = "/history?date=" + document.querySelector('.input-in').value + "&page=";
+        page=0;
         outputHistory(page, urlQuery);
     }
     if(event.target.classList.contains('logout')){

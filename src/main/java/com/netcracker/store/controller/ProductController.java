@@ -84,9 +84,13 @@ public class ProductController {
 
     @PostMapping("/basket")
     public ResponseEntity<Void> basket(@RequestBody List<BasketDto> basket) {
-        return basketServiceImpl.addHistory(basket) ? ResponseEntity.status(HttpStatus.OK).build() :
-                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-
+        try {
+            return basketServiceImpl.addHistory(basket) ? ResponseEntity.status(HttpStatus.OK).build() :
+                    ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (ProductException productException) {
+            productException.printStackTrace();
+        }
+        return null;
     }
 
     @PutMapping("/product")
